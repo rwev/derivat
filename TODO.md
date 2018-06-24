@@ -1,0 +1,5 @@
+- [ ] sort **/scraps/** and assemble basic running program
+- [ ] improve developability
+    - [ ] add architecture for saving program state
+    - [ ] find solution to auto-restart process w/ GUI
+        - [ ] python *watchdog* package

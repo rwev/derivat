@@ -142,10 +142,10 @@ class MainWindow(QtGui.QMainWindow):
 
         m = np.random.multivariate_normal(means, covs, 1000).T # (3 x 1000)
 
-        print m
+        # print m
         pos = np.array([(c[0], c[1], c[2]) for c in m.T])
-        print m.shape
-        print pos
+        # print m.shape
+        # print pos
 
         scatter = gl.GLScatterPlotItem(pos=pos, size=0.1, pxMode=False)
         view.addItem(scatter)
@@ -191,7 +191,7 @@ class MainWindow(QtGui.QMainWindow):
         self.setWindowIcon(app_icon)
 
 def main():
-    app = QtGui.QApplication(argv) 
+    app = QtGui.QApplication(argv)  
     main = MainWindow()
     exit(app.exec_())
 

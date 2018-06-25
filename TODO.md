@@ -1,4 +1,5 @@
-- [ ] sort **/scraps/** and assemble basic running program
+- [X] sort **/scraps/** and assemble basic running program
+- [ ] convert to underscore styling per [PEP-0008 Python guidelines]( https://www.python.org/dev/peps/pep-0008/)
 - [ ] improve developability
     - [ ] add architecture for saving program state
     - [ ] find solution to auto-restart process w/ GUI

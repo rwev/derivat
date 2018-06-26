@@ -1,14 +1,15 @@
 """ 
 Changes:
-    * added kill_proc_tree using psutil dependency. Required to kill further processes spawned by command (e.q. PyQt. 
-    * added proper option parser and extended the ability to specify parameters
-    * only find matching files once (added files are not accounted for; script must be restarted )
+    * added kill_proc_tree using psutil dependency. Required to kill further processes spawned by command (e.g. PyQt.)
+    * added proper option parser and extended customizability
+    * ability to focus on specified subdirectories (or working directory).
+    * only find matching files once to save computation (added files are not accounted for; script must be restarted)
+    * log observed file changed to console w/ timestamp
 Future changes:
     * add function commentary
     * remove blacklist functionality, only used whitelist
-    * log observed file changed to console w/ timestamp
+    * error handling (e.g. for invalid directories or regex patterns)
     * ability to specify regex to match directories
-    * ability to ignore / focus on specified subdirectories (or simply working directory)
     * integrate option parser
 ===================================================
 
@@ -123,20 +124,29 @@ def run_filters(name, filters):
             return True
     return False
 
-def get_file_modification_times(relative_filepaths):
+def get_last_edited_filepath_and_time(relative_filepaths):
+    last_modification_time = 0
     for filepath in relative_filepaths:
-        yield os.stat(filepath).st_mtime
+        modification_time = os.stat(filepath).st_mtime
+        if modification_time > last_modification_time:
+            last_modification_time = modification_time
+            last_edited_filepath = filepath
+    return last_edited_filepath, last_modification_time
 
-def kill_proc_tree(pid, including_parent=True):    
+def kill_proc_tree(pid, including_parent=True):  
+    print('\tKilling process tree for parent with ID %d...' % pid)  
     parent = psutil.Process(pid)
     # recursive option includes child, grandchildren (further generations)
     children = parent.children(recursive=True) 
     for child in children:
         child.kill()
+        print('\t\tKilled child process with ID %d.' % child.pid)  
+       
     gone, still_alive = psutil.wait_procs(children, timeout=5)
     if including_parent:
         parent.kill()
         parent.wait(5)
+        print('\t\tKilled parent process with ID %d.' % parent.pid)  
 
 def print_stdout(process):
     stdout = process.stdout
@@ -159,18 +169,21 @@ for filepath in filepaths_to_watch:
 
 ##### SPAWN PROCESS AND OBSERVATION LOOP ##### 
 # The current maximum file modified time under the watched directory
-last_mtime = max(get_file_modification_times(filepaths_to_watch))
+last_edited_filepath, last_modification_time = get_last_edited_filepath_and_time(filepaths_to_watch)
 # shell=False => do not spawn shell process first. Results in fewer processes to kill.
 process = subprocess.Popen(command, shell=False)
 
 while True:
-    max_mtime = max(get_file_modification_times(filepaths_to_watch))
+    temp_last_edited_filepath, temp_last_modification_time = get_last_edited_filepath_and_time(filepaths_to_watch)
     print_stdout(process)
-    if max_mtime > last_mtime:
-        last_mtime = max_mtime
+    if temp_last_modification_time > last_modification_time:
+        last_modification_time = temp_last_modification_time
+        print('%s modified. Restarting...' % temp_last_edited_filepath)
         try: 
             kill_proc_tree(process.pid)
-        except:
+        except Exception as e:
+            print('\tUnable to kill process with ID %d. (Exception: %s' % (process.pid, e))
             pass
         process = subprocess.Popen(command, shell=False)
+        print ('New process started with ID %d.' % process.pid)
     time.sleep(wait)

@@ -92,12 +92,11 @@ if (not len(options.regex_file_patterns_to_observe)):
     print ('Must specify command at least one regex pattern matching files to be watched.')
 
 # only allows the use of blacklist OR whitelist (recommend change)
-blacklist = ["^\.", "\.swp$"]
-whitelist = []
+regex_whitelist = []
 for regex_rule in options.regex_file_patterns_to_observe:
     if regex_rule.startswith('*'):
         regex_rule = regex_rule[1:]
-    whitelist.append("%s$" % regex_rule)
+    regex_whitelist.append("%s$" % regex_rule)
 
 ##### DEFINE CORE LOGIC #####
 def get_observed_relative_filepaths_for_directory(relative_dir, include_subdirs = False):
@@ -106,12 +105,12 @@ def get_observed_relative_filepaths_for_directory(relative_dir, include_subdirs 
     if include_subdirs:
         for root, dirs, files in os.walk(relative_dir, topdown = True):
             for filename in files:
-                if run_filters(filename, whitelist):
+                if run_filters(filename, regex_whitelist):
                     relative_filepaths.append(os.path.join(root, filename))
     else:
         files = get_files_in_directory(relative_dir)
         for filename in files:
-            if run_filters(filename, whitelist):
+            if run_filters(filename, regex_whitelist):
                 relative_filepaths.append(os.path.join(relative_dir, filename))
     return relative_filepaths
 
@@ -123,11 +122,7 @@ def run_filters(name, filters):
         if re.search(regex, name):
             return True
     return False
-def file_filter(name):
-    if len(whitelist) > 0:
-        return run_filters(name, whitelist)
-    else:
-        return not run_filters(name, blacklist)
+
 def get_file_modification_times(relative_filepaths):
     for filepath in relative_filepaths:
         yield os.stat(filepath).st_mtime
@@ -142,6 +137,7 @@ def kill_proc_tree(pid, including_parent=True):
     if including_parent:
         parent.kill()
         parent.wait(5)
+
 def print_stdout(process):
     stdout = process.stdout
     if stdout != None:

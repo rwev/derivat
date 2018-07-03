@@ -47,7 +47,8 @@ class MainWindow(QtGui.QMainWindow):
                                         (('Spot',                   float,  None),
                                         ('Interest Rate (% p.a.)',  float,  None),
                                         ('Carry (% p.a.)',          float,  None),
-                                        ('Volatility (% p.a.)',     float,  None)))
+                                        ('Volatility (% p.a.)',     float,  None),
+                                        ('Option Type',             tuple,  ('American', 'European'))))
         params_widget.setMaximumWidth(MAX_WIDTH)
         layout.addWidget(params_widget)
 

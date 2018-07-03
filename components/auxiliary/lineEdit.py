@@ -8,21 +8,10 @@ Created on Thu Aug 25 11:39:53 2016
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
-class CustomLineEdit(QtGui.QWidget):
+class CustomLineEdit(QtGui.QLineEdit):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, default_text, parent = None):
         QtGui.QWidget.__init__(self, parent)
-        layout = QtGui.QHBoxLayout() 
-        layout.setAlignment(Qt.Qt.AlignTop)
-        self.line_edit = self.addLineEdit(layout, default_text)
-        self.setLayout(layout)
-        self.link() 
-    def addLineEdit(self, layout, default_text):
-        line_edit = QtGui.QLineEdit()
-        if default_text:
-            line_edit.setText(str(default_text).upper())
-        layout.addWidget(line_edit)
-        return line_edit
 
 class AutoUpperLineEdit(CustomLineEdit):
     def __init__(self, default_text):
@@ -63,3 +52,26 @@ class ListNumeralsLineEdit(CustomLineEdit):
         for num in filter(lambda x: x in '0123456789.,', str(self.line_edit.text())).split(','):
             ret.append(num)
         return num
+
+# TODO: refactor FilePathLineEdit        
+class FilePathLineEdit(QtGui.QLineEdit):
+    def __init__(self, default_path = None, parent=None):
+        super(FilePathLineEdit, self).__init__()
+        self.button = QtGui.QToolButton()
+        self.button.setIcon(QtGui.QIcon('folder_icon.ico'))
+        self.button.setStyleSheet("background: transparent; border: none;")
+        self.button.setFixedSize(20, 20)
+        self.button.clicked.connect(self.selectFolder)
+        
+        layout = QtGui.QHBoxLayout()
+        layout.setAlignment(Qt.Qt.AlignRight)
+        layout.addWidget(self.button)
+        layout.setSpacing(0)
+        layout.setContentsMargins(0,0,0,0)
+        self.setLayout(layout)
+        Qt.QCoreApplication.processEvents()
+        
+    def selectFolder(self):
+        filepath = str(QtGui.QFileDialog.getOpenFileName())
+        if filepath:
+            self.setText(filepath)

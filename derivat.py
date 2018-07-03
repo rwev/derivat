@@ -8,6 +8,8 @@ import components.auxiliary.CustomInputs as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.AutoAxisTable as AUTO_TABLE
 
+import components.lib.PyQtShared as PYQT_SHARED
+
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, parent)
@@ -18,29 +20,23 @@ class MainWindow(QtGui.QMainWindow):
     def buildGui(self):
 
         self.setWindowTitle('derivat')
-        self.setIcons()
+        self.setIcon()
 
-        self.main_layout = QtGui.QHBoxLayout()
-        self.main_layout.setAlignment(Qt.Qt.AlignJustify)
+        splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
 
-        settings_layout = QtGui.QVBoxLayout()
-        self.buildSettingsLayout(settings_layout)
+        settings_widget = self.buildSettings()
+        view_widget = self.buildView()
 
-        view_layout = QtGui.QVBoxLayout()
-        self.buildViewLayout(view_layout)
+        splitter.addWidget(settings_widget)
+        splitter.addWidget(view_widget)
 
-        self.main_layout.addLayout(settings_layout)
-        self.main_layout.addLayout(view_layout)
-
-        self.frame = QtGui.QWidget()
-        self.frame.setLayout(self.main_layout)
-        self.setCentralWidget(self.frame)
+        self.setCentralWidget(splitter)
         
         Qt.QCoreApplication.processEvents()
 
-    def buildSettingsLayout(self, layout):
+    def buildSettings(self):
 
-        MAX_WIDTH = 400
+        splitter = QtGui.QSplitter(Qt.Qt.Vertical)
 
         params_widget = CUSTOM.ParameterSelectionWidget(group_name = 'Pricing Inputs')
         params_widget.displayParameters(param_name_type_default_tuples = 
@@ -49,26 +45,25 @@ class MainWindow(QtGui.QMainWindow):
                                         ('Carry (% p.a.)',          float,  None),
                                         ('Volatility (% p.a.)',     float,  None),
                                         ('Option Type',             tuple,  ('American', 'European'))))
-        params_widget.setMaximumWidth(MAX_WIDTH)
-        layout.addWidget(params_widget)
 
-        self.params_list_widget = CUSTOM.ParameterSelectionWidget(group_name = 'Pricing Dimensions')
-        self.params_list_widget.displayParameters(param_name_type_default_tuples = 
+        params_list_widget = CUSTOM.ParameterSelectionWidget(group_name = 'Pricing Dimensions')
+        params_list_widget.displayParameters(param_name_type_default_tuples = 
                                             (('Strikes', list, None),
                                             ('Expirations (days)', list, None)))
-        self.params_list_widget.setMaximumWidth(MAX_WIDTH)
-        self.params_list_widget.changedSignal.connect(self.updatePriceTableAxis)
-        layout.addWidget(self.params_list_widget)
-        return layout
+
+        splitter.addWidget(params_widget)
+        splitter.addWidget(params_list_widget)
+
+        return splitter
 
     def updatePriceTableAxis(self, param_name_values_dict):
         self.prices_table.updateColumnLabels(param_name_values_dict['Strikes'])
         self.prices_table.updateRowLabels(param_name_values_dict['Expirations (days)'])
 
-    def buildViewLayout(self, view_layout):
+    def buildView(self):
         tabs = QtGui.QTabWidget()
         self.buildViewsTabs(tabs)
-        view_layout.addWidget(tabs)
+        return tabs
 
     def buildViewsTabs(self, tabs):
         
@@ -174,15 +169,9 @@ class MainWindow(QtGui.QMainWindow):
             event.ignore()
 
 
-    def setIcons(self):
-        # applies to all child windows     
-        app_icon = QtGui.QIcon()
+    def setIcon(self):
         source = 'assets/gamma.png'
-        app_icon.addFile(source, Qt.QSize(16,16))
-        app_icon.addFile(source, Qt.QSize(24,24))
-        app_icon.addFile(source, Qt.QSize(32,32))
-        app_icon.addFile(source, Qt.QSize(48,48))
-        app_icon.addFile(source, Qt.QSize(256,256))
+        app_icon = PYQT_SHARED.getIcon(source)
         self.setWindowIcon(app_icon)
 
 def main():

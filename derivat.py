@@ -57,10 +57,10 @@ class MainWindow(QtGui.QMainWindow):
         params_widget.setMaximumWidth(MAX_WIDTH)
         layout.addWidget(params_widget)
 
-        self.params_list_widget = CUSTOM.ParameterNumericListWidget(group_name = 'Pricing Dimensions')
-        self.params_list_widget.displayParameters(param_name_default_tuples = 
-                                            (('Strikes', None),
-                                            ('Expirations (days)', None)))
+        self.params_list_widget = CUSTOM.ParameterSelectionWidget(group_name = 'Pricing Dimensions')
+        self.params_list_widget.displayParameters(param_name_type_default_tuples = 
+                                            (('Strikes', list, None),
+                                            ('Expirations (days)', list, None)))
         self.params_list_widget.setMaximumWidth(MAX_WIDTH)
         self.params_list_widget.changedSignal.connect(self.updatePriceTableAxis)
         layout.addWidget(self.params_list_widget)

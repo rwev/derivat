@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Aug 25 11:39:53 2016
-
-@author: Ryan
-"""
 
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui

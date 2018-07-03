@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Aug 25 11:39:53 2016
-
-@author: Ryan
-"""
 
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
@@ -59,15 +53,10 @@ class ParameterSelectionWidget(QtGui.QWidget):
             editable = LINE_EDIT.AutoUpperLineEdit(default)
         elif typ == list:
             editable = LINE_EDIT.ListNumeralsLineEdit(default)
-        # TODO: handle tuple type
-        # elifsetMinimumHeighte):
-        #     editable = QComboBox()
-        #     if typ == () and isinstance(default_combo, tuple): # if empty, check if default combo was passed
-        #         editable.addItems(default_combo)
-        #     elif len(typ) > 0:
-        #         editable.addItems(typ)
-        #     if default:
-        #         editable.setCurrentIndex(list(typ).index(default))
+        elif typ == tuple: 
+            editable = QtGui.QComboBox()
+            editable.addItems(default)
+
         editable.changedSignal.connect(self.emitChangedSignal)
         return editable
     def emitChangedSignal(self):

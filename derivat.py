@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 10 21:02:07 2018
-
-@author: Ryan
-"""
 
 import os
 from sys import exit, argv

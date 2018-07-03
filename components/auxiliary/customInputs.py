@@ -8,7 +8,7 @@ Created on Thu Aug 25 11:39:53 2016
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
-import lineEdit
+import LineEdit as LINE_EDIT
 
 class ParameterNumericListWidget(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
@@ -44,7 +44,7 @@ class ParameterNumericListWidget(QtGui.QWidget):
         return label
 
     def getEditable(self, default):
-        editable = lineEdit.ListNumeralsLineEdit(default)
+        editable = LINE_EDIT.ListNumeralsLineEdit(default)
         editable.changedSignal.connect(self.emitChangedSignal)
         return editable
 
@@ -108,9 +108,9 @@ class ParameterSelectionWidget(QtGui.QWidget):
             return editable
 
         if typ == int or typ == float:
-            editable = lineEdit.AutoNumeralLineEdit(default)
+            editable = LINE_EDIT.AutoNumeralLineEdit(default)
         elif typ == str:
-            editable = lineEdit.AutoUpperLineEdit(default)
+            editable = LINE_EDIT.AutoUpperLineEdit(default)
         elif typ == file:
             editable = FilePathLineEdit(default)
         # TODO: handle tuple type
@@ -134,9 +134,9 @@ class ParameterSelectionWidget(QtGui.QWidget):
             editable = self.param_name_to_editable_dict[param_name]
             if isinstance(editable, QtGui.QComboBox):
                 value = str(editable.currentText())
-            elif isinstance(editable, lineEdit.AutoNumeralLineEdit):
+            elif isinstance(editable, LINE_EDIT.AutoNumeralLineEdit):
                 value = float(editable.text())
-            elif isinstance(editable, lineEdit.AutoUpperLineEdit):
+            elif isinstance(editable, LINE_EDIT.AutoUpperLineEdit):
                 value = str(editable.text())
             elif isinstance(editable, FilePathLineEdit):
                 value = str(editable.text())

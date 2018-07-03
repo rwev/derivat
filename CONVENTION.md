@@ -32,6 +32,13 @@ user_input = raw_input(prompt_str)
 class_instance = ExampleClass()
 ```
 
+### IMPORTS 
+Imports shall written in fully-capitalized Snake Case. 
+```python
+import components.auxiliary.customObjects as CUSTOM_IMPORT 
+import SiblingSourceFile as SIBLING 
+```
+
 ### Spacing 
 One empty line shall be present between:
     1. Class definitions;

@@ -10,9 +10,9 @@ from sys import exit, argv
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
-import components.auxiliary.customInputs as CUSTOM
-import components.auxiliary.lineEdit as LINE_EDIT
-import components.auxiliary.autoTable as AUTO_TABLE
+import components.auxiliary.CustomInputs as CUSTOM
+import components.auxiliary.LineEdit as LINE_EDIT
+import components.auxiliary.AutoAxisTable as AUTO_TABLE
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -23,7 +23,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def buildGui(self):
 
-        self.setWindowTitle('3DOV')
+        self.setWindowTitle('derivat')
         self.setIcons()
 
         self.main_layout = QtGui.QHBoxLayout()
@@ -167,7 +167,7 @@ class MainWindow(QtGui.QMainWindow):
         return
 
         quit_title = "Confirm Exit"
-        quit_msg = 'Close 3DOV? Any unsaved pricing configuration will be lost.'
+        quit_msg = 'Close derivat? Any unsaved pricing configuration will be lost.'
         reply = QtGui.QMessageBox.question(self, 
                                             quit_title,
                                             quit_msg,

@@ -15,7 +15,6 @@ class AutoAxisTable(QtGui.QTableWidget):
         self.setColumnCount(len(column_labels) + 1)
         
     def updateRowLabels(self, labels):
-        print 
         self.setRowCount(len(labels))
         for i in range(len(labels)):
             self.setItem(1 + i, 0, QtGui.QTableWidgetItem(str(labels[i])))

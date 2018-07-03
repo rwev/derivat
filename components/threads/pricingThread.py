@@ -6,7 +6,7 @@ Created on Sat Feb 10 21:02:07 2018
 """
 
 import PyQt4.QtCore as Qt
-from ..lib import baw
+from ..lib import BAW
 
 ROUNDDIG = 5
 

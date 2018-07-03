@@ -1,6 +1,15 @@
-- [X] sort **/scraps/** and assemble basic running program
-- [ ] convert to underscore styling per [PEP-0008 Python guidelines]( https://www.python.org/dev/peps/pep-0008/)
+- [ ] define standard convention
+    - [ ] potentional styling per [PEP-0008 Python guidelines]( https://www.python.org/dev/peps/pep-0008/)
+    - [ ] describe convention in CONVENTION.md
 - [ ] improve developability
     - [ ] add architecture for saving program state
-    - [ ] find solution to auto-restart process w/ GUI
-        - [ ] python *watchdog* package
+    - [X] find solution to auto-restart process w/ GUI - autoreload.py added
+- [ ] add settings saving / loading functionality
+    - [ ] serialize data with YAML
+    - [ ] automatic:   
+        - [ ] load on program start
+        - [ ] save on program exit
+    - [ ] manual
+        - [ ] menu entry for settings
+            - [ ] load option for manual settings edit / reload
+            - [ ] save option for forced save (to try out other inputs without overwriting)

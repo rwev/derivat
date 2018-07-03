@@ -2,7 +2,9 @@
     - [ ] potentional styling per [PEP-0008 Python guidelines]( https://www.python.org/dev/peps/pep-0008/)
     - [ ] describe convention in CONVENTION.md
 - [ ] improve developability
-    - [ ] add architecture for saving program state
+    - [ ] add architecture for saving program state, including
+        - [ ] including widget dimensions;
+        - [ ] user input
     - [X] find solution to auto-restart process w/ GUI - autoreload.py added
 - [ ] add settings saving / loading functionality
     - [ ] serialize data with YAML
@@ -13,3 +15,12 @@
         - [ ] menu entry for settings
             - [ ] load option for manual settings edit / reload
             - [ ] save option for forced save (to try out other inputs without overwriting)
+- [ ] add "getting started" to README.md
+    - [ ] *launch.json* configuration and *autoreload.py*
+- [ ] use validators in LineEdit implementations
+- [ ] export strings to single constants file
+- [X] make settings / table area stretchable; don't use fixed sizes
+- [ ] file settings group box
+    - [ ] display current configuration file
+    - [ ] save and load buttons
+- [ ] build OpenGL into main application

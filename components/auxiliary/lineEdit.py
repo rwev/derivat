@@ -10,40 +10,43 @@ class CustomLineEdit(QtGui.QLineEdit):
 class AutoUpperLineEdit(CustomLineEdit):
     def __init__(self, default_text):
         super(AutoUpperLineEdit, self).__init__(default_text)
+        self.link()
     def link(self):
-        self.line_edit.textChanged.connect(self.capitalize)
+        self.textChanged.connect(self.capitalize)
     def capitalize(self):
-        self.line_edit.setText(str(self.line_edit.text()).upper())
+        self.setText(str(self.text()).upper())
         self.changedSignal.emit(self.text())
         Qt.QCoreApplication.processEvents()
     def text(self):
-        return self.line_edit.text()
+        return self.text()
         
 class AutoNumeralLineEdit(CustomLineEdit):
     def __init__(self, default_text = ''):
         super(AutoNumeralLineEdit, self).__init__(default_text)
+        self.link()
     def link(self):
-        self.line_edit.textChanged.connect(self.checkNumeral)
+        self.textChanged.connect(self.checkNumeral)
     def checkNumeral(self):
-        self.line_edit.setText(filter( lambda x: x in '0123456789.+-', str(self.line_edit.text()) ))
+        self.setText(filter( lambda x: x in '0123456789.+-', str(self.text()) ))
         self.changedSignal.emit(self.value())
         Qt.QCoreApplication.processEvents()
     def value(self):
-        return float(self.line_edit.text())
+        return float(self.text())
         
 class ListNumeralsLineEdit(CustomLineEdit):
     def __init__(self, default_text = None):
         super(ListNumeralsLineEdit, self).__init__(default_text)
+        self.link()
     def link(self):
-        self.line_edit.textChanged.connect(self.checkNumericList)
+        self.textChanged.connect(self.checkNumericList)
     def checkNumericList(self):
-        text = filter(lambda x: x in '0123456789.,', str(self.line_edit.text()))
-        self.line_edit.setText(', '.join(text.split(',')))
+        text = filter(lambda x: x in '0123456789.,', str(self.text()))
+        self.setText(', '.join(text.split(',')))
         self.changedSignal.emit(self.value())
         Qt.QCoreApplication.processEvents()
     def value(self):
         ret = []
-        for num in filter(lambda x: x in '0123456789.,', str(self.line_edit.text())).split(','):
+        for num in filter(lambda x: x in '0123456789.,', str(self.text())).split(','):
             ret.append(num)
         return num
 

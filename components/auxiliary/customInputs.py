@@ -5,6 +5,7 @@ import PyQt4.QtGui as QtGui
 from ..lib import PyQtShared as PYQT_SHARED
 
 import LineEdit as LINE_EDIT
+import ComboBox as COMBO_BOX
 
 class ParameterSelectionWidget(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
@@ -54,9 +55,7 @@ class ParameterSelectionWidget(QtGui.QWidget):
         elif typ == list:
             editable = LINE_EDIT.ListNumeralsLineEdit(default)
         elif typ == tuple: 
-            editable = QtGui.QComboBox()
-            editable.addItems(default)
-
+            editable = COMBO_BOX.CustomComboBox(default)
         editable.changedSignal.connect(self.emitChangedSignal)
         return editable
     def emitChangedSignal(self):
@@ -71,8 +70,6 @@ class ParameterSelectionWidget(QtGui.QWidget):
             elif isinstance(editable, LINE_EDIT.AutoNumeralLineEdit):
                 value = float(editable.text())
             elif isinstance(editable, LINE_EDIT.AutoUpperLineEdit):
-                value = str(editable.text())
-            elif isinstance(editable, FilePathLineEdit):
                 value = str(editable.text())
             param_name_value_dict[param_name] = value
         return param_name_value_dict

@@ -2,7 +2,7 @@
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
-from ..lib import PyQtShared as PYQT_SHARED
+from ..libs import PyQtShared as PYQT_SHARED
 
 import LineEdit as LINE_EDIT
 import ComboBox as COMBO_BOX
@@ -30,12 +30,7 @@ class ParameterSelectionWidget(QtGui.QWidget):
     def getLabel(self, name, typ):
         label = QtGui.QLabel()
         label.setAlignment(Qt.Qt.AlignLeft)
-        if typ == int:
-            label.setText(Qt.QString((name + ' (int)')))
-        elif typ == float:
-            label.setText(Qt.QString((name + ' (float)')))
-        else:
-            label.setText(Qt.QString((name)))
+        label.setText(Qt.QString(name))
         return label
 
     def getEditable(self, typ, default):

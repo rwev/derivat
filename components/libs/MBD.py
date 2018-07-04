@@ -1,7 +1,7 @@
 """
 Implements MemBerDict, a nested dictionary offering member attributes for faster access and improved aesthetic.
+Standard Python dictionaries can be converted to an MBD instance with convertDictToMBD. 
 """
-
 
 from collections import OrderedDict
 
@@ -28,3 +28,21 @@ class MBD(OrderedDict):
             self.__dict__[key] = value
             return
         self[key] = value
+
+def convertDictToMBD(dict):
+    mdb = MBD()
+    for k in dict.keys():
+        if type(dict[k]) == dict:
+            mdb = convertDictToMBD(dict[k])
+        else:
+            setattr(mdb, k, dict[k])
+    return mdb
+
+def convertMBDtoDict(mdb):
+    dict = {}
+    for k in mdb.keys():
+        if type(mdb[k]) == dict:
+            mdb = convertMBDtoDict(mdb[k])
+        else:
+            dict[k] = mdb[k]
+    return dict

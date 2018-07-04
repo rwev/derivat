@@ -5,7 +5,6 @@
     - [ ] add architecture for saving program state, including
         - [ ] including widget dimensions;
         - [ ] user input
-    - [X] find solution to auto-restart process w/ GUI - autoreload.py added
 - [ ] add settings saving / loading functionality
     - [ ] serialize data with YAML
     - [ ] automatic:   
@@ -18,9 +17,11 @@
 - [ ] add "getting started" to README.md
     - [ ] *launch.json* configuration and *autoreload.py*
 - [ ] use validators in LineEdit implementations
-- [ ] export strings to single constants file
-- [X] make settings / table area stretchable; don't use fixed sizes
 - [ ] file settings group box
     - [ ] display current configuration file
     - [ ] save and load buttons
 - [ ] build OpenGL into main application
+- [ ] define rules on branching
+    - [ ] features
+    - [ ] bug fixes
+- [ ] clean up unused dependencies in requirements.txt

@@ -8,7 +8,8 @@ import components.auxiliary.CustomInputs as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.AutoAxisTable as AUTO_TABLE
 
-import components.lib.PyQtShared as PYQT_SHARED
+import components.libs.PyQtShared as PYQT_SHARED
+from components.libs.Constants import derivat_constants as CONSTANTS
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -19,7 +20,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def buildGui(self):
 
-        self.setWindowTitle('derivat')
+        self.setWindowTitle(CONSTANTS.window.title)
         self.setIcon()
 
         splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
@@ -38,27 +39,33 @@ class MainWindow(QtGui.QMainWindow):
 
         splitter = QtGui.QSplitter(Qt.Qt.Vertical)
 
-        params_widget = CUSTOM.ParameterSelectionWidget(group_name = 'Pricing Inputs')
+        params_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.inputs)
         params_widget.displayParameters(param_name_type_default_tuples = 
-                                        (('Spot',                   float,  None),
-                                        ('Interest Rate (% p.a.)',  float,  None),
-                                        ('Carry (% p.a.)',          float,  None),
-                                        ('Volatility (% p.a.)',     float,  None),
-                                        ('Option Type',             tuple,  ('American', 'European'))))
+            (
+                (CONSTANTS.window.pricing.input_factors.spot_price,     float,  None),
+                (CONSTANTS.window.pricing.input_factors.interest_rate,  float,  None),
+                (CONSTANTS.window.pricing.input_factors.carry_rate,     float,  None),
+                (CONSTANTS.window.pricing.input_factors.volatility,     float,  None),
+                (CONSTANTS.window.pricing.input_factors.option_type,    tuple,  (
+                                                        CONSTANTS.window.pricing.types.american, 
+                                                        CONSTANTS.window.pricing.types.european
+                                                        )
+                )
+            )
+        )
 
-        params_list_widget = CUSTOM.ParameterSelectionWidget(group_name = 'Pricing Dimensions')
+        params_list_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.dimensions)
         params_list_widget.displayParameters(param_name_type_default_tuples = 
-                                            (('Strikes', list, None),
-                                            ('Expirations (days)', list, None)))
+            (
+                (CONSTANTS.window.pricing.input_dimensions.strikes,     list, None),
+                (CONSTANTS.window.pricing.input_dimensions.expirations, list, None)
+            )
+        )
 
         splitter.addWidget(params_widget)
         splitter.addWidget(params_list_widget)
 
         return splitter
-
-    def updatePriceTableAxis(self, param_name_values_dict):
-        self.prices_table.updateColumnLabels(param_name_values_dict['Strikes'])
-        self.prices_table.updateRowLabels(param_name_values_dict['Expirations (days)'])
 
     def buildView(self):
         tabs = QtGui.QTabWidget()
@@ -70,23 +77,21 @@ class MainWindow(QtGui.QMainWindow):
         prices_tab =   QtGui.QWidget()
         graphs_tab =   QtGui.QWidget()
 
-        self.buildPricesTab(    prices_tab)
-        self.buildGraphsTab(    graphs_tab)
+        self.buildPricesTab(prices_tab)
+        self.buildGraphsTab(graphs_tab)
 
-        tabs.addTab(prices_tab,   'Prices')
-        tabs.addTab(graphs_tab,   'Graphs')
+        tabs.addTab(prices_tab, CONSTANTS.window.tabs.prices)
+        tabs.addTab(graphs_tab, CONSTANTS.window.tabs.graphs)
 
         return tabs
      
     def buildPricesTab(self, tab):
         layout = QtGui.QVBoxLayout()
         layout.setAlignment(Qt.Qt.AlignTop)
-        #layout.addWidget(view)
         self.prices_table = AUTO_TABLE.AutoAxisTable(range(5), range(5))
         layout.addWidget(self.prices_table)
         tab.setLayout(layout)
         return
-
 
     def buildGraphsTab(self, tab):
 
@@ -151,13 +156,8 @@ class MainWindow(QtGui.QMainWindow):
         return
 
     def closeEvent(self, event):
-        # overwrite the default QMainWindow close
-        # behavior in order to verify
-
-        return
-
-        quit_title = "Confirm Exit"
-        quit_msg = 'Close derivat? Any unsaved pricing configuration will be lost.'
+        quit_title = CONSTANTS.window.messages.exit.title
+        quit_msg = CONSTANTS.window.messages.exit.description
         reply = QtGui.QMessageBox.question(self, 
                                             quit_title,
                                             quit_msg,
@@ -170,7 +170,7 @@ class MainWindow(QtGui.QMainWindow):
 
 
     def setIcon(self):
-        source = 'assets/gamma.png'
+        source = CONSTANTS.sources.icon
         app_icon = PYQT_SHARED.getIcon(source)
         self.setWindowIcon(app_icon)
 

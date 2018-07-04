@@ -39,3 +39,5 @@ derivat_constants.backend.pricing.flags.delta = 'Delta'
 derivat_constants.backend.pricing.flags.gamma = 'Gamma'
 derivat_constants.backend.pricing.flags.vega = 'Vega'
 derivat_constants.backend.pricing.flags.theta = 'Theta'
+
+derivat_constants.backend.serialization.settings_path = 'components/serial/settings.yaml'

@@ -6,6 +6,11 @@ class CustomLineEdit(QtGui.QLineEdit):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, default_text, parent = None):
         QtGui.QWidget.__init__(self, parent)
+    def emitValueIfDefined(self):
+        value = self.getValueIfDefined()
+        if value:
+            self.changedSignal.emit(value)
+            Qt.QCoreApplication.processEvents()
 
 class AutoUpperLineEdit(CustomLineEdit):
     def __init__(self, default_text):
@@ -15,10 +20,12 @@ class AutoUpperLineEdit(CustomLineEdit):
         self.textChanged.connect(self.capitalize)
     def capitalize(self):
         self.setText(str(self.text()).upper())
-        self.changedSignal.emit(self.text())
-        Qt.QCoreApplication.processEvents()
-    def text(self):
-        return self.text()
+        self.emitValueIfDefined()
+    def getValueIfDefined(self):
+        value = self.text()
+        if value:
+            return str(self.text())
+        return False
         
 class AutoNumeralLineEdit(CustomLineEdit):
     def __init__(self, default_text = ''):
@@ -27,29 +34,14 @@ class AutoNumeralLineEdit(CustomLineEdit):
     def link(self):
         self.textChanged.connect(self.checkNumeral)
     def checkNumeral(self):
-        self.setText(filter( lambda x: x in '0123456789.+-', str(self.text()) ))
-        self.changedSignal.emit(self.value())
-        Qt.QCoreApplication.processEvents()
-    def value(self):
-        return float(self.text())
+        self.setText(filter( lambda x: x in '0123456789.+-', str(self.text())))
+        self.emitValueIfDefined()
+    def getValueIfDefined(self):
+        value = self.text()
+        if value:
+            return float(value)
+        return False
         
-class ListNumeralsLineEdit(CustomLineEdit):
-    def __init__(self, default_text = None):
-        super(ListNumeralsLineEdit, self).__init__(default_text)
-        self.link()
-    def link(self):
-        self.textChanged.connect(self.checkNumericList)
-    def checkNumericList(self):
-        text = filter(lambda x: x in '0123456789.,', str(self.text()))
-        self.setText(', '.join(text.split(',')))
-        self.changedSignal.emit(self.value())
-        Qt.QCoreApplication.processEvents()
-    def value(self):
-        ret = []
-        for num in filter(lambda x: x in '0123456789.,', str(self.text())).split(','):
-            ret.append(num)
-        return num
-
 # TODO: refactor FilePathLineEdit        
 class FilePathLineEdit(QtGui.QLineEdit):
     def __init__(self, default_path = None, parent=None):

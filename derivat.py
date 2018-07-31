@@ -69,16 +69,24 @@ class MainWindow(QtGui.QMainWindow):
         expirations_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.input_dimensions.expirations)
         expirations_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.pricing.input_dimensions.expiration_start, list, None),
-                (CONSTANTS.window.pricing.input_dimensions.expiration_step, list, None),
-                (CONSTANTS.window.pricing.input_dimensions.expiration_stop, list, None)
+                (CONSTANTS.window.pricing.input_dimensions.expiration_start, float, None),
+                (CONSTANTS.window.pricing.input_dimensions.expiration_step,  float, None),
+                (CONSTANTS.window.pricing.input_dimensions.expiration_stop,  float, None)
             )
         )
+
+        strikes_widget.changedSignal.connect(self.onDimensionChange)
+        expirations_widget.changedSignal.connect(self.onDimensionChange)
+
         splitter.addWidget(input_factors_widget)
         splitter.addWidget(strikes_widget)
         splitter.addWidget(expirations_widget)
 
         return splitter
+
+    def onDimensionChange(self, range_dict):
+        print(range_dict)
+
 
     def buildView(self):
         tabs = QtGui.QTabWidget()

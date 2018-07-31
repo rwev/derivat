@@ -47,30 +47,25 @@ class ParameterSelectionWidget(QtGui.QWidget):
             editable = LINE_EDIT.AutoNumeralLineEdit(default)
         elif typ == str:
             editable = LINE_EDIT.AutoUpperLineEdit(default)
-        elif typ == list:
-            editable = LINE_EDIT.ListNumeralsLineEdit(default)
         elif typ == tuple: 
             editable = COMBO_BOX.CustomComboBox(default)
         editable.changedSignal.connect(self.emitChangedSignal)
         return editable
+
     def emitChangedSignal(self):
-        self.changedSignal.emit(self.getParametersNameValueDict())
+        name_value_dict = self.getParametersNameValueDictIfDefined()
+        if name_value_dict:
+            self.changedSignal.emit(name_value_dict)
             
-    def getParametersNameValueDict(self):
+    def getParametersNameValueDictIfDefined(self):
         param_name_value_dict = {}
         for param_name in self.param_name_to_editable_dict.keys():
             editable = self.param_name_to_editable_dict[param_name]
-            if isinstance(editable, QtGui.QComboBox):
-                value = str(editable.currentText())
-            elif isinstance(editable, LINE_EDIT.AutoNumeralLineEdit):
-                value = float(editable.text())
-            elif isinstance(editable, LINE_EDIT.AutoUpperLineEdit):
-                value = str(editable.text())
-            param_name_value_dict[param_name] = value
+            value = editable.getValueIfDefined()
+            if value:
+                param_name_value_dict[param_name] = editable.getValueIfDefined()
+            else: 
+                return False
         return param_name_value_dict
-
-
-            
-
 
 

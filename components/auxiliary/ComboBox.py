@@ -11,4 +11,7 @@ class CustomComboBox(QtGui.QComboBox):
         self.currentIndexChanged.connect(self.emit)
     def emit(self, index):
         self.changedSignal.emit(self.choices[index])
-        
+    def getValueIfDefined(self):
+        index = self.currentIndex()
+        if index > 0:
+            return self.choices[index]

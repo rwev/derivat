@@ -57,13 +57,6 @@ class MainWindow(QtGui.QMainWindow):
             )
         )
 
-        input_dimensions_widget = QtGui.QWidget()
-        input_dimensions_content_layout = QtGui.QHBoxLayout()
-        input_dimensions_layout = PYQT_SHARED.getGroupFormLayout(input_dimensions_content_layout, CONSTANTS.window.pricing.dimensions)
-        input_dimensions_widget.setLayout(input_dimensions_layout)
-
-        input_dimensions_splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
-
         strikes_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.input_dimensions.strikes)
         strikes_widget.displayParameters(param_name_type_default_tuples = 
             (
@@ -81,12 +74,9 @@ class MainWindow(QtGui.QMainWindow):
                 (CONSTANTS.window.pricing.input_dimensions.expiration_stop, list, None)
             )
         )
-
-        input_dimensions_splitter.addWidget(strikes_widget)
-        input_dimensions_splitter.addWidget(expirations_widget)
-
         splitter.addWidget(input_factors_widget)
-        splitter.addWidget(input_dimensions_splitter)
+        splitter.addWidget(strikes_widget)
+        splitter.addWidget(expirations_widget)
 
         return splitter
 

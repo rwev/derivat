@@ -1,6 +1,7 @@
 - [ ] define standard convention
     - [ ] potentional styling per [PEP-0008 Python guidelines]( https://www.python.org/dev/peps/pep-0008/)
     - [ ] describe convention in CONVENTION.md
+- [ ] use strike and expiration ranges instead of explicit specification
 - [ ] improve developability
     - [ ] add architecture for saving program state, including
         - [ ] including widget dimensions;
@@ -25,3 +26,4 @@
     - [ ] features
     - [ ] bug fixes
 - [ ] clean up unused dependencies in requirements.txt
+- [ ] move unit input specifications to tool tip (if possible, investigate)

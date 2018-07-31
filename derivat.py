@@ -11,12 +11,15 @@ import components.auxiliary.AutoAxisTable as AUTO_TABLE
 import components.libs.PyQtShared as PYQT_SHARED
 from components.libs.Constants import derivat_constants as CONSTANTS
 
+import components.threads.SerializationThreads as SERIAL
+
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, parent)
         self.buildGui()
         self.show()
         self.activateWindow()
+        self.loadSettings()
 
     def buildGui(self):
 
@@ -39,8 +42,8 @@ class MainWindow(QtGui.QMainWindow):
 
         splitter = QtGui.QSplitter(Qt.Qt.Vertical)
 
-        params_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.inputs)
-        params_widget.displayParameters(param_name_type_default_tuples = 
+        input_factors_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.inputs)
+        input_factors_widget.displayParameters(param_name_type_default_tuples = 
             (
                 (CONSTANTS.window.pricing.input_factors.spot_price,     float,  None),
                 (CONSTANTS.window.pricing.input_factors.interest_rate,  float,  None),
@@ -54,16 +57,36 @@ class MainWindow(QtGui.QMainWindow):
             )
         )
 
-        params_list_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.dimensions)
-        params_list_widget.displayParameters(param_name_type_default_tuples = 
+        input_dimensions_widget = QtGui.QWidget()
+        input_dimensions_content_layout = QtGui.QHBoxLayout()
+        input_dimensions_layout = PYQT_SHARED.getGroupFormLayout(input_dimensions_content_layout, CONSTANTS.window.pricing.dimensions)
+        input_dimensions_widget.setLayout(input_dimensions_layout)
+
+        input_dimensions_splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
+
+        strikes_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.input_dimensions.strikes)
+        strikes_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.pricing.input_dimensions.strikes,     list, None),
-                (CONSTANTS.window.pricing.input_dimensions.expirations, list, None)
+                (CONSTANTS.window.pricing.input_dimensions.strike_start,  float, None),
+                (CONSTANTS.window.pricing.input_dimensions.strike_step,   float, None),
+                (CONSTANTS.window.pricing.input_dimensions.strike_stop,   float, None)
             )
         )
 
-        splitter.addWidget(params_widget)
-        splitter.addWidget(params_list_widget)
+        expirations_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.input_dimensions.expirations)
+        expirations_widget.displayParameters(param_name_type_default_tuples = 
+            (
+                (CONSTANTS.window.pricing.input_dimensions.expiration_start, list, None),
+                (CONSTANTS.window.pricing.input_dimensions.expiration_step, list, None),
+                (CONSTANTS.window.pricing.input_dimensions.expiration_stop, list, None)
+            )
+        )
+
+        input_dimensions_splitter.addWidget(strikes_widget)
+        input_dimensions_splitter.addWidget(expirations_widget)
+
+        splitter.addWidget(input_factors_widget)
+        splitter.addWidget(input_dimensions_splitter)
 
         return splitter
 
@@ -168,11 +191,18 @@ class MainWindow(QtGui.QMainWindow):
         else:
             event.ignore()
 
-
     def setIcon(self):
         source = CONSTANTS.sources.icon
         app_icon = PYQT_SHARED.getIcon(source)
         self.setWindowIcon(app_icon)
+
+    def loadSettings(self):
+        self.load_thread = SERIAL.LoadYAMLThread()
+        self.load_thread.resultsSignal.connect(self.printSettings)
+        self.load_thread.start()
+
+    def printSettings(self, settingsMBD):
+        print(settingsMBD)
 
 def main():
     app = QtGui.QApplication(argv)  

@@ -27,7 +27,3 @@
     - [ ] bug fixes
 - [ ] clean up unused dependencies in requirements.txt
 - [ ] move unit input specifications to tool tip (if possible, investigate)
-- [ ] change start, step, stop to min, increment, max for dimension specification
-- [ ] handle bad dimension range specification
-- [ ] disable horizontal expansion of inputs widget
-- [ ] integers-only expiration range

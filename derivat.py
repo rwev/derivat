@@ -1,6 +1,7 @@
 
 import os
 from sys import exit, argv
+import numpy as np
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
@@ -75,8 +76,8 @@ class MainWindow(QtGui.QMainWindow):
             )
         )
 
-        strikes_widget.changedSignal.connect(self.onDimensionChange)
-        expirations_widget.changedSignal.connect(self.onDimensionChange)
+        strikes_widget.changedSignal.connect(self.onStrikesDimensionChange)
+        expirations_widget.changedSignal.connect(self.onExpirationsDimensionChange)
 
         splitter.addWidget(input_factors_widget)
         splitter.addWidget(strikes_widget)
@@ -84,9 +85,29 @@ class MainWindow(QtGui.QMainWindow):
 
         return splitter
 
-    def onDimensionChange(self, range_dict):
-        print(range_dict)
+    def onStrikesDimensionChange(self, strikeDimensionsDict):
+        print(strikeDimensionsDict)
+        start = strikeDimensionsDict[CONSTANTS.window.pricing.input_dimensions.strike_start]
+        step = strikeDimensionsDict[CONSTANTS.window.pricing.input_dimensions.strike_step]
+        stop = strikeDimensionsDict[CONSTANTS.window.pricing.input_dimensions.strike_stop]
+        if start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop:
+            strike_range = np.arange(start, stop, step)
+            self.prices_table.updateColumnLabels(strike_range)
+        else:
+            # TODO handle bad range
+            print('Bad strike range')
 
+    def onExpirationsDimensionChange(self, expirationDimensionsDict):
+        print(expirationDimensionsDict)
+        start = expirationDimensionsDict[CONSTANTS.window.pricing.input_dimensions.expiration_start]
+        step = expirationDimensionsDict[CONSTANTS.window.pricing.input_dimensions.expiration_step]
+        stop = expirationDimensionsDict[CONSTANTS.window.pricing.input_dimensions.expiration_stop]
+        if start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop:
+            expiration_range = np.arange(start, stop, step)
+            self.prices_table.updateRowLabels(expiration_range)
+        else:
+            # TODO handle bad range
+            print('Bad expiration range')
 
     def buildView(self):
         tabs = QtGui.QTabWidget()
@@ -109,7 +130,7 @@ class MainWindow(QtGui.QMainWindow):
     def buildPricesTab(self, tab):
         layout = QtGui.QVBoxLayout()
         layout.setAlignment(Qt.Qt.AlignTop)
-        self.prices_table = AUTO_TABLE.AutoAxisTable(range(5), range(5))
+        self.prices_table = AUTO_TABLE.AutoAxisTable()
         layout.addWidget(self.prices_table)
         tab.setLayout(layout)
         return

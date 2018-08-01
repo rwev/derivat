@@ -13,6 +13,9 @@ from ..libs.Constants import derivat_constants as CONSTANTS
 
 def checkRange(start, step, stop):
     return (start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop)
+
+def getFactorInputs(factors_dict):
+    return factors_dict[CONSTANTS.window.pricing.input_factors.spot_price],  factors_dict[CONSTANTS.window.pricing.input_factors.interest_rate], factors_dict[CONSTANTS.window.pricing.input_factors.carry_rate], factors_dict[CONSTANTS.window.pricing.input_factors.volatility], factors_dict[CONSTANTS.window.pricing.input_factors.option_type]
 def getStrikeRangeInputs(strike_dimensions_dict):
     return strike_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_start], strike_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_step], strike_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_stop]
 def getExpirationRangeInputs(expiration_dimensions_dict):
@@ -35,26 +38,24 @@ class PricingController():
         if not self.factors_dict:
             return False
         
-        spot_price = self.factors_dict[CONSTANTS.window.pricing.input_factors.spot_price]
+        spot_price, interest_rate_ppa, carry_rate_ppa, volatility_ppa, option_type = getFactorInputs(self.factors_dict)
+        
         if not (spot_price > 0):
             return False
-
-        interest_rate = self.factors_dict[CONSTANTS.window.pricing.input_factors.interest_rate]
-        if not (interest_rate > 0):
+        if not (interest_rate_ppa > 0):
             return False
-
-        carry_rate = self.factors_dict[CONSTANTS.window.pricing.input_factors.carry_rate]
-        if not (carry_rate > 0):
+        if not (carry_rate_ppa > 0):
             return False
-        
-        volatility = self.factors_dict[CONSTANTS.window.pricing.input_factors.volatility]
-        if not (volatility > 0):
+        if not (volatility_ppa > 0):
             return False
-
-        option_type = self.factors_dict[CONSTANTS.window.pricing.input_factors.option_type]
         if not ((option_type == CONSTANTS.window.pricing.types.european) or (option_type == CONSTANTS.window.pricing.types.american)):
             return False
         return True
+
+    def getFactors(self):
+        if not self.areFactorsValid():
+            return False
+        return getFactorInputs(self.factors_dict)
 
     def areStrikesValid(self):
         if not self.strike_dimensions_dict:
@@ -85,5 +86,6 @@ class PricingController():
         return expirations_list
 
     def readyToPrice(self):
+        print(self.areFactorsValid(), self.areStrikesValid(),self.areExpirationsValid() )
         return self.areFactorsValid() and self.areStrikesValid() and self.areExpirationsValid() 
     

@@ -27,3 +27,22 @@
     - [ ] bug fixes
 - [ ] clean up unused dependencies in requirements.txt
 - [ ] move unit input specifications to tool tip (if possible, investigate)
+- [ ] change start, step, stop to min, increment, max for dimension specification
+- [ ] handle bad dimension range specification
+- [ ] disable horizontal expansion of inputs widget
+- [ ] integers-only expiration range
+- [ ] add actions layout with "price" button; connect to thread
+- [ ] add load and save settings actions
+- [ ] add export prices action
+- [ ] change option type selection to radio button group
+- [ ] standardized return None vs return False when returning values when defined
+- [ ] add status bar updates
+    - [ ] pricing in progress
+    - [ ] bad inputs to check, explanation of check failure
+- [ ] break down settings GUI build into components 
+- [ ] add greeks pricing
+- [ ] control for multiple plus, minus, decimal in numeral line edit
+    - [ ] only first character can be symbol.
+- [ ] green / red indicator on input components when they are valid or invalid
+- [ ] pricing calls versus puts
+- [ ] bring BAW.py up to style spec

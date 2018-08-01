@@ -13,8 +13,10 @@ import components.libs.PyQtShared as PYQT_SHARED
 from components.libs.Constants import derivat_constants as CONSTANTS
 
 import components.threads.SerializationThreads as SERIAL
+import components.threads.PricingThread as PRICE
 
 pricing_controller = PRICE_CONTROL.PricingController()
+
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, parent)
@@ -78,6 +80,7 @@ class MainWindow(QtGui.QMainWindow):
             )
         )
 
+        input_factors_widget.changedSignal.connect(self.onInputFactorChange)
         strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
         expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
 
@@ -87,15 +90,30 @@ class MainWindow(QtGui.QMainWindow):
 
         return splitter
 
+    def onInputFactorChange(self, input_factors_dict):
+        print(input_factors_dict)
+        pricing_controller.setFactorsDict(input_factors_dict)
+        self.priceIfReady()
+
     def onStrikeDimensionChange(self, strike_dimensions_dict):
         pricing_controller.setStrikesDict(strike_dimensions_dict)
         if pricing_controller.areStrikesValid():
             self.prices_table.updateColumnLabels(pricing_controller.getStrikesList())
+        self.priceIfReady()
 
     def onExpirationDimensionChange(self, expiration_dimensions_dict):
         pricing_controller.setExpirationsDict(expiration_dimensions_dict)
         if pricing_controller.areExpirationsValid():
             self.prices_table.updateRowLabels(pricing_controller.getExpirationsList())
+        self.priceIfReady()
+
+    def priceIfReady(self):
+        if pricing_controller.readyToPrice():
+            self.price_thread = PRICE.PricingThread()
+            self.price_thread.setFactors(*pricing_controller.getFactors())
+            self.price_thread.setStrikesList(pricing_controller.getStrikesList())
+            self.price_thread.setExpirationsList(pricing_controller.getExpirationsList())
+            self.price_thread.start()
 
     def buildView(self):
         tabs = QtGui.QTabWidget()

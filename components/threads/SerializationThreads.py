@@ -24,6 +24,6 @@ class LoadYAMLThread(Qt.QThread):
         with open(CONSTANTS.backend.serialization.settings_path, 'r') as stream:
             settings_dict = yaml.load(stream)
         print(settings_dict)
-        settingsMBD = MDB.convertDictToMBD(settings_dict)
+        settingsMBD = MBD.convertDictToMBD(settings_dict)
         self.resultsSignal.emit(settingsMBD)
 

@@ -1,22 +1,24 @@
 
 import os
 from sys import exit, argv
-import numpy as np
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
 import components.auxiliary.CustomInputs as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.AutoAxisTable as AUTO_TABLE
+import components.auxiliary.PricingController as PRICE_CONTROL
 
 import components.libs.PyQtShared as PYQT_SHARED
 from components.libs.Constants import derivat_constants as CONSTANTS
 
 import components.threads.SerializationThreads as SERIAL
 
+pricing_controller = PRICE_CONTROL.PricingController()
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, parent)
+
         self.buildGui()
         self.show()
         self.activateWindow()
@@ -76,8 +78,8 @@ class MainWindow(QtGui.QMainWindow):
             )
         )
 
-        strikes_widget.changedSignal.connect(self.onStrikesDimensionChange)
-        expirations_widget.changedSignal.connect(self.onExpirationsDimensionChange)
+        strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
+        expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
 
         splitter.addWidget(input_factors_widget)
         splitter.addWidget(strikes_widget)
@@ -85,29 +87,15 @@ class MainWindow(QtGui.QMainWindow):
 
         return splitter
 
-    def onStrikesDimensionChange(self, strikeDimensionsDict):
-        print(strikeDimensionsDict)
-        start = strikeDimensionsDict[CONSTANTS.window.pricing.input_dimensions.strike_start]
-        step = strikeDimensionsDict[CONSTANTS.window.pricing.input_dimensions.strike_step]
-        stop = strikeDimensionsDict[CONSTANTS.window.pricing.input_dimensions.strike_stop]
-        if start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop:
-            strike_range = np.arange(start, stop, step)
-            self.prices_table.updateColumnLabels(strike_range)
-        else:
-            # TODO handle bad range
-            print('Bad strike range')
+    def onStrikeDimensionChange(self, strike_dimensions_dict):
+        pricing_controller.setStrikesDict(strike_dimensions_dict)
+        if pricing_controller.areStrikesValid():
+            self.prices_table.updateColumnLabels(pricing_controller.getStrikesList())
 
-    def onExpirationsDimensionChange(self, expirationDimensionsDict):
-        print(expirationDimensionsDict)
-        start = expirationDimensionsDict[CONSTANTS.window.pricing.input_dimensions.expiration_start]
-        step = expirationDimensionsDict[CONSTANTS.window.pricing.input_dimensions.expiration_step]
-        stop = expirationDimensionsDict[CONSTANTS.window.pricing.input_dimensions.expiration_stop]
-        if start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop:
-            expiration_range = np.arange(start, stop, step)
-            self.prices_table.updateRowLabels(expiration_range)
-        else:
-            # TODO handle bad range
-            print('Bad expiration range')
+    def onExpirationDimensionChange(self, expiration_dimensions_dict):
+        pricing_controller.setExpirationsDict(expiration_dimensions_dict)
+        if pricing_controller.areExpirationsValid():
+            self.prices_table.updateRowLabels(pricing_controller.getExpirationsList())
 
     def buildView(self):
         tabs = QtGui.QTabWidget()

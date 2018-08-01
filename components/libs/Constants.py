@@ -38,6 +38,8 @@ derivat_constants.window.pricing.input_dimensions.expiration_start = 'Start'
 derivat_constants.window.pricing.input_dimensions.expiration_step = 'Step'
 derivat_constants.window.pricing.input_dimensions.expiration_stop = 'Stop'
 
+derivat_constants.window.actions.price = 'Price'
+
 derivat_constants.backend.pricing.flags.call = 'Call'
 derivat_constants.backend.pricing.flags.put = 'Put'
 derivat_constants.backend.pricing.flags.value = 'Value'

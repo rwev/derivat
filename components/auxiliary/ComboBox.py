@@ -10,8 +10,8 @@ class CustomComboBox(QtGui.QComboBox):
         self.addItems(default_choices)
         self.currentIndexChanged.connect(self.emit)
     def emit(self, index):
-        self.changedSignal.emit(self.choices[index])
+        self.changedSignal.emit(self.getValueIfDefined())
     def getValueIfDefined(self):
         index = self.currentIndex()
-        if index > 0:
+        if index >= 0:
             return self.choices[index]

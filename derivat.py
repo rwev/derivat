@@ -6,7 +6,7 @@ import PyQt4.QtGui as QtGui
 
 import components.auxiliary.CustomInputs as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
-import components.auxiliary.AutoAxisTable as AUTO_TABLE
+import components.auxiliary.PriceTable as PRICE_TABLE
 import components.auxiliary.PricingController as PRICE_CONTROL
 
 import components.libs.PyQtShared as PYQT_SHARED
@@ -98,13 +98,13 @@ class MainWindow(QtGui.QMainWindow):
     def onStrikeDimensionChange(self, strike_dimensions_dict):
         pricing_controller.setStrikesDict(strike_dimensions_dict)
         if pricing_controller.areStrikesValid():
-            self.prices_table.updateColumnLabels(pricing_controller.getStrikesList())
+            self.prices_table.updateStrikeColumns(pricing_controller.getStrikesList())
         self.priceIfReady()
 
     def onExpirationDimensionChange(self, expiration_dimensions_dict):
         pricing_controller.setExpirationsDict(expiration_dimensions_dict)
         if pricing_controller.areExpirationsValid():
-            self.prices_table.updateRowLabels(pricing_controller.getExpirationsList())
+            self.prices_table.updateExpirationRows(pricing_controller.getExpirationsList())
         self.priceIfReady()
 
     def priceIfReady(self):
@@ -113,6 +113,7 @@ class MainWindow(QtGui.QMainWindow):
             self.price_thread.setFactors(*pricing_controller.getFactors())
             self.price_thread.setStrikesList(pricing_controller.getStrikesList())
             self.price_thread.setExpirationsList(pricing_controller.getExpirationsList())
+            self.price_thread.resultSignal.connect(self.prices_table.updatePrice)
             self.price_thread.start()
 
     def buildView(self):
@@ -136,7 +137,7 @@ class MainWindow(QtGui.QMainWindow):
     def buildPricesTab(self, tab):
         layout = QtGui.QVBoxLayout()
         layout.setAlignment(Qt.Qt.AlignTop)
-        self.prices_table = AUTO_TABLE.AutoAxisTable()
+        self.prices_table = PRICE_TABLE.PriceTable()
         layout.addWidget(self.prices_table)
         tab.setLayout(layout)
         return

@@ -9,17 +9,17 @@ and returns them
 
 import numpy as np
 
-from ..libs.Constants import derivat_constants as CONSTANTS
+from ..libs.Constants import constants as CONSTANTS
 
 def checkRange(start, step, stop):
     return (start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop)
 
 def getFactorInputs(factors_dict):
-    return factors_dict[CONSTANTS.window.pricing.input_factors.spot_price],  factors_dict[CONSTANTS.window.pricing.input_factors.interest_rate], factors_dict[CONSTANTS.window.pricing.input_factors.carry_rate], factors_dict[CONSTANTS.window.pricing.input_factors.volatility], factors_dict[CONSTANTS.window.pricing.input_factors.option_type]
+    return factors_dict[CONSTANTS.window.pricing.factor.spot_price],  factors_dict[CONSTANTS.window.pricing.factor.interest_rate], factors_dict[CONSTANTS.window.pricing.factor.carry_rate], factors_dict[CONSTANTS.window.pricing.factor.volatility], factors_dict[CONSTANTS.window.pricing.factor.option_type]
 def getStrikeRangeInputs(strike_dimensions_dict):
-    return strike_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_start], strike_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_step], strike_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_stop]
+    return strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_start], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_step], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_stop]
 def getExpirationRangeInputs(expiration_dimensions_dict):
-    return expiration_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_start], expiration_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_step], expiration_dimensions_dict[CONSTANTS.window.pricing.input_dimensions.strike_stop]
+    return expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_start], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_step], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_stop]
 
 class PricingController():
     def __init__(self):

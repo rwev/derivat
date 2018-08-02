@@ -11,7 +11,7 @@ import components.auxiliary.PriceTable as PRICE_TABLE
 import components.auxiliary.PricingController as PRICE_CONTROL
 
 import components.libs.PyQtShared as PYQT_SHARED
-from components.libs.Constants import derivat_constants as CONSTANTS
+from components.libs.Constants import constants as CONSTANTS
 
 import components.threads.SerializationThreads as SERIAL
 import components.threads.PricingThread as PRICE
@@ -49,6 +49,7 @@ class MainWindow(QtGui.QMainWindow):
         splitter = QtGui.QSplitter(Qt.Qt.Vertical)
  
         option_style_widget = BUILD_CONTROLS.buildOptionStyleWidget()
+        option_type_widget = BUILD_CONTROLS.buildOptionTypeWidget()
         input_factors_widget = BUILD_CONTROLS.buildInputFactorsWidget()
         strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
         expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
@@ -58,6 +59,7 @@ class MainWindow(QtGui.QMainWindow):
         expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
 
         splitter.addWidget(option_style_widget)
+        splitter.addWidget(option_type_widget)
         splitter.addWidget(input_factors_widget)
         splitter.addWidget(strikes_widget)
         splitter.addWidget(expirations_widget)

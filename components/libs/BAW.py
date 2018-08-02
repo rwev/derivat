@@ -5,7 +5,7 @@ Implements the Barone-Adesi And Whaley model for the pricing of American options
 import numpy as np
 import cmath as m
 
-from Constants import derivat_constants as CONSTANTS
+from Constants import constants as CONSTANTS
 
 dS = 0.001
 dT = 1 / 365

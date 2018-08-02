@@ -3,7 +3,7 @@ import PyQt4.QtCore as Qt
 import yaml
 
 from ..libs import MBD
-from ..libs.Constants import derivat_constants as CONSTANTS
+from ..libs.Constants import constants as CONSTANTS
 
 class SaveYAMLThread(Qt.QThread):
     resultsSignal = Qt.pyqtSignal(object)

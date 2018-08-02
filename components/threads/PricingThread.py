@@ -1,7 +1,7 @@
 
 import PyQt4.QtCore as Qt
 from ..libs import BAW
-from ..libs.Constants import derivat_constants as CONSTANTS
+from ..libs.Constants import constants as CONSTANTS
 
 class PricingThread(Qt.QThread):
     resultSignal = Qt.pyqtSignal(object)

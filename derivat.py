@@ -4,6 +4,7 @@ from sys import exit, argv
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
+import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
 import components.auxiliary.CustomInputs as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.PriceTable as PRICE_TABLE
@@ -33,57 +34,30 @@ class MainWindow(QtGui.QMainWindow):
 
         splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
 
-        settings_widget = self.buildSettings()
+        controls_widget = self.buildControls()
         view_widget = self.buildView()
 
-        splitter.addWidget(settings_widget)
+        splitter.addWidget(controls_widget)
         splitter.addWidget(view_widget)
 
         self.setCentralWidget(splitter)
         
         Qt.QCoreApplication.processEvents()
 
-    def buildSettings(self):
+    def buildControls(self):
 
         splitter = QtGui.QSplitter(Qt.Qt.Vertical)
-
-        input_factors_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.inputs)
-        input_factors_widget.displayParameters(param_name_type_default_tuples = 
-            (
-                (CONSTANTS.window.pricing.input_factors.spot_price,     float,  None),
-                (CONSTANTS.window.pricing.input_factors.interest_rate,  float,  None),
-                (CONSTANTS.window.pricing.input_factors.carry_rate,     float,  None),
-                (CONSTANTS.window.pricing.input_factors.volatility,     float,  None),
-                (CONSTANTS.window.pricing.input_factors.option_type,    tuple,  (
-                                                        CONSTANTS.window.pricing.types.american, 
-                                                        CONSTANTS.window.pricing.types.european
-                                                        )
-                )
-            )
-        )
-
-        strikes_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.input_dimensions.strikes)
-        strikes_widget.displayParameters(param_name_type_default_tuples = 
-            (
-                (CONSTANTS.window.pricing.input_dimensions.strike_start,  float, None),
-                (CONSTANTS.window.pricing.input_dimensions.strike_step,   float, None),
-                (CONSTANTS.window.pricing.input_dimensions.strike_stop,   float, None)
-            )
-        )
-
-        expirations_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.input_dimensions.expirations)
-        expirations_widget.displayParameters(param_name_type_default_tuples = 
-            (
-                (CONSTANTS.window.pricing.input_dimensions.expiration_start, int, None),
-                (CONSTANTS.window.pricing.input_dimensions.expiration_step,  int, None),
-                (CONSTANTS.window.pricing.input_dimensions.expiration_stop,  int, None)
-            )
-        )
+ 
+        option_style_widget = BUILD_CONTROLS.buildOptionStyleWidget()
+        input_factors_widget = BUILD_CONTROLS.buildInputFactorsWidget()
+        strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
+        expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
 
         input_factors_widget.changedSignal.connect(self.onInputFactorChange)
         strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
         expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
 
+        splitter.addWidget(option_style_widget)
         splitter.addWidget(input_factors_widget)
         splitter.addWidget(strikes_widget)
         splitter.addWidget(expirations_widget)

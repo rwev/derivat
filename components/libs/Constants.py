@@ -18,8 +18,9 @@ derivat_constants.window.tabs.graphs = 'Graphs'
 derivat_constants.window.messages.exit.title = 'Confirm Exit'
 derivat_constants.window.messages.exit.description = 'Close derivat? Any unsaved pricing configuration will be lost.'
 
-derivat_constants.window.pricing.types.european = 'European'
-derivat_constants.window.pricing.types.american = 'American'
+derivat_constants.window.pricing.style = 'Option Style'
+derivat_constants.window.pricing.styles.european = 'European'
+derivat_constants.window.pricing.styles.american = 'American'
 
 derivat_constants.window.pricing.inputs = 'Pricing Inputs'
 derivat_constants.window.pricing.input_factors.spot_price = 'Spot'

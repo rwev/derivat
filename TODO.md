@@ -48,3 +48,6 @@
     - [ ] reduce decimals 
     - [ ] reduce column width
     - [ ] disable clickability / editability
+- [ ] define group box radio button group componenet
+    - [ ] streamline status retrieval 
+- [ ] hook up option style, option type, and output selection to pricing 

@@ -53,6 +53,7 @@ class MainWindow(QtGui.QMainWindow):
         input_factors_widget = BUILD_CONTROLS.buildInputFactorsWidget()
         strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
         expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
+        output_type_widget = BUILD_CONTROLS.buildOutputTypeWidget()
 
         input_factors_widget.changedSignal.connect(self.onInputFactorChange)
         strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
@@ -63,11 +64,11 @@ class MainWindow(QtGui.QMainWindow):
         splitter.addWidget(input_factors_widget)
         splitter.addWidget(strikes_widget)
         splitter.addWidget(expirations_widget)
+        splitter.addWidget(output_type_widget)
 
         return splitter
 
     def onInputFactorChange(self, input_factors_dict):
-        print(input_factors_dict)
         pricing_controller.setFactorsDict(input_factors_dict)
         self.priceIfReady()
 

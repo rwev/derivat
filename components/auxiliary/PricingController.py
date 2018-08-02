@@ -48,7 +48,7 @@ class PricingController():
             return False
         if not (volatility_ppa > 0):
             return False
-        if not ((option_type == CONSTANTS.window.pricing.types.european) or (option_type == CONSTANTS.window.pricing.types.american)):
+        if not ((option_type == CONSTANTS.window.pricing.type.european) or (option_type == CONSTANTS.window.pricing.type.american)):
             return False
         return True
 

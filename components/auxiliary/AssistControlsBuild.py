@@ -88,13 +88,50 @@ def buildOptionTypeWidget():
     call_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.type.call)
     put_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.type.put)
     otm_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.type.otm)
+    itm_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.type.itm)
 
-    option_style_button_group = QtGui.QButtonGroup()
-    option_style_button_group.addButton(call_radio_button)
-    option_style_button_group.addButton(put_radio_button)
+    option_type_button_group = QtGui.QButtonGroup()
+    option_type_button_group.addButton(call_radio_button)
+    option_type_button_group.addButton(put_radio_button)
+    option_type_button_group.addButton(otm_radio_button)
+    option_type_button_group.addButton(itm_radio_button)
 
     option_type_group_box_content_layout.addWidget(call_radio_button)
     option_type_group_box_content_layout.addWidget(put_radio_button)
     option_type_group_box_content_layout.addWidget(otm_radio_button)
-
+    option_type_group_box_content_layout.addWidget(itm_radio_button)
+    
     return option_type_widget
+
+def buildOutputTypeWidget():
+
+    output_type_widget = QtGui.QWidget()
+    output_type_layout = QtGui.QVBoxLayout()
+
+    output_type_widget.setLayout(output_type_layout)
+ 
+    output_type_group_box = QtGui.QGroupBox(CONSTANTS.window.pricing.outputs)
+    output_type_group_box_content_layout = QtGui.QHBoxLayout()
+    output_type_group_box.setLayout(output_type_group_box_content_layout)
+    output_type_layout.addWidget(output_type_group_box)
+
+    value_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.output.value)
+    delta_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.output.delta)
+    gamma_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.output.gamma)
+    vega_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.output.vega)
+    theta_radio_button = QtGui.QRadioButton(CONSTANTS.window.pricing.output.theta)
+
+    output_type_button_group = QtGui.QButtonGroup()
+    output_type_button_group.addButton(value_radio_button)
+    output_type_button_group.addButton(delta_radio_button)
+    output_type_button_group.addButton(gamma_radio_button)
+    output_type_button_group.addButton(vega_radio_button)
+    output_type_button_group.addButton(theta_radio_button)
+
+    output_type_group_box_content_layout.addWidget(value_radio_button)
+    output_type_group_box_content_layout.addWidget(delta_radio_button)
+    output_type_group_box_content_layout.addWidget(gamma_radio_button)
+    output_type_group_box_content_layout.addWidget(vega_radio_button)
+    output_type_group_box_content_layout.addWidget(theta_radio_button)
+        
+    return output_type_widget

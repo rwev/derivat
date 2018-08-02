@@ -18,11 +18,6 @@ def buildInputFactorsWidget():
             (CONSTANTS.window.pricing.factor.interest_rate,  float,  None),
             (CONSTANTS.window.pricing.factor.carry_rate,     float,  None),
             (CONSTANTS.window.pricing.factor.volatility,     float,  None),
-            (CONSTANTS.window.pricing.factor.option_type,    tuple,  (
-                                                    CONSTANTS.window.pricing.style.american, 
-                                                    CONSTANTS.window.pricing.style.european
-                                                    )
-            )
         )
     )
     return input_factors_widget
@@ -49,7 +44,7 @@ def buildExpirationDimensionsWidget():
         )
     return expirations_widget
 
-def buildOptionStyleWidget():
+def buildOptionStyleWidget(): 
 
     option_style_widget = QtGui.QWidget()
     option_style_layout = QtGui.QVBoxLayout()

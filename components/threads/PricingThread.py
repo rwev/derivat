@@ -38,5 +38,5 @@ class PricingThread(Qt.QThread):
                 else:
                     call_put_flag = CONSTANTS.backend.pricing.flags.put
 
-                price = BAW.EBAWAmericanApprox(CONSTANTS.backend.pricing.flags.value, call_put_flag, self.spot_price, strike, expiration / 365.0, self.interest_rate_ppa / 100.0, self.carry_rate_ppa / 100.0, self.volatility_ppa / 100.0 )
+                price = BAW.getValue(self.option_type, CONSTANTS.backend.pricing.flags.value, call_put_flag, self.spot_price, strike, expiration / 365.0, self.interest_rate_ppa / 100.0, self.carry_rate_ppa / 100.0, self.volatility_ppa / 100.0 )
                 self.resultSignal.emit((strike, expiration, price))

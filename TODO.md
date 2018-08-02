@@ -45,4 +45,8 @@
     - [ ] only first character can be symbol.
 - [ ] green / red indicator on input components when they are valid or invalid
 - [ ] pricing calls versus puts
+    - [ ] this should be Option Type 
+    - [ ] change American / European to Option Style 
 - [ ] bring BAW.py up to style spec
+- [ ] implement greeks for european options
+- [ ] restrict BAW external function access to getValue 

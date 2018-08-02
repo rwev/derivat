@@ -40,8 +40,10 @@ derivat_constants.window.pricing.input_dimensions.expiration_stop = 'Stop'
 
 derivat_constants.window.actions.price = 'Price'
 
-derivat_constants.backend.pricing.flags.call = 'Call'
-derivat_constants.backend.pricing.flags.put = 'Put'
+derivat_constants.backend.pricing.flags.style.american = 'American'
+derivat_constants.backend.pricing.flags.style.european = 'European'
+derivat_constants.backend.pricing.flags.type.call = 'Call'
+derivat_constants.backend.pricing.flags.type.put = 'Put'
 derivat_constants.backend.pricing.flags.value = 'Value'
 derivat_constants.backend.pricing.flags.delta = 'Delta'
 derivat_constants.backend.pricing.flags.gamma = 'Gamma'

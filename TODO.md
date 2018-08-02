@@ -1,7 +1,3 @@
-- [ ] define standard convention
-    - [ ] potentional styling per [PEP-0008 Python guidelines]( https://www.python.org/dev/peps/pep-0008/)
-    - [ ] describe convention in CONVENTION.md
-- [ ] use strike and expiration ranges instead of explicit specification
 - [ ] improve developability
     - [ ] add architecture for saving program state, including
         - [ ] including widget dimensions;
@@ -16,11 +12,10 @@
             - [ ] load option for manual settings edit / reload
             - [ ] save option for forced save (to try out other inputs without overwriting)
 - [ ] add "getting started" to README.md
-    - [ ] *launch.json* configuration and *autoreload.py*
-- [ ] use validators in LineEdit implementations
-- [ ] file settings group box
-    - [ ] display current configuration file
-    - [ ] save and load buttons
+    - [ ] package installations
+    - [ ] execution instructions
+    - [ ] development instructions
+        - [ ] *launch.json* configuration
 - [ ] build OpenGL into main application
 - [ ] define rules on branching
     - [ ] features
@@ -30,7 +25,6 @@
 - [ ] change start, step, stop to min, increment, max for dimension specification
 - [ ] handle bad dimension range specification
 - [ ] disable horizontal expansion of inputs widget
-- [ ] integers-only expiration range
 - [ ] add actions layout with "price" button; connect to thread
 - [ ] add load and save settings actions
 - [ ] add export prices action
@@ -40,13 +34,17 @@
     - [ ] pricing in progress
     - [ ] bad inputs to check, explanation of check failure
 - [ ] break down settings GUI build into components 
-- [ ] add greeks pricing
+- [ ] add greeks pricing 
+    - [ ] radio button group in settings panel named "Output Type"
 - [ ] control for multiple plus, minus, decimal in numeral line edit
     - [ ] only first character can be symbol.
 - [ ] green / red indicator on input components when they are valid or invalid
 - [ ] pricing calls versus puts
     - [ ] this should be Option Type 
     - [ ] change American / European to Option Style 
-- [ ] bring BAW.py up to style spec
 - [ ] implement greeks for european options
 - [ ] restrict BAW external function access to getValue 
+- [ ] format price table
+    - [ ] reduce decimals 
+    - [ ] reduce column width
+    - [ ] disable clickability / editability

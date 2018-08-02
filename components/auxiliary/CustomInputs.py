@@ -43,10 +43,10 @@ class ParameterSelectionWidget(QtGui.QWidget):
                 editable.setText(Qt.QString((str(default))))  
                 
             return editable
-        if typ == int or typ == float:
-            editable = LINE_EDIT.AutoNumeralLineEdit(default)
-        elif typ == str:
-            editable = LINE_EDIT.AutoUpperLineEdit(default)
+        if typ == int: 
+            editable = LINE_EDIT.AutoIntegerLineEdit(default)
+        elif typ == float:
+            editable = LINE_EDIT.AutoDoubleLineEdit(default)
         elif typ == tuple: 
             editable = COMBO_BOX.CustomComboBox(default)
         editable.changedSignal.connect(self.emitChangedSignal)

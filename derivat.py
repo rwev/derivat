@@ -74,9 +74,9 @@ class MainWindow(QtGui.QMainWindow):
         expirations_widget = CUSTOM.ParameterSelectionWidget(group_name = CONSTANTS.window.pricing.input_dimensions.expirations)
         expirations_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.pricing.input_dimensions.expiration_start, float, None),
-                (CONSTANTS.window.pricing.input_dimensions.expiration_step,  float, None),
-                (CONSTANTS.window.pricing.input_dimensions.expiration_stop,  float, None)
+                (CONSTANTS.window.pricing.input_dimensions.expiration_start, int, None),
+                (CONSTANTS.window.pricing.input_dimensions.expiration_step,  int, None),
+                (CONSTANTS.window.pricing.input_dimensions.expiration_stop,  int, None)
             )
         )
 

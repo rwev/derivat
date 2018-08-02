@@ -24,7 +24,6 @@
 - [ ] move unit input specifications to tool tip (if possible, investigate)
 - [ ] change start, step, stop to min, increment, max for dimension specification
 - [ ] handle bad dimension range specification
-- [ ] disable horizontal expansion of inputs widget
 - [ ] add actions layout with "price" button; connect to thread
 - [ ] add load and save settings actions
 - [ ] add export prices action
@@ -36,11 +35,12 @@
 - [ ] break down settings GUI build into components 
 - [ ] add greeks pricing 
     - [ ] radio button group in settings panel named "Output Type"
+- [ ] move option style to button group 
 - [ ] control for multiple plus, minus, decimal in numeral line edit
     - [ ] only first character can be symbol.
 - [ ] green / red indicator on input components when they are valid or invalid
 - [ ] pricing calls versus puts
-    - [ ] this should be Option Type 
+    - [ ] this should be Option Type button group
     - [ ] change American / European to Option Style 
 - [ ] implement greeks for european options
 - [ ] restrict BAW external function access to getValue 

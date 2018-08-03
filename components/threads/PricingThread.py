@@ -47,17 +47,17 @@ class PricingThread(Qt.QThread):
 
                 if self.option_type == CONSTANTS.window.pricing.type.otm:
                     if self.spot_price < strike:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.call
+                        call_put_flag = CONSTANTS.backend.pricing.flags.type.call
                     else:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.put
+                        call_put_flag = CONSTANTS.backend.pricing.flags.type.put
                 elif self.option_type == CONSTANTS.window.pricing.type.itm:
                     if self.spot_price > strike:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.call
+                        call_put_flag = CONSTANTS.backend.pricing.flags.type.call
                     else:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.put
+                        call_put_flag = CONSTANTS.backend.pricing.flags.type.put
                 else:
                     call_put_flag = self.option_type
 
-                value = BAW.getValue(self.option_type, self.output_type, call_put_flag, self.spot_price, strike, expiration / 365.0, self.interest_rate_ppa / 100.0, self.carry_rate_ppa / 100.0, self.volatility_ppa / 100.0 )
+                value = BAW.getValue(self.option_style, self.output_type, call_put_flag, self.spot_price, strike, expiration / 365.0, self.interest_rate_ppa / 100.0, self.carry_rate_ppa / 100.0, self.volatility_ppa / 100.0 )
                 
                 self.resultSignal.emit((strike_index, expiration_index, value))

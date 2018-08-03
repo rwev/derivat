@@ -27,9 +27,9 @@ def buildStrikeDimensionsWidget():
     strikes_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.pricing.dimension.strikes)
     strikes_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.pricing.dimension.strike_start,  float, None),
-                (CONSTANTS.window.pricing.dimension.strike_step,   float, None),
-                (CONSTANTS.window.pricing.dimension.strike_stop,   float, None)
+                (CONSTANTS.window.pricing.dimension.strike_min,  float, None),
+                (CONSTANTS.window.pricing.dimension.strike_incr,   float, None),
+                (CONSTANTS.window.pricing.dimension.strike_max,   float, None)
             )
         )
     return strikes_widget
@@ -38,9 +38,9 @@ def buildExpirationDimensionsWidget():
     expirations_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.pricing.dimension.expirations)
     expirations_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.pricing.dimension.expiration_start, int, None),
-                (CONSTANTS.window.pricing.dimension.expiration_step,  int, None),
-                (CONSTANTS.window.pricing.dimension.expiration_stop,  int, None)
+                (CONSTANTS.window.pricing.dimension.expiration_min, int, None),
+                (CONSTANTS.window.pricing.dimension.expiration_incr,  int, None),
+                (CONSTANTS.window.pricing.dimension.expiration_max,  int, None)
             )
         )
     return expirations_widget

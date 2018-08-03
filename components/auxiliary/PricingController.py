@@ -11,15 +11,15 @@ import numpy as np
 
 from ..libs.Constants import constants as CONSTANTS
 
-def checkRange(start, step, stop):
-    return (start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop)
+def checkRange(min, incr, max):
+    return (min > 0 and incr > 0 and max > 0 and min < max and min + incr < max)
 
 def getFactorInputs(factors_dict):
     return factors_dict[CONSTANTS.window.pricing.factor.spot_price],  factors_dict[CONSTANTS.window.pricing.factor.interest_rate], factors_dict[CONSTANTS.window.pricing.factor.carry_rate], factors_dict[CONSTANTS.window.pricing.factor.volatility]
 def getStrikeRangeInputs(strike_dimensions_dict):
-    return strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_start], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_step], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_stop]
+    return strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_min], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_incr], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_max]
 def getExpirationRangeInputs(expiration_dimensions_dict):
-    return expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_start], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_step], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_stop]
+    return expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_min], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_incr], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_max]
 
 class PricingController():
     def __init__(self):
@@ -83,8 +83,8 @@ class PricingController():
     def areStrikesValid(self):
         if not self.strike_dimensions_dict:
             return False
-        start, step, stop = getStrikeRangeInputs(self.strike_dimensions_dict) 
-        if checkRange(start, step, stop):
+        min, incr, max = getStrikeRangeInputs(self.strike_dimensions_dict) 
+        if checkRange(min, incr, max):
             return True
         return False
 
@@ -104,23 +104,23 @@ class PricingController():
     def getStrikesList(self):
         if not self.areStrikesValid():
             return False
-        start, step, stop = getStrikeRangeInputs(self.strike_dimensions_dict) 
-        strikes_list = list(np.arange(start, stop, step))
+        min, incr, max = getStrikeRangeInputs(self.strike_dimensions_dict) 
+        strikes_list = list(np.arange(min, max + incr, incr))
         return strikes_list
 
     def areExpirationsValid(self):
         if not self.expiration_dimensions_dict:
             return False
-        start, step, stop = getExpirationRangeInputs(self.expiration_dimensions_dict) 
-        if checkRange(start, step, stop):
+        min, incr, max = getExpirationRangeInputs(self.expiration_dimensions_dict) 
+        if checkRange(min, incr, max):
             return True
         return False
 
     def getExpirationsList(self):
         if not self.areExpirationsValid():
             return False
-        start, step, stop = getExpirationRangeInputs(self.expiration_dimensions_dict) 
-        expirations_list = list(np.arange(start, stop, step))
+        min, incr, max = getExpirationRangeInputs(self.expiration_dimensions_dict) 
+        expirations_list = list(np.arange(min, max + incr, incr))
         return expirations_list
 
     def readyToPrice(self):

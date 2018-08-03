@@ -115,6 +115,7 @@ class MainWindow(QtGui.QMainWindow):
             self.price_thread.setStrikesList(pricing_controller.getStrikesList())
             self.price_thread.setExpirationsList(pricing_controller.getExpirationsList())
 
+            self.prices_table.clearContents()
             self.price_thread.resultSignal.connect(self.prices_table.updateValue)
 
             self.price_thread.start()

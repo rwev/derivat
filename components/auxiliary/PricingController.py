@@ -15,7 +15,7 @@ def checkRange(start, step, stop):
     return (start > 0 and step > 0 and stop > 0 and start < stop and start + step < stop)
 
 def getFactorInputs(factors_dict):
-    return factors_dict[CONSTANTS.window.pricing.factor.spot_price],  factors_dict[CONSTANTS.window.pricing.factor.interest_rate], factors_dict[CONSTANTS.window.pricing.factor.carry_rate], factors_dict[CONSTANTS.window.pricing.factor.volatility], factors_dict[CONSTANTS.window.pricing.factor.option_type]
+    return factors_dict[CONSTANTS.window.pricing.factor.spot_price],  factors_dict[CONSTANTS.window.pricing.factor.interest_rate], factors_dict[CONSTANTS.window.pricing.factor.carry_rate], factors_dict[CONSTANTS.window.pricing.factor.volatility]
 def getStrikeRangeInputs(strike_dimensions_dict):
     return strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_start], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_step], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_stop]
 def getExpirationRangeInputs(expiration_dimensions_dict):
@@ -23,9 +23,34 @@ def getExpirationRangeInputs(expiration_dimensions_dict):
 
 class PricingController():
     def __init__(self):
+
+        self.option_style = None
+        self.option_type = None
+        self.output_type = None
+
         self.factors_dict = None
         self.strike_dimensions_dict = None
         self.expiration_dimensions_dict = None
+
+    def setOptionStyle(self, o):
+        if o == CONSTANTS.window.pricing.style.american or \
+            o == CONSTANTS.window.pricing.style.european:
+            self.option_style = o
+
+    def setOptionType(self, o):
+        if o == CONSTANTS.window.pricing.type.call or \
+            o == CONSTANTS.window.pricing.type.put or \
+            o == CONSTANTS.window.pricing.type.otm or \
+            o == CONSTANTS.window.pricing.type.itm:
+            self.option_type = o
+
+    def setOutputType(self, o):
+        if o == CONSTANTS.window.pricing.output.value or \
+            o == CONSTANTS.window.pricing.output.delta or \
+            o == CONSTANTS.window.pricing.output.gamma or \
+            o == CONSTANTS.window.pricing.output.vega or \
+            o == CONSTANTS.window.pricing.output.theta:
+           self.output_type = o
 
     def setFactorsDict(self, d):
         self.factors_dict = d
@@ -38,7 +63,7 @@ class PricingController():
         if not self.factors_dict:
             return False
         
-        spot_price, interest_rate_ppa, carry_rate_ppa, volatility_ppa, option_type = getFactorInputs(self.factors_dict)
+        spot_price, interest_rate_ppa, carry_rate_ppa, volatility_ppa = getFactorInputs(self.factors_dict)
         
         if not (spot_price > 0):
             return False
@@ -47,8 +72,6 @@ class PricingController():
         if not (carry_rate_ppa > 0):
             return False
         if not (volatility_ppa > 0):
-            return False
-        if not ((option_type == CONSTANTS.window.pricing.type.european) or (option_type == CONSTANTS.window.pricing.type.american)):
             return False
         return True
 
@@ -64,6 +87,20 @@ class PricingController():
         if checkRange(start, step, stop):
             return True
         return False
+
+    def getOptionStyle(self):
+        if self.option_style:
+            return self.option_style
+        return False
+    def getOptionType(self):
+        if self.option_type:
+            return self.option_type
+        return False
+    def getOutputType(self):
+        if self.output_type:
+            return self.output_type
+        return False
+
     def getStrikesList(self):
         if not self.areStrikesValid():
             return False
@@ -78,6 +115,7 @@ class PricingController():
         if checkRange(start, step, stop):
             return True
         return False
+
     def getExpirationsList(self):
         if not self.areExpirationsValid():
             return False
@@ -86,6 +124,7 @@ class PricingController():
         return expirations_list
 
     def readyToPrice(self):
-        print(self.areFactorsValid(), self.areStrikesValid(),self.areExpirationsValid() )
-        return self.areFactorsValid() and self.areStrikesValid() and self.areExpirationsValid() 
+        radio_options_ready = (self.getOptionStyle() and self.getOptionType() and self.getOutputType())
+        numeric_inputs_ready = (self.areFactorsValid() and self.areStrikesValid() and self.areExpirationsValid())
+        return radio_options_ready and numeric_inputs_ready
     

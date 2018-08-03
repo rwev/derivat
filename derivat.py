@@ -50,10 +50,15 @@ class MainWindow(QtGui.QMainWindow):
  
         option_style_widget = BUILD_CONTROLS.buildOptionStyleWidget()
         option_type_widget = BUILD_CONTROLS.buildOptionTypeWidget()
+        output_type_widget = BUILD_CONTROLS.buildOutputTypeWidget()
+
         input_factors_widget = BUILD_CONTROLS.buildInputFactorsWidget()
         strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
         expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
-        output_type_widget = BUILD_CONTROLS.buildOutputTypeWidget()
+
+        option_style_widget.changedSignal.connect(self.onOptionStyleChange)
+        option_type_widget.changedSignal.connect(self.onOptionTypeChange)
+        output_type_widget.changedSignal.connect(self.onOutputTypeChange)
 
         input_factors_widget.changedSignal.connect(self.onInputFactorChange)
         strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
@@ -67,6 +72,18 @@ class MainWindow(QtGui.QMainWindow):
         splitter.addWidget(output_type_widget)
 
         return splitter
+
+    def onOptionStyleChange(self, selected_option):
+        pricing_controller.setOptionStyle(selected_option)
+        self.priceIfReady()
+
+    def onOptionTypeChange(self, selected_option):
+        pricing_controller.setOptionType(selected_option)
+        self.priceIfReady()
+    
+    def onOutputTypeChange(self, selected_option):
+        pricing_controller.setOutputType(selected_option)
+        self.priceIfReady()
 
     def onInputFactorChange(self, input_factors_dict):
         pricing_controller.setFactorsDict(input_factors_dict)
@@ -86,11 +103,20 @@ class MainWindow(QtGui.QMainWindow):
 
     def priceIfReady(self):
         if pricing_controller.readyToPrice():
+
             self.price_thread = PRICE.PricingThread()
+            
+            self.price_thread.setOptionStyle(pricing_controller.getOptionStyle())
+            self.price_thread.setOptionType(pricing_controller.getOptionType())
+            self.price_thread.setOutputType(pricing_controller.getOutputType())
+
             self.price_thread.setFactors(*pricing_controller.getFactors())
+
             self.price_thread.setStrikesList(pricing_controller.getStrikesList())
             self.price_thread.setExpirationsList(pricing_controller.getExpirationsList())
+
             self.price_thread.resultSignal.connect(self.prices_table.updatePrice)
+
             self.price_thread.start()
 
     def buildView(self):

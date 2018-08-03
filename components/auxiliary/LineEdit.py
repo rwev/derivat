@@ -2,7 +2,7 @@
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
-class CustomLineEdit(QtGui.QLineEdit):
+class NumericLineEdit(QtGui.QLineEdit):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, default_text, parent = None):
         QtGui.QWidget.__init__(self, parent)
@@ -12,7 +12,7 @@ class CustomLineEdit(QtGui.QLineEdit):
             self.changedSignal.emit(value)
             Qt.QCoreApplication.processEvents()
 
-class AutoDoubleLineEdit(CustomLineEdit):
+class AutoDoubleLineEdit(NumericLineEdit):
     def __init__(self, default_text = ''):
         super(AutoDoubleLineEdit, self).__init__(default_text)
         self.setValidator(QtGui.QDoubleValidator())
@@ -25,7 +25,7 @@ class AutoDoubleLineEdit(CustomLineEdit):
             return float(value)
         return False
 
-class AutoIntegerLineEdit(CustomLineEdit):
+class AutoIntegerLineEdit(NumericLineEdit):
     def __init__(self, default_text = ''):
         super(AutoIntegerLineEdit, self).__init__(default_text)
         self.setValidator(QtGui.QIntValidator())

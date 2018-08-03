@@ -5,7 +5,7 @@ import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
 import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
-import components.auxiliary.CustomInputs as CUSTOM
+import components.auxiliary.NumericInputGroupBox as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.PriceTable as PRICE_TABLE
 import components.auxiliary.PricingController as PRICE_CONTROL

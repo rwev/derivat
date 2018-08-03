@@ -6,7 +6,7 @@ from ..libs import PyQtShared as PYQT_SHARED
 
 import LineEdit as LINE_EDIT
 
-class ParameterSelectionWidget(QtGui.QWidget):
+class NumericInputWidget(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, group_name = None, display_only = False, parent = None):
         QtGui.QWidget.__init__(self, parent)

@@ -172,13 +172,8 @@ def getValue(option_style_flag, output_flag, option_type_flag, spot_price, strik
     r = interest_rate_dec_pa
     b = carry_rate_dec_pa
     v = volatility_dec_pa
-
-    print('here 1', option_style_flag, CONSTANTS.backend.pricing.flags.style.american, CONSTANTS.backend.pricing.flags.style.european)
     
     if option_style_flag == CONSTANTS.backend.pricing.flags.style.american:
-        print('here 2')
-
-        print('here 4', output_flag, CONSTANTS.backend.pricing.flags.value, option_type_flag)
     
         if output_flag == CONSTANTS.backend.pricing.flags.value: 
             return priceAmericanOption(option_type_flag, S, X, T, r, b, v)
@@ -192,7 +187,6 @@ def getValue(option_style_flag, output_flag, option_type_flag, spot_price, strik
             return priceAmericanOption(option_type_flag, S + dS, X, T - dT, r, b, v) - priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v)
             
     elif option_style_flag == CONSTANTS.backend.pricing.flags.style.european:
-        print('here 3')
 
         # TODO implement Greeks for european options
         if output_flag == CONSTANTS.backend.pricing.flags.value: 

@@ -18,6 +18,9 @@ constants.window.tabs.graphs = 'Graphs'
 constants.window.messages.exit.title = 'Confirm Exit'
 constants.window.messages.exit.description = 'Close derivat? Any unsaved pricing configuration will be lost.'
 
+constants.window.table.content.font.size = 8
+constants.window.table.content.characters = 6
+
 constants.window.pricing.styles = 'Option Style'
 constants.window.pricing.style.european = 'European'
 constants.window.pricing.style.american = 'American'

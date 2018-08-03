@@ -16,9 +16,9 @@ class OptionValuesTable(QtGui.QTableWidget):
         self.setRowCount(len(expiration_list))
         self.setVerticalHeaderLabels([str(l) for l in expiration_list])
 
-    def updateValue(self, (strike, expiration, price)):
-        column_index = self.strike_list.index(strike)
-        row_index = self.expiration_list.index(expiration)
+    def updateValue(self, (strike_index, expiration_index, price)):
+        column_index = strike_index
+        row_index = expiration_index
         self.setItem(row_index, column_index, QtGui.QTableWidgetItem(str(price)))
 
 

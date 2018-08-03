@@ -39,9 +39,12 @@ class PricingThread(Qt.QThread):
         self.expirations_list = expirations_list 
 
     def run(self): 
-        for strike in self.strikes_list:
-            for expiration in self.expirations_list:
+        for strike_index in range(len(self.strikes_list)):
+            for expiration_index in range(len(self.expirations_list)):
                 
+                strike = self.strikes_list[strike_index]
+                expiration = self.expirations_list[expiration_index]
+
                 if self.option_type == CONSTANTS.window.pricing.type.otm:
                     if self.spot_price < strike:
                         call_put_flag = CONSTANTS.backend.pricing.flags.call
@@ -57,4 +60,4 @@ class PricingThread(Qt.QThread):
 
                 value = BAW.getValue(self.option_type, self.output_type, call_put_flag, self.spot_price, strike, expiration / 365.0, self.interest_rate_ppa / 100.0, self.carry_rate_ppa / 100.0, self.volatility_ppa / 100.0 )
                 
-                self.resultSignal.emit((strike, expiration, value))
+                self.resultSignal.emit((strike_index, expiration_index, value))

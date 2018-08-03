@@ -5,7 +5,7 @@ import PyQt4.QtGui as QtGui
 import components.auxiliary.NumericInputGroupBox as NUMERIC_INPUT_GROUP_BOX
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.RadioButtonGroupBox as RADIO_BUTTON_GROUP_BOX
-import components.auxiliary.PriceTable as PRICE_TABLE
+import components.auxiliary.OptionValuesTable as OPT_VAL_TABLE
 import components.auxiliary.PricingController as PRICE_CONTROL
 
 import components.libs.PyQtShared as PYQT_SHARED

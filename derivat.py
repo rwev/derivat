@@ -7,7 +7,7 @@ import PyQt4.QtGui as QtGui
 import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
 import components.auxiliary.NumericInputGroupBox as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
-import components.auxiliary.PriceTable as PRICE_TABLE
+import components.auxiliary.OptionValuesTable as OPT_VAL_TABLE
 import components.auxiliary.PricingController as PRICE_CONTROL
 
 import components.libs.PyQtShared as PYQT_SHARED
@@ -105,7 +105,7 @@ class MainWindow(QtGui.QMainWindow):
         if pricing_controller.readyToPrice():
 
             self.price_thread = PRICE.PricingThread()
-            
+
             self.price_thread.setOptionStyle(pricing_controller.getOptionStyle())
             self.price_thread.setOptionType(pricing_controller.getOptionType())
             self.price_thread.setOutputType(pricing_controller.getOutputType())
@@ -115,7 +115,7 @@ class MainWindow(QtGui.QMainWindow):
             self.price_thread.setStrikesList(pricing_controller.getStrikesList())
             self.price_thread.setExpirationsList(pricing_controller.getExpirationsList())
 
-            self.price_thread.resultSignal.connect(self.prices_table.updatePrice)
+            self.price_thread.resultSignal.connect(self.prices_table.updateValue)
 
             self.price_thread.start()
 
@@ -140,7 +140,7 @@ class MainWindow(QtGui.QMainWindow):
     def buildPricesTab(self, tab):
         layout = QtGui.QVBoxLayout()
         layout.setAlignment(Qt.Qt.AlignTop)
-        self.prices_table = PRICE_TABLE.PriceTable()
+        self.prices_table = OPT_VAL_TABLE.OptionValuesTable()
         layout.addWidget(self.prices_table)
         tab.setLayout(layout)
         return

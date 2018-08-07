@@ -111,21 +111,16 @@ class MainWindow(QtGui.QMainWindow):
 
     def onOptionStyleChange(self, selected_option):
         pricing_controller.setOptionStyle(selected_option)
-
     def onOptionTypeChange(self, selected_option):
         pricing_controller.setOptionType(selected_option)
-    
     def onOutputTypeChange(self, selected_option):
         pricing_controller.setOutputType(selected_option)
-
     def onInputFactorChange(self, input_factors_dict):
         pricing_controller.setFactorsDict(input_factors_dict)
-
     def onStrikeDimensionChange(self, strike_dimensions_dict):
         pricing_controller.setStrikesDict(strike_dimensions_dict)
         if pricing_controller.areStrikesValid():
             self.values_table.updateStrikeColumns(pricing_controller.getStrikesList())
-
     def onExpirationDimensionChange(self, expiration_dimensions_dict):
         pricing_controller.setExpirationsDict(expiration_dimensions_dict)
         if pricing_controller.areExpirationsValid():
@@ -142,13 +137,10 @@ class MainWindow(QtGui.QMainWindow):
             self.price_thread.resultSignal.connect(self.progress_bar.increment)
 
             self.price_thread.start()
-
-
     def prepareProgressBar(self):
 
         self.progress_bar.resetToIncrement()
         self.progress_bar.setMaximumIncrements(pricing_controller.getNumberOfCalculations())
-    
     def preparePricingThread(self):
         price_thread = PRICE.PricingThread()
 
@@ -167,19 +159,17 @@ class MainWindow(QtGui.QMainWindow):
         tabs = QtGui.QTabWidget()
         self.buildViewsTabs(tabs)
         return tabs
-
     def buildViewsTabs(self, tabs):
         
-        prices_tab =   QtGui.QWidget()
+        values_tab =   QtGui.QWidget()
         graphs_tab =   QtGui.QWidget()
 
-        self.buildPricesTab(prices_tab)
+        self.buildValuesTab(values_tab)
 
-        tabs.addTab(prices_tab, CONSTANTS.window.tabs.prices)
+        tabs.addTab(values_tab, CONSTANTS.window.tabs.values)
 
         return tabs
-     
-    def buildPricesTab(self, tab):
+    def buildValuesTab(self, tab):
         layout = QtGui.QVBoxLayout()
         layout.setAlignment(Qt.Qt.AlignTop)
         self.values_table = OPT_VAL_TABLE.OptionValuesTable()

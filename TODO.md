@@ -23,7 +23,7 @@
     - [ ] green / red indicator on input components when they are valid or invalid
 - [ ] add actions layout with "price" button; connect to thread
 - [ ] add load and save settings actions
-- [ ] add export prices action
+- [ ] add export values action
 - [ ] add status bar updates
     - [ ] pricing in progress
     - [ ] bad inputs to check, explanation of check failure

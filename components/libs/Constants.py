@@ -12,7 +12,7 @@ constants.sources.icon = 'assets/gamma.png'
 
 constants.window.title = 'derivat'
 
-constants.window.tabs.prices = 'Prices'
+constants.window.tabs.values = 'Values'
 constants.window.tabs.graphs = 'Graphs'
 
 constants.window.messages.exit.title = 'Confirm Exit'

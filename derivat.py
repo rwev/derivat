@@ -50,42 +50,42 @@ class MainWindow(QtGui.QMainWindow):
 
         splitter = QtGui.QSplitter(Qt.Qt.Vertical)
  
-        option_style_widget = BUILD_CONTROLS.buildOptionStyleWidget()
-        option_type_widget = BUILD_CONTROLS.buildOptionTypeWidget()
-        output_type_widget = BUILD_CONTROLS.buildOutputTypeWidget()
+        self.option_style_widget = BUILD_CONTROLS.buildOptionStyleWidget()
+        self.option_type_widget = BUILD_CONTROLS.buildOptionTypeWidget()
+        self.output_type_widget = BUILD_CONTROLS.buildOutputTypeWidget()
 
-        input_factors_widget = BUILD_CONTROLS.buildInputFactorsWidget()
-        strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
-        expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
+        self.input_factors_widget = BUILD_CONTROLS.buildInputFactorsWidget()
+        self.strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
+        self.expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
 
         actions_widget = BUILD_CONTROLS.buildActionsWidget()
 
         progress_bar_container_widget = self.buildProgressBar()
 
-        option_style_widget.changedSignal.connect(self.onOptionStyleChange)
-        option_type_widget.changedSignal.connect(self.onOptionTypeChange)
-        output_type_widget.changedSignal.connect(self.onOutputTypeChange)
+        self.option_style_widget.changedSignal.connect(self.onOptionStyleChange)
+        self.option_type_widget.changedSignal.connect(self.onOptionTypeChange)
+        self.output_type_widget.changedSignal.connect(self.onOutputTypeChange)
 
-        input_factors_widget.changedSignal.connect(self.onInputFactorChange)
-        strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
-        expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
+        self.input_factors_widget.changedSignal.connect(self.onInputFactorChange)
+        self.strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
+        self.expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
 
         actions_widget.actionSignal.connect(self.handleAction)
 
-        splitter.addWidget(option_style_widget)
-        splitter.addWidget(option_type_widget)
-        splitter.addWidget(input_factors_widget)
-        splitter.addWidget(strikes_widget)
-        splitter.addWidget(expirations_widget)
-        splitter.addWidget(output_type_widget)
+        splitter.addWidget(self.option_style_widget)
+        splitter.addWidget(self.option_type_widget)
+        splitter.addWidget(self.input_factors_widget)
+        splitter.addWidget(self.strikes_widget)
+        splitter.addWidget(self.expirations_widget)
+        splitter.addWidget(self.output_type_widget)
         splitter.addWidget(actions_widget)
         splitter.addWidget(progress_bar_container_widget)
 
         return splitter
 
     def handleAction(self, action):
-        if (action == CONSTANTS.window.action.clear):
-            self.clearAllInputs()
+        if (action == CONSTANTS.window.action.clear_):
+            self.clearInputs()
         elif (action == CONSTANTS.window.action.calculate):
             self.priceIfReady()
         elif (action == CONSTANTS.window.action.load):
@@ -93,9 +93,15 @@ class MainWindow(QtGui.QMainWindow):
         elif (action == CONSTANTS.window.action.save):
             self.saveSettings()
 
-    def clearAllInputs(self):
-        print('clearAllInputs [TO IMPLEMENT]')
+    def clearInputs(self):
+        self.option_style_widget.clearSelection()
+        self.option_type_widget.clearSelection()
+        self.output_type_widget.clearSelection()
 
+        self.input_factors_widget.clearForm()
+        self.strikes_widget.clearForm()
+        self.expirations_widget.clearForm()
+        
     def buildProgressBar(self):
 
         progress_bar_container_widget = QtGui.QWidget()
@@ -162,11 +168,10 @@ class MainWindow(QtGui.QMainWindow):
     def buildViewsTabs(self, tabs):
         
         values_tab =   QtGui.QWidget()
-        graphs_tab =   QtGui.QWidget()
 
         self.buildValuesTab(values_tab)
 
-        tabs.addTab(values_tab, CONSTANTS.window.tabs.values)
+        tabs.addTab(values_tab, CONSTANTS.window.tabs.values_)
 
         return tabs
     def buildValuesTab(self, tab):

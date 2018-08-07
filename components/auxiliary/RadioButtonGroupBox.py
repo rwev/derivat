@@ -39,3 +39,15 @@ class RadioButtonGroupBox(QtGui.QWidget):
         if checked_id >= 0:
             return self.options[checked_id]
         return False
+
+    def clearSelection(self):
+        checked_id = self.button_group.checkedId()
+        if checked_id >= 0:
+            
+            self.button_group.setExclusive(False)
+
+            checked_button = self.button_group.checkedButton()
+            checked_button.setChecked(False)
+
+            self.button_group.setExclusive(True)
+

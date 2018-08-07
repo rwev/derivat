@@ -65,4 +65,10 @@ class NumericInputWidget(QtGui.QWidget):
                 return False
         return param_name_value_dict
 
+    def clearForm(self):
+        for param_name in self.param_name_to_editable_dict.keys():
+            editable = self.param_name_to_editable_dict[param_name]
+            editable.clear()
+
+
 

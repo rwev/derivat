@@ -29,6 +29,23 @@ class MainWindow(QtGui.QMainWindow):
         self.activateWindow()
         self.loadSettings()
 
+    def closeEvent(self, event):
+        quit_title = CONSTANTS.window.messages.exit.title
+        quit_msg = CONSTANTS.window.messages.exit.description
+        reply = QtGui.QMessageBox.question(self, 
+                                            quit_title,
+                                            quit_msg,
+                                            QtGui.QMessageBox.Yes, 
+                                            QtGui.QMessageBox.No)
+        if reply == QtGui.QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+    def setIcon(self):
+        source = CONSTANTS.sources.icon
+        app_icon = PYQT_SHARED.getIcon(source)
+        self.setWindowIcon(app_icon)
+
     def buildGui(self):
 
         self.setWindowTitle(CONSTANTS.window.title)
@@ -36,15 +53,31 @@ class MainWindow(QtGui.QMainWindow):
 
         splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
 
+        tabs_widget = self.buildTabs()
         controls_widget = self.buildControls()
-        view_widget = self.buildView()
 
         splitter.addWidget(controls_widget)
-        splitter.addWidget(view_widget)
+        splitter.addWidget(tabs_widget)
 
         self.setCentralWidget(splitter)
         
         Qt.QCoreApplication.processEvents()
+
+    def buildTabs(self):
+        tabs = QtGui.QTabWidget()
+
+        values_tab = QtGui.QWidget()
+        self.buildValuesTab(values_tab)
+        tabs.addTab(values_tab, CONSTANTS.window.tabs.values_)
+
+        return tabs
+    def buildValuesTab(self, tab):
+        layout = QtGui.QVBoxLayout()
+        layout.setAlignment(Qt.Qt.AlignTop)
+        self.values_table = OPT_VAL_TABLE.OptionValuesTable()
+        layout.addWidget(self.values_table)
+        tab.setLayout(layout)
+        return
 
     def buildControls(self):
 
@@ -83,25 +116,6 @@ class MainWindow(QtGui.QMainWindow):
 
         return splitter
 
-    def handleAction(self, action):
-        if (action == CONSTANTS.window.action.clear_):
-            self.clearInputs()
-        elif (action == CONSTANTS.window.action.calculate):
-            self.priceIfReady()
-        elif (action == CONSTANTS.window.action.load):
-            self.loadSettings()
-        elif (action == CONSTANTS.window.action.save):
-            self.saveSettings()
-
-    def clearInputs(self):
-        self.option_style_widget.clearSelection()
-        self.option_type_widget.clearSelection()
-        self.output_type_widget.clearSelection()
-
-        self.input_factors_widget.clearForm()
-        self.strikes_widget.clearForm()
-        self.expirations_widget.clearForm()
-        
     def buildProgressBar(self):
 
         progress_bar_container_widget = QtGui.QWidget()
@@ -132,6 +146,32 @@ class MainWindow(QtGui.QMainWindow):
         if pricing_controller.areExpirationsValid():
             self.values_table.updateExpirationRows(pricing_controller.getExpirationsList())
 
+    def handleAction(self, action):
+        if (action == CONSTANTS.window.action.clear_):
+            self.clearInputs()
+        elif (action == CONSTANTS.window.action.calculate):
+            self.priceIfReady()
+        elif (action == CONSTANTS.window.action.load):
+            self.loadSettings()
+        elif (action == CONSTANTS.window.action.save):
+            self.saveSettings()
+    def clearInputs(self):
+        self.option_style_widget.clearSelection()
+        self.option_type_widget.clearSelection()
+        self.output_type_widget.clearSelection()
+
+        self.input_factors_widget.clearForm()
+        self.strikes_widget.clearForm()
+        self.expirations_widget.clearForm()
+    def loadSettings(self):
+        self.load_thread = SERIAL.LoadYAMLThread()
+        self.load_thread.resultsSignal.connect(self.printSettings)
+        self.load_thread.start()
+    def saveSettings(self):
+        print('saveSettings [TO IMPLEMENT]')
+    def printSettings(self, settingsMBD):
+        print(settingsMBD)
+
     def priceIfReady(self):
         if pricing_controller.readyToPrice():
 
@@ -160,56 +200,6 @@ class MainWindow(QtGui.QMainWindow):
         price_thread.setExpirationsList(pricing_controller.getExpirationsList())
 
         return price_thread
-
-    def buildView(self):
-        tabs = QtGui.QTabWidget()
-        self.buildViewsTabs(tabs)
-        return tabs
-    def buildViewsTabs(self, tabs):
-        
-        values_tab =   QtGui.QWidget()
-
-        self.buildValuesTab(values_tab)
-
-        tabs.addTab(values_tab, CONSTANTS.window.tabs.values_)
-
-        return tabs
-    def buildValuesTab(self, tab):
-        layout = QtGui.QVBoxLayout()
-        layout.setAlignment(Qt.Qt.AlignTop)
-        self.values_table = OPT_VAL_TABLE.OptionValuesTable()
-        layout.addWidget(self.values_table)
-        tab.setLayout(layout)
-        return
-
-    def closeEvent(self, event):
-        quit_title = CONSTANTS.window.messages.exit.title
-        quit_msg = CONSTANTS.window.messages.exit.description
-        reply = QtGui.QMessageBox.question(self, 
-                                            quit_title,
-                                            quit_msg,
-                                            QtGui.QMessageBox.Yes, 
-                                            QtGui.QMessageBox.No)
-        if reply == QtGui.QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()
-
-    def setIcon(self):
-        source = CONSTANTS.sources.icon
-        app_icon = PYQT_SHARED.getIcon(source)
-        self.setWindowIcon(app_icon)
-
-    def loadSettings(self):
-        self.load_thread = SERIAL.LoadYAMLThread()
-        self.load_thread.resultsSignal.connect(self.printSettings)
-        self.load_thread.start()
-
-    def saveSettings(self):
-        print('saveSettings [TO IMPLEMENT]')
-
-    def printSettings(self, settingsMBD):
-        print(settingsMBD)
 
 def main():
     app = QtGui.QApplication(argv)  

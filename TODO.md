@@ -16,7 +16,7 @@
     - [ ] execution instructions
     - [ ] development instructions
         - [ ] *launch.json* configuration
-- [ ] build OpenGL into main application
+- [ ] integrate OpenGL (pyqtgraph.opengl) into main application's "Graphs" tabs
 - [ ] clean up unused dependencies in requirements.txt
 - [ ] move unit input specifications to tool tip (if possible, investigate)
 - [ ] handle bad dimension range specification

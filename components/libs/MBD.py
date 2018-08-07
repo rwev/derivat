@@ -46,5 +46,3 @@ def convertMBDtoDict(mbd):
         else:
             d[key] = value
     return d
-
-# print(convertDictToMBD({'valuation': {'output': 'Value', 'style': 'American', 'type': 'OTM', 'dimensions': {'expirations': {'max': 300, 'incr': 30, 'min': 30}, 'strikes': {'max': 110, 'incr': 0.5, 'min': 90}}, 'factors': {'spot_price': 100.25, 'interest_rate': 0.05, 'carry_rate': 0.05, 'volatility': 0.15}}}))

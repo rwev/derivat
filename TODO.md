@@ -31,3 +31,4 @@
 - [ ] add Cython to speed up valuation 
 - [ ] do not autoprice on input change
 - [ ] show indicator based on whether inputs are ready to be used for valuation or not
+- [ ] conventions on global variables

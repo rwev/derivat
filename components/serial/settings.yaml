@@ -1,18 +1,8 @@
 valuation:
-  style: 'American'
-  type: 'OTM'
-  output: 'Value'
-  factors: 
-    spot_price: 100
-    interest_rate: 0.05
-    carry_rate: 0.05
-    volatility: 0.15
-  dimensions: 
-    strikes: 
-      min: 90
-      incr: 0.5
-      max: 110
-    expirations:
-      min: 30
-      incr: 30
-      max: 300
+  dimensions:
+    expirations: {incr: 30, max: 100, min: 30}
+    strikes: {incr: 0.5, max: 110.0, min: 90.0}
+  factors: {carry_rate: 0.05, interest_rate: 0.05, spot_price: 100.0, volatility: 0.15}
+  output: Vega
+  style: American
+  type: OTM

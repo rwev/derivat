@@ -5,15 +5,17 @@ import yaml
 from ..libs import MBD
 from ..libs.Constants import constants as CONSTANTS
 
+from ..auxiliary import Globals as GLOBALS
+
 class SaveYAMLThread(Qt.QThread):
     resultsSignal = Qt.pyqtSignal(object)
     def __init__(self, parent = None):
         Qt.QThread.__init__(self, parent)
-    def run(self, settingsMBD): 
-        settings_dict = MBD.convertMBDtoDict(settingsMBD)
+    def run(self): 
+        settings_dict = MBD.convertMBDtoDict(GLOBALS.settings)
         with open(CONSTANTS.backend.serialization.path.file, 'w+') as stream:
             yaml.dump(settings_dict, stream)
-        self.resultsSignal.emit()
+        self.resultsSignal.emit(GLOBALS.settings)
 
 class LoadYAMLThread(Qt.QThread):
     resultsSignal = Qt.pyqtSignal(object)

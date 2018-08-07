@@ -86,5 +86,5 @@ constants.backend.serialization.path.setting.strike_incr = 'valuation.dimensions
 constants.backend.serialization.path.setting.strike_max = 'valuation.dimensions.strikes.max'
 
 constants.backend.serialization.path.setting.expiration_min = 'valuation.dimensions.expirations.min'
-constants.backend.serialization.path.setting.expiration_incr = 'valuation.dimensions.expirations.min'
-constants.backend.serialization.path.setting.expiration_max = 'valuation.dimensions.expirations.min'
+constants.backend.serialization.path.setting.expiration_incr = 'valuation.dimensions.expirations.incr'
+constants.backend.serialization.path.setting.expiration_max = 'valuation.dimensions.expirations.max'

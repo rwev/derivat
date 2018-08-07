@@ -11,3 +11,25 @@ global settings
 
 valuation_controller = VALUE_CONTROL.ValuationController()
 
+def copyStateIntoSettings():
+
+    settings.valuation.style = valuation_controller.getOptionStyle()
+    settings.valuation.type = valuation_controller.getOptionType()
+    settings.valuation.output = valuation_controller.getOutputType()
+
+    s, i, c, v = valuation_controller.getFactors()
+    settings.valuation.factors.spot_price = s
+    settings.valuation.factors.interest_rate = i
+    settings.valuation.factors.carry_rate = c
+    settings.valuation.factors.volatility = v
+
+    min, incr, max = valuation_controller.getStrikeRangeInputs()
+    settings.valuation.dimensions.strikes.min = min
+    settings.valuation.dimensions.strikes.incr = incr
+    settings.valuation.dimensions.strikes.max = max
+
+    min, incr, max = valuation_controller.getExpirationRangeInputs()
+    settings.valuation.dimensions.expirations.min = min
+    settings.valuation.dimensions.expirations.incr = incr
+    settings.valuation.dimensions.expirations.max = max
+

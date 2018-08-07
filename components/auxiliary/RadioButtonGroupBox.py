@@ -32,12 +32,9 @@ class RadioButtonGroupBox(QtGui.QWidget):
 
     def loadSelectedOption(self, setting_serialization_path):
         temp = GLOBALS.settings
-        try:
-            for attr in setting_serialization_path.split('.'):
-                temp = temp[attr]
-            self.setCheckedOption(temp)
-        except Exception, e:
-            print('Unable to load selection from serialization path %s [%s]' % (setting_serialization_path, e))
+        for attr in setting_serialization_path.split('.'):
+            temp = temp[attr]
+        self.setCheckedOption(temp)
 
     def setCheckedOption(self, option):
         self.clearSelection()

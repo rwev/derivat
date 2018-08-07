@@ -165,10 +165,15 @@ class MainWindow(QtGui.QMainWindow):
         self.load_thread.resultsSignal.connect(self.processSettings)
         self.load_thread.start()
     def saveSettingsToFile(self):
-        print('saveSettingsToFile [TO IMPLEMENT]')
+        if GLOBALS.valuation_controller.readyToValue():
+            self.save_thread = SERIAL.SaveYAMLThread()
+            GLOBALS.copyStateIntoSettings()
+            self.save_thread.start()
     def processSettings(self, settingsMBD):
 
         GLOBALS.settings = settingsMBD
+
+        GLOBALS.valuation_controller.loadFromSettings()
 
         self.input_factors_widget.loadValues(
             (

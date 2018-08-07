@@ -70,4 +70,21 @@ constants.backend.valuation.flags.gamma = 'Gamma'
 constants.backend.valuation.flags.vega = 'Vega'
 constants.backend.valuation.flags.theta = 'Theta'
 
-constants.backend.serialization.settings_path = 'components/serial/settings.yaml'
+constants.backend.serialization.path.file = 'components/serial/settings.yaml'
+
+constants.backend.serialization.path.setting.style = 'valuation.style'
+constants.backend.serialization.path.setting.type = 'valuation.type'
+constants.backend.serialization.path.setting.output = 'valuation.output'
+
+constants.backend.serialization.path.setting.spot_price = 'valuation.factors.spot_price'
+constants.backend.serialization.path.setting.interest_rate = 'valuation.factors.interest_rate'
+constants.backend.serialization.path.setting.carry_rate = 'valuation.factors.carry_rate'
+constants.backend.serialization.path.setting.volatility = 'valuation.factors.volatility'
+
+constants.backend.serialization.path.setting.strike_min = 'valuation.dimensions.strikes.min'
+constants.backend.serialization.path.setting.strike_incr = 'valuation.dimensions.strikes.incr'
+constants.backend.serialization.path.setting.strike_max = 'valuation.dimensions.strikes.max'
+
+constants.backend.serialization.path.setting.expiration_min = 'valuation.dimensions.expirations.min'
+constants.backend.serialization.path.setting.expiration_incr = 'valuation.dimensions.expirations.min'
+constants.backend.serialization.path.setting.expiration_max = 'valuation.dimensions.expirations.min'

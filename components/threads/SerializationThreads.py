@@ -11,7 +11,7 @@ class SaveYAMLThread(Qt.QThread):
         Qt.QThread.__init__(self, parent)
     def run(self, settingsMBD): 
         settings_dict = MBD.convertMBDtoDict(settingsMBD)
-        with open(CONSTANTS.backend.serialization.settings_path, 'w+') as stream:
+        with open(CONSTANTS.backend.serialization.path.file, 'w+') as stream:
             yaml.dump(settings_dict, stream)
         self.resultsSignal.emit()
 
@@ -20,7 +20,7 @@ class LoadYAMLThread(Qt.QThread):
     def __init__(self, parent = None):
         Qt.QThread.__init__(self, parent)
     def run(self): 
-        with open(CONSTANTS.backend.serialization.settings_path, 'r') as stream:
+        with open(CONSTANTS.backend.serialization.path.file, 'r') as stream:
             settings_dict = yaml.load(stream)
         settingsMBD = MBD.convertDictToMBD(settings_dict)
         self.resultsSignal.emit(settingsMBD)

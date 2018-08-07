@@ -29,4 +29,5 @@
     - [ ] bad inputs to check, explanation of check failure
 - [ ] implement greeks for european options
 - [ ] add Cython to speed up pricing 
-- [ ] 
+- [ ] do not autoprice on input change
+- [ ] show indicator based on whether inputs are ready to be used for pricing or not

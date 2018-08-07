@@ -58,6 +58,8 @@ class MainWindow(QtGui.QMainWindow):
         strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
         expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
 
+        actions_widget = BUILD_CONTROLS.buildActionsWidget()
+
         progress_bar_container_widget = self.buildProgressBar()
 
         option_style_widget.changedSignal.connect(self.onOptionStyleChange)
@@ -74,6 +76,7 @@ class MainWindow(QtGui.QMainWindow):
         splitter.addWidget(strikes_widget)
         splitter.addWidget(expirations_widget)
         splitter.addWidget(output_type_widget)
+        splitter.addWidget(actions_widget)
         splitter.addWidget(progress_bar_container_widget)
 
         return splitter

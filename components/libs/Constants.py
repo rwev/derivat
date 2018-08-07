@@ -21,6 +21,12 @@ constants.window.messages.exit.description = 'Close derivat? Any unsaved pricing
 constants.window.table.content.font.size = 8
 constants.window.table.content.characters = 6
 
+constants.window.actions = 'Actions'
+constants.window.action.clear_ = 'Clear'
+constants.window.action.calculate = 'Calculate'
+constants.window.action.save = 'Save'
+constants.window.action.load = 'Load'
+
 constants.window.pricing.styles = 'Option Style'
 constants.window.pricing.style.european = 'European'
 constants.window.pricing.style.american = 'American'

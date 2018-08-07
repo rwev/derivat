@@ -4,6 +4,7 @@ import PyQt4.QtGui as QtGui
 
 import components.auxiliary.NumericInputGroupBox as NUMERIC_INPUT_GROUP_BOX
 import components.auxiliary.RadioButtonGroupBox as RADIO_BUTTON_GROUP_BOX
+import components.auxiliary.PushButtonGroupBox as PUSH_BUTTON_GROUP_BOX
 
 from components.libs.Constants import constants as CONSTANTS
 
@@ -85,4 +86,17 @@ def buildOutputTypeWidget():
  
     return output_type_widget
 
+def buildActionsWidget():
 
+    actions_widget = PUSH_BUTTON_GROUP_BOX.PushButtonGroupBox(2, 2, CONSTANTS.window.actions)
+
+    actions_widget.addActions(
+        (
+            CONSTANTS.window.action.clear_,
+            CONSTANTS.window.action.calculate,
+            CONSTANTS.window.action.save,
+            CONSTANTS.window.action.load
+        )
+    )
+
+    return actions_widget

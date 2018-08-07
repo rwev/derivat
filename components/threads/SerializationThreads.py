@@ -24,4 +24,3 @@ class LoadYAMLThread(Qt.QThread):
             settings_dict = yaml.load(stream)
         settingsMBD = MBD.convertDictToMBD(settings_dict)
         self.resultsSignal.emit(settingsMBD)
-

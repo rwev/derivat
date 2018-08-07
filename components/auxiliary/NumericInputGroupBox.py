@@ -4,6 +4,8 @@ import PyQt4.QtGui as QtGui
 
 from ..libs import PyQtShared as PYQT_SHARED
 
+import Globals as GLOBALS
+
 import LineEdit as LINE_EDIT
 
 class NumericInputWidget(QtGui.QWidget):
@@ -25,6 +27,16 @@ class NumericInputWidget(QtGui.QWidget):
             self.param_name_to_editable_dict[name] = editable
             self.content_layout.addRow(label, editable)
             Qt.QCoreApplication.processEvents()
+
+    def loadValues(self, param_name_serialization_path_tuples):
+        for (name, path) in param_name_serialization_path_tuples:
+            temp = GLOBALS.settings
+            try:
+                for attr in path.split('.'):
+                    temp = temp[attr]
+                self.param_name_to_editable_dict[name].setText(str(temp))
+            except Exception, e:
+                print('Unable to load value for %s from serialization path %s [%s]' % (name, path, e))
 
     def getLabel(self, name, typ):
         label = QtGui.QLabel()

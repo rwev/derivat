@@ -9,16 +9,13 @@ import components.auxiliary.NumericInputGroupBox as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.OptionValuesTable as OPT_VAL_TABLE
 import components.auxiliary.IncrementalProgressBar as PROGRESS_BAR
-import components.auxiliary.ValuationController as VALUE_CONTROL
-
+import components.auxiliary.Globals as GLOBALS
 
 import components.libs.PyQtShared as PYQT_SHARED
 from components.libs.Constants import constants as CONSTANTS
 
 import components.threads.SerializationThreads as SERIAL
 import components.threads.ValuationThread as VALUE
-
-valuation_controller = VALUE_CONTROL.ValuationController()
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -27,7 +24,7 @@ class MainWindow(QtGui.QMainWindow):
         self.buildGui()
         self.show()
         self.activateWindow()
-        self.loadSettings()
+        self.loadSettingsFromFile()
 
     def closeEvent(self, event):
         quit_title = CONSTANTS.window.messages.exit.title
@@ -130,21 +127,21 @@ class MainWindow(QtGui.QMainWindow):
         return progress_bar_container_widget 
 
     def onOptionStyleChange(self, selected_option):
-        valuation_controller.setOptionStyle(selected_option)
+        GLOBALS.valuation_controller.setOptionStyle(selected_option)
     def onOptionTypeChange(self, selected_option):
-        valuation_controller.setOptionType(selected_option)
+        GLOBALS.valuation_controller.setOptionType(selected_option)
     def onOutputTypeChange(self, selected_option):
-        valuation_controller.setOutputType(selected_option)
+        GLOBALS.valuation_controller.setOutputType(selected_option)
     def onInputFactorChange(self, input_factors_dict):
-        valuation_controller.setFactorsDict(input_factors_dict)
+        GLOBALS.valuation_controller.setFactorsDict(input_factors_dict)
     def onStrikeDimensionChange(self, strike_dimensions_dict):
-        valuation_controller.setStrikesDict(strike_dimensions_dict)
-        if valuation_controller.areStrikesValid():
-            self.values_table.updateStrikeColumns(valuation_controller.getStrikesList())
+        GLOBALS.valuation_controller.setStrikesDict(strike_dimensions_dict)
+        if GLOBALS.valuation_controller.areStrikesValid():
+            self.values_table.updateStrikeColumns(GLOBALS.valuation_controller.getStrikesList())
     def onExpirationDimensionChange(self, expiration_dimensions_dict):
-        valuation_controller.setExpirationsDict(expiration_dimensions_dict)
-        if valuation_controller.areExpirationsValid():
-            self.values_table.updateExpirationRows(valuation_controller.getExpirationsList())
+        GLOBALS.valuation_controller.setExpirationsDict(expiration_dimensions_dict)
+        if GLOBALS.valuation_controller.areExpirationsValid():
+            self.values_table.updateExpirationRows(GLOBALS.valuation_controller.getExpirationsList())
 
     def handleAction(self, action):
         if (action == CONSTANTS.window.action.clear_):
@@ -152,9 +149,9 @@ class MainWindow(QtGui.QMainWindow):
         elif (action == CONSTANTS.window.action.calculate):
             self.priceIfReady()
         elif (action == CONSTANTS.window.action.load):
-            self.loadSettings()
+            self.loadSettingsFromFile()
         elif (action == CONSTANTS.window.action.save):
-            self.saveSettings()
+            self.saveSettingsToFile()
     def clearInputs(self):
         self.option_style_widget.clearSelection()
         self.option_type_widget.clearSelection()
@@ -163,17 +160,28 @@ class MainWindow(QtGui.QMainWindow):
         self.input_factors_widget.clearForm()
         self.strikes_widget.clearForm()
         self.expirations_widget.clearForm()
-    def loadSettings(self):
+    def loadSettingsFromFile(self):
         self.load_thread = SERIAL.LoadYAMLThread()
-        self.load_thread.resultsSignal.connect(self.printSettings)
+        self.load_thread.resultsSignal.connect(self.processSettings)
         self.load_thread.start()
-    def saveSettings(self):
-        print('saveSettings [TO IMPLEMENT]')
-    def printSettings(self, settingsMBD):
-        print(settingsMBD)
+    def saveSettingsToFile(self):
+        print('saveSettingsToFile [TO IMPLEMENT]')
+    def processSettings(self, settingsMBD):
+        
+        GLOBALS.settings = settingsMBD
+
+        self.input_factors_widget.loadValues(
+            (
+                (CONSTANTS.window.valuation.factor.spot_price,      CONSTANTS.backend.serialization.path.setting.spot_price),
+                (CONSTANTS.window.valuation.factor.interest_rate,   CONSTANTS.backend.serialization.path.setting.interest_rate),
+                (CONSTANTS.window.valuation.factor.carry_rate,      CONSTANTS.backend.serialization.path.setting.carry_rate),
+                (CONSTANTS.window.valuation.factor.volatility,      CONSTANTS.backend.serialization.path.setting.volatility),
+            )
+        )
+
 
     def priceIfReady(self):
-        if valuation_controller.readyToValue():
+        if GLOBALS.valuation_controller.readyToValue():
 
             self.prepareProgressBar()
             self.price_thread = self.prepareValuationThread()
@@ -186,18 +194,18 @@ class MainWindow(QtGui.QMainWindow):
     def prepareProgressBar(self):
 
         self.progress_bar.resetToIncrement()
-        self.progress_bar.setMaximumIncrements(valuation_controller.getNumberOfCalculations())
+        self.progress_bar.setMaximumIncrements(GLOBALS.valuation_controller.getNumberOfCalculations())
     def prepareValuationThread(self):
         price_thread = VALUE.ValuationThread()
 
-        price_thread.setOptionStyle(valuation_controller.getOptionStyle())
-        price_thread.setOptionType(valuation_controller.getOptionType())
-        price_thread.setOutputType(valuation_controller.getOutputType())
+        price_thread.setOptionStyle(GLOBALS.valuation_controller.getOptionStyle())
+        price_thread.setOptionType(GLOBALS.valuation_controller.getOptionType())
+        price_thread.setOutputType(GLOBALS.valuation_controller.getOutputType())
 
-        price_thread.setFactors(*valuation_controller.getFactors())
+        price_thread.setFactors(*GLOBALS.valuation_controller.getFactors())
 
-        price_thread.setStrikesList(valuation_controller.getStrikesList())
-        price_thread.setExpirationsList(valuation_controller.getExpirationsList())
+        price_thread.setStrikesList(GLOBALS.valuation_controller.getStrikesList())
+        price_thread.setExpirationsList(GLOBALS.valuation_controller.getExpirationsList())
 
         return price_thread
 

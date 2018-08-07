@@ -15,7 +15,7 @@ def buildInputFactorsWidget():
             (CONSTANTS.window.valuation.factor.spot_price,     float,  None),
             (CONSTANTS.window.valuation.factor.interest_rate,  float,  None),
             (CONSTANTS.window.valuation.factor.carry_rate,     float,  None),
-            (CONSTANTS.window.valuation.factor.volatility,     float,  None),
+            (CONSTANTS.window.valuation.factor.volatility,     float,  None)
         )
     )
     return input_factors_widget

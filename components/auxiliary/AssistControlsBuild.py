@@ -9,47 +9,47 @@ import components.auxiliary.PushButtonGroupBox as PUSH_BUTTON_GROUP_BOX
 from components.libs.Constants import constants as CONSTANTS
 
 def buildInputFactorsWidget():        
-    input_factors_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.pricing.factors)
+    input_factors_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.valuation.factors)
     input_factors_widget.displayParameters(param_name_type_default_tuples = 
         (
-            (CONSTANTS.window.pricing.factor.spot_price,     float,  None),
-            (CONSTANTS.window.pricing.factor.interest_rate,  float,  None),
-            (CONSTANTS.window.pricing.factor.carry_rate,     float,  None),
-            (CONSTANTS.window.pricing.factor.volatility,     float,  None),
+            (CONSTANTS.window.valuation.factor.spot_price,     float,  None),
+            (CONSTANTS.window.valuation.factor.interest_rate,  float,  None),
+            (CONSTANTS.window.valuation.factor.carry_rate,     float,  None),
+            (CONSTANTS.window.valuation.factor.volatility,     float,  None),
         )
     )
     return input_factors_widget
 
 def buildStrikeDimensionsWidget():
-    strikes_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.pricing.dimension.strikes)
+    strikes_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.valuation.dimension.strikes)
     strikes_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.pricing.dimension.strike_min,  float, None),
-                (CONSTANTS.window.pricing.dimension.strike_incr,   float, None),
-                (CONSTANTS.window.pricing.dimension.strike_max,   float, None)
+                (CONSTANTS.window.valuation.dimension.strike_min,  float, None),
+                (CONSTANTS.window.valuation.dimension.strike_incr,   float, None),
+                (CONSTANTS.window.valuation.dimension.strike_max,   float, None)
             )
         )
     return strikes_widget
 
 def buildExpirationDimensionsWidget():
-    expirations_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.pricing.dimension.expirations)
+    expirations_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.valuation.dimension.expirations)
     expirations_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.pricing.dimension.expiration_min, int, None),
-                (CONSTANTS.window.pricing.dimension.expiration_incr,  int, None),
-                (CONSTANTS.window.pricing.dimension.expiration_max,  int, None)
+                (CONSTANTS.window.valuation.dimension.expiration_min, int, None),
+                (CONSTANTS.window.valuation.dimension.expiration_incr,  int, None),
+                (CONSTANTS.window.valuation.dimension.expiration_max,  int, None)
             )
         )
     return expirations_widget
 
 def buildOptionStyleWidget(): 
 
-    option_style_widget = RADIO_BUTTON_GROUP_BOX.RadioButtonGroupBox(CONSTANTS.window.pricing.styles)
+    option_style_widget = RADIO_BUTTON_GROUP_BOX.RadioButtonGroupBox(CONSTANTS.window.valuation.styles)
 
     option_style_widget.addOptions(
         (
-            CONSTANTS.window.pricing.style.american,
-            CONSTANTS.window.pricing.style.european
+            CONSTANTS.window.valuation.style.american,
+            CONSTANTS.window.valuation.style.european
         )
     )
 
@@ -57,14 +57,14 @@ def buildOptionStyleWidget():
 
 def buildOptionTypeWidget():
 
-    option_type_widget = RADIO_BUTTON_GROUP_BOX.RadioButtonGroupBox(CONSTANTS.window.pricing.types)
+    option_type_widget = RADIO_BUTTON_GROUP_BOX.RadioButtonGroupBox(CONSTANTS.window.valuation.types)
 
     option_type_widget.addOptions(
         (
-            CONSTANTS.window.pricing.type.call,
-            CONSTANTS.window.pricing.type.put,
-            CONSTANTS.window.pricing.type.otm,
-            CONSTANTS.window.pricing.type.itm
+            CONSTANTS.window.valuation.type.call,
+            CONSTANTS.window.valuation.type.put,
+            CONSTANTS.window.valuation.type.otm,
+            CONSTANTS.window.valuation.type.itm
         )
     )
  
@@ -72,15 +72,15 @@ def buildOptionTypeWidget():
 
 def buildOutputTypeWidget():
 
-    output_type_widget = RADIO_BUTTON_GROUP_BOX.RadioButtonGroupBox(CONSTANTS.window.pricing.outputs)
+    output_type_widget = RADIO_BUTTON_GROUP_BOX.RadioButtonGroupBox(CONSTANTS.window.valuation.outputs)
 
     output_type_widget.addOptions(
         (
-            CONSTANTS.window.pricing.output.value,
-            CONSTANTS.window.pricing.output.delta,
-            CONSTANTS.window.pricing.output.gamma,
-            CONSTANTS.window.pricing.output.vega,
-            CONSTANTS.window.pricing.output.theta
+            CONSTANTS.window.valuation.output.value,
+            CONSTANTS.window.valuation.output.delta,
+            CONSTANTS.window.valuation.output.gamma,
+            CONSTANTS.window.valuation.output.vega,
+            CONSTANTS.window.valuation.output.theta
         )
     )
  

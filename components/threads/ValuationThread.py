@@ -3,7 +3,7 @@ import PyQt4.QtCore as Qt
 from ..libs import BAW
 from ..libs.Constants import constants as CONSTANTS
 
-class PricingThread(Qt.QThread):
+class ValuationThread(Qt.QThread):
     resultSignal = Qt.pyqtSignal(object)
     def __init__(self, parent = None):
         Qt.QThread.__init__(self, parent)
@@ -45,16 +45,16 @@ class PricingThread(Qt.QThread):
                 strike = self.strikes_list[strike_index]
                 expiration = self.expirations_list[expiration_index]
 
-                if self.option_type == CONSTANTS.window.pricing.type.otm:
+                if self.option_type == CONSTANTS.window.valuation.type.otm:
                     if self.spot_price < strike:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.type.call
+                        call_put_flag = CONSTANTS.backend.valuation.flags.type.call
                     else:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.type.put
-                elif self.option_type == CONSTANTS.window.pricing.type.itm:
+                        call_put_flag = CONSTANTS.backend.valuation.flags.type.put
+                elif self.option_type == CONSTANTS.window.valuation.type.itm:
                     if self.spot_price > strike:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.type.call
+                        call_put_flag = CONSTANTS.backend.valuation.flags.type.call
                     else:
-                        call_put_flag = CONSTANTS.backend.pricing.flags.type.put
+                        call_put_flag = CONSTANTS.backend.valuation.flags.type.put
                 else:
                     call_put_flag = self.option_type
 

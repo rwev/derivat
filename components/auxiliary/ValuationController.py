@@ -1,5 +1,5 @@
 '''
-Defines the PricingController class, 
+Defines the ValuationController class, 
 which accepts dictionaries of various input components (i.e. factors, dimensions),
 processes them (e.g. unpacks / expands)
 stores them, 
@@ -15,13 +15,13 @@ def checkRange(min, incr, max):
     return (min > 0 and incr > 0 and max > 0 and min < max and min + incr < max)
 
 def getFactorInputs(factors_dict):
-    return factors_dict[CONSTANTS.window.pricing.factor.spot_price],  factors_dict[CONSTANTS.window.pricing.factor.interest_rate], factors_dict[CONSTANTS.window.pricing.factor.carry_rate], factors_dict[CONSTANTS.window.pricing.factor.volatility]
+    return factors_dict[CONSTANTS.window.valuation.factor.spot_price],  factors_dict[CONSTANTS.window.valuation.factor.interest_rate], factors_dict[CONSTANTS.window.valuation.factor.carry_rate], factors_dict[CONSTANTS.window.valuation.factor.volatility]
 def getStrikeRangeInputs(strike_dimensions_dict):
-    return strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_min], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_incr], strike_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_max]
+    return strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_min], strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_incr], strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_max]
 def getExpirationRangeInputs(expiration_dimensions_dict):
-    return expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_min], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_incr], expiration_dimensions_dict[CONSTANTS.window.pricing.dimension.strike_max]
+    return expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_min], expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_incr], expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_max]
 
-class PricingController():
+class ValuationController():
     def __init__(self):
 
         self.option_style = None
@@ -33,23 +33,23 @@ class PricingController():
         self.expiration_dimensions_dict = None
 
     def setOptionStyle(self, o):
-        if o == CONSTANTS.window.pricing.style.american or \
-            o == CONSTANTS.window.pricing.style.european:
+        if o == CONSTANTS.window.valuation.style.american or \
+            o == CONSTANTS.window.valuation.style.european:
             self.option_style = o
 
     def setOptionType(self, o):
-        if o == CONSTANTS.window.pricing.type.call or \
-            o == CONSTANTS.window.pricing.type.put or \
-            o == CONSTANTS.window.pricing.type.otm or \
-            o == CONSTANTS.window.pricing.type.itm:
+        if o == CONSTANTS.window.valuation.type.call or \
+            o == CONSTANTS.window.valuation.type.put or \
+            o == CONSTANTS.window.valuation.type.otm or \
+            o == CONSTANTS.window.valuation.type.itm:
             self.option_type = o
 
     def setOutputType(self, o):
-        if o == CONSTANTS.window.pricing.output.value or \
-            o == CONSTANTS.window.pricing.output.delta or \
-            o == CONSTANTS.window.pricing.output.gamma or \
-            o == CONSTANTS.window.pricing.output.vega or \
-            o == CONSTANTS.window.pricing.output.theta:
+        if o == CONSTANTS.window.valuation.output.value or \
+            o == CONSTANTS.window.valuation.output.delta or \
+            o == CONSTANTS.window.valuation.output.gamma or \
+            o == CONSTANTS.window.valuation.output.vega or \
+            o == CONSTANTS.window.valuation.output.theta:
            self.output_type = o
 
     def setFactorsDict(self, d):
@@ -126,7 +126,7 @@ class PricingController():
     def getNumberOfCalculations(self):
         return len(self.getExpirationsList()) * len(self.getStrikesList())
 
-    def readyToPrice(self):
+    def readyToValue(self):
         radio_options_ready = (self.getOptionStyle() and self.getOptionType() and self.getOutputType())
         numeric_inputs_ready = (self.areFactorsValid() and self.areStrikesValid() and self.areExpirationsValid())
         return radio_options_ready and numeric_inputs_ready

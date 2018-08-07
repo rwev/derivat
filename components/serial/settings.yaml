@@ -1,4 +1,4 @@
-pricing:
+valuation:
   inputs: 
     spot_price: 100
     interest_rate: 0.05

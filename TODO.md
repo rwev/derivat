@@ -25,9 +25,9 @@
 - [ ] add load and save settings actions
 - [ ] add export values action
 - [ ] add status bar updates
-    - [ ] pricing in progress
+    - [ ] valuation in progress
     - [ ] bad inputs to check, explanation of check failure
 - [ ] implement greeks for european options
-- [ ] add Cython to speed up pricing 
+- [ ] add Cython to speed up valuation 
 - [ ] do not autoprice on input change
-- [ ] show indicator based on whether inputs are ready to be used for pricing or not
+- [ ] show indicator based on whether inputs are ready to be used for valuation or not

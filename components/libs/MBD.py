@@ -1,6 +1,6 @@
 """
-Implements MemBerDict, a nested dictionary offering member attributes for faster access and improved aesthetic.
-Standard Python dictionaries can be converted to an MBD instance with convertDictToMBD. 
+Implements MemBerDict, a nested dionary offering member attributes for faster access and improved aesthetic.
+Standard Python dionaries can be converted to an MBD instance with convertDictToMBD. 
 """
 
 from collections import OrderedDict
@@ -29,20 +29,22 @@ class MBD(OrderedDict):
             return
         self[key] = value
 
-def convertDictToMBD(dict):
-    mdb = MBD()
-    for k in dict.keys():
-        if type(dict[k]) == dict:
-            mdb = convertDictToMBD(dict[k])
+def convertDictToMBD(d):
+    mbd = MBD()
+    for key, value in d.iteritems():
+        if isinstance(value, dict):
+            setattr(mbd, key, convertDictToMBD(value))
         else:
-            setattr(mdb, k, dict[k])
-    return mdb
+            setattr(mbd, key, value)
+    return mbd
 
-def convertMBDtoDict(mdb):
-    dict = {}
-    for k in mdb.keys():
-        if type(mdb[k]) == dict:
-            mdb = convertMBDtoDict(mdb[k])
+def convertMBDtoDict(mbd):
+    d = {}
+    for key, value in mbd.iteritems():
+        if isinstance(value, MBD):
+            d[key] = convertMBDtoDict(value)
         else:
-            dict[k] = mdb[k]
-    return dict
+            d[key] = value
+    return d
+
+# print(convertDictToMBD({'valuation': {'output': 'Value', 'style': 'American', 'type': 'OTM', 'dimensions': {'expirations': {'max': 300, 'incr': 30, 'min': 30}, 'strikes': {'max': 110, 'incr': 0.5, 'min': 90}}, 'factors': {'spot_price': 100.25, 'interest_rate': 0.05, 'carry_rate': 0.05, 'volatility': 0.15}}}))

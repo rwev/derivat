@@ -56,4 +56,5 @@ Comments shall be avoided whenever possible, and otherwise deemed as unnecessary
 All source files should not exceed 250 lines. 
 Files shall be broken down and parted out to separate function distinctly and orthagonally. 
 
-
+## Development
+Until there are other contributors, all development will be done by on the master branch and follow the continuously edited TODO.md file in the main project folder.  

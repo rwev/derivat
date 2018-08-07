@@ -1,5 +1,5 @@
 """
-Implements the Barone-Adesi And Whaley model for the pricing of American options. 
+Implements the Barone-Adesi And Whaley model for the valuation of American options and their greeks. 
 """
 
 import numpy as np
@@ -13,10 +13,10 @@ dV = 0.00001
 
 ITERATION_MAX_ERROR = 0.001
 
-def standardNormalPDF(x): 
+def _standardNormalPDF(x): 
     val = (1 / (2 * m.pi)**0.5) * np.exp(-1 * (x**2) / 2)
     return val
-def standardNormalCDF(X):     
+def _standardNormalCDF(X):     
     y = np.abs(X) 
     
     if y > 37: 
@@ -38,21 +38,21 @@ def standardNormalCDF(X):
         SumB = SumB * y + 637.333633378831
         SumB = SumB * y + 793.826512519948
         SumB = SumB * y + 440.413735824752
-        standardNormalCDF = Exponential * SumA / SumB
+        _standardNormalCDF = Exponential * SumA / SumB
     else:
         SumA = y + 0.65
         SumA = y + 4 / SumA
         SumA = y + 3 / SumA
         SumA = y + 2 / SumA
         SumA = y + 1 / SumA
-        standardNormalCDF = Exponential / (SumA * 2.506628274631)
+        _standardNormalCDF = Exponential / (SumA * 2.506628274631)
     
     if X > 0:
-         return 1 - standardNormalCDF
+         return 1 - _standardNormalCDF
     else: 
-         return standardNormalCDF
+         return _standardNormalCDF
         
-def priceEuropeanOption(option_type_flag, S, X, T, r, b, v):
+def _priceEuropeanOption(option_type_flag, S, X, T, r, b, v):
     '''
     Black-Scholes
     '''
@@ -61,57 +61,57 @@ def priceEuropeanOption(option_type_flag, S, X, T, r, b, v):
     d2 = d1 - v * (T)**0.5
 
     if option_type_flag == CONSTANTS.backend.pricing.flags.type.call:
-        bsp = S * np.exp((b - r) * T) * standardNormalCDF(d1) - X * np.exp(-r * T) * standardNormalCDF(d2)
+        bsp = S * np.exp((b - r) * T) * _standardNormalCDF(d1) - X * np.exp(-r * T) * _standardNormalCDF(d2)
     else:
-        bsp = X * np.exp(-r * T) * standardNormalCDF(-d2) - S * np.exp((b - r) * T) * standardNormalCDF(-d1)
+        bsp = X * np.exp(-r * T) * _standardNormalCDF(-d2) - S * np.exp((b - r) * T) * _standardNormalCDF(-d1)
         
     return bsp
 
-def priceAmericanOption(option_type_flag, S, X, T, r, b, v):
+def _priceAmericanOption(option_type_flag, S, X, T, r, b, v):
     '''
     Barone-Adesi-Whaley
     '''
     
     if option_type_flag == CONSTANTS.backend.pricing.flags.type.call:
-        return approximateAmericanCall(S, X, T, r, b, v)
+        return _approximateAmericanCall(S, X, T, r, b, v)
     elif option_type_flag == CONSTANTS.backend.pricing.flags.type.put:
-        return approximateAmericanPut(S, X, T, r, b, v)
-def approximateAmericanCall(S, X, T, r, b, v):
+        return _approximateAmericanPut(S, X, T, r, b, v)
+def _approximateAmericanCall(S, X, T, r, b, v):
     '''
     Barone-Adesi And Whaley
     '''
 
     if b >= r:
-        return priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, S, X, T, r, b, v)
+        return _priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, S, X, T, r, b, v)
     else:
-        Sk = Kc(X, T, r, b, v)
+        Sk = _Kc(X, T, r, b, v)
         N = 2 * b / v**2                                           
         k = 2 * r / (v**2 * (1 - np.exp(-1 * r * T)))
         d1 = (np.log(Sk / X) + (b + (v**2) / 2) * T) / (v * (T**0.5))
         Q2 = (-1 * (N - 1) + ((N - 1)**2 + 4 * k))**0.5 / 2
-        a2 = (Sk / Q2) * (1 - np.exp((b - r) * T) * standardNormalCDF(d1))
+        a2 = (Sk / Q2) * (1 - np.exp((b - r) * T) * _standardNormalCDF(d1))
         if S < Sk:
-            return priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, S, X, T, r, b, v) + a2 * (S / Sk)**Q2
+            return _priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, S, X, T, r, b, v) + a2 * (S / Sk)**Q2
         else:
             return S - X
-def approximateAmericanPut(S, X, T, r, b, v):
+def _approximateAmericanPut(S, X, T, r, b, v):
     '''
     Barone-Adesi-Whaley
     '''
 
-    Sk = Kp(X, T, r, b, v)
+    Sk = _Kp(X, T, r, b, v)
     N = 2 * b / v**2
     k = 2 * r / (v**2 * (1 - np.exp(-1 * r * T)))
     d1 = (np.log(Sk / X) + (b + (v**2) / 2) * T) / (v * (T)**0.5)
     Q1 = (-1 * (N - 1) - (((N - 1)**2 + 4 * k))**0.5) / 2
-    a1 = -1 * (Sk / Q1) * (1 - np.exp((b - r) * T) * standardNormalCDF(-1 * d1))
+    a1 = -1 * (Sk / Q1) * (1 - np.exp((b - r) * T) * _standardNormalCDF(-1 * d1))
 
     if S > Sk:
-        return priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.put, S, X, T, r, b, v) + a1 * (S / Sk)**Q1
+        return _priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.put, S, X, T, r, b, v) + a1 * (S / Sk)**Q1
     else:
         return X - S
     
-def Kc(X, T, r, b, v):
+def _Kc(X, T, r, b, v):
 
     N = 2 * b / v**2
     m = 2 * r / v**2
@@ -124,8 +124,8 @@ def Kc(X, T, r, b, v):
     d1 = (np.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
     Q2 = (-1 * (N - 1) + ((N - 1)**2 + 4 * k)**0.5) / 2
     LHS = Si - X
-    RHS = priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, Si, X, T, r, b, v) + (1 - np.exp((b - r) * T) * standardNormalCDF(d1)) * Si / Q2
-    bi = np.exp((b - r) * T) * standardNormalCDF(d1) * (1 - 1 / Q2) + (1 - np.exp((b - r) * T) * standardNormalPDF(d1) / (v * (T)**0.5)) / Q2
+    RHS = _priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, Si, X, T, r, b, v) + (1 - np.exp((b - r) * T) * _standardNormalCDF(d1)) * Si / Q2
+    bi = np.exp((b - r) * T) * _standardNormalCDF(d1) * (1 - 1 / Q2) + (1 - np.exp((b - r) * T) * _standardNormalPDF(d1) / (v * (T)**0.5)) / Q2
 
     E = ITERATION_MAX_ERROR
     
@@ -133,11 +133,11 @@ def Kc(X, T, r, b, v):
         Si = (X + RHS - bi * Si) / (1 - bi)
         d1 = (np.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
         LHS = Si - X
-        RHS = priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, Si, X, T, r, b, v) + (1 - np.exp((b - r) * T) * standardNormalCDF(d1)) * Si / Q2
-        bi = np.exp((b - r) * T) * standardNormalCDF(d1) * (1 - 1 / Q2) + (1 - np.exp((b - r) * T) * standardNormalCDF(d1) / (v * (T)**0.5)) / Q2
+        RHS = _priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.call, Si, X, T, r, b, v) + (1 - np.exp((b - r) * T) * _standardNormalCDF(d1)) * Si / Q2
+        bi = np.exp((b - r) * T) * _standardNormalCDF(d1) * (1 - 1 / Q2) + (1 - np.exp((b - r) * T) * _standardNormalCDF(d1) / (v * (T)**0.5)) / Q2
     
     return Si
-def Kp(X, T, r, b, v):
+def _Kp(X, T, r, b, v):
 
     N = 2 * b / v**2
     m = 2 * r / v**2
@@ -150,8 +150,8 @@ def Kp(X, T, r, b, v):
     d1 = (np.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
     Q1 = (-1 * (N - 1) - ((N - 1)**2 + 4 * k)**0.5) / 2
     LHS = X - Si
-    RHS = priceEuropeanOption( CONSTANTS.backend.pricing.flags.type.put, Si, X, T, r, b, v) - (1 - np.exp((b - r) * T) * standardNormalCDF(-1 * d1)) * Si / Q1
-    bi = -1 * np.exp((b - r) * T) * standardNormalCDF(-1 * d1) * (1 - 1 / Q1) - (1 + np.exp((b - r) * T) * standardNormalPDF(-d1) / (v * (T)**0.5)) / Q1
+    RHS = _priceEuropeanOption( CONSTANTS.backend.pricing.flags.type.put, Si, X, T, r, b, v) - (1 - np.exp((b - r) * T) * _standardNormalCDF(-1 * d1)) * Si / Q1
+    bi = -1 * np.exp((b - r) * T) * _standardNormalCDF(-1 * d1) * (1 - 1 / Q1) - (1 + np.exp((b - r) * T) * _standardNormalPDF(-d1) / (v * (T)**0.5)) / Q1
     
     E = ITERATION_MAX_ERROR
     
@@ -159,8 +159,8 @@ def Kp(X, T, r, b, v):
         Si = (X - RHS + bi * Si) / (1 + bi)
         d1 = (np.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
         LHS = X - Si
-        RHS = priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.put, Si, X, T, r, b, v) - (1 - np.exp((b - r) * T) * standardNormalCDF(-1 * d1)) * Si / Q1
-        bi = -np.exp((b - r) * T) * standardNormalCDF(-1 * d1) * (1 - 1 / Q1) - (1 + np.exp((b - r) * T) * standardNormalCDF(-1 * d1) / (v * (T)**0.5)) / Q1
+        RHS = _priceEuropeanOption(CONSTANTS.backend.pricing.flags.type.put, Si, X, T, r, b, v) - (1 - np.exp((b - r) * T) * _standardNormalCDF(-1 * d1)) * Si / Q1
+        bi = -np.exp((b - r) * T) * _standardNormalCDF(-1 * d1) * (1 - 1 / Q1) - (1 + np.exp((b - r) * T) * _standardNormalCDF(-1 * d1) / (v * (T)**0.5)) / Q1
         
     return Si
 
@@ -176,19 +176,19 @@ def getValue(option_style_flag, output_flag, option_type_flag, spot_price, strik
     if option_style_flag == CONSTANTS.backend.pricing.flags.style.american:
     
         if output_flag == CONSTANTS.backend.pricing.flags.value: 
-            return priceAmericanOption(option_type_flag, S, X, T, r, b, v)
+            return _priceAmericanOption(option_type_flag, S, X, T, r, b, v)
         elif output_flag == CONSTANTS.backend.pricing.flags.delta: 
-            return (priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v) - priceAmericanOption(option_type_flag, S - dS, X, T, r, b, v)) / (2 * dS)
+            return (_priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v) - _priceAmericanOption(option_type_flag, S - dS, X, T, r, b, v)) / (2 * dS)
         elif output_flag == CONSTANTS.backend.pricing.flags.gamma: 
-            return (priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v) - 2 * priceAmericanOption(option_type_flag, S, X, T, r, b, v) + priceAmericanOption(option_type_flag, S - dS, X, T, r, b, v)) / dS**2
+            return (_priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v) - 2 * _priceAmericanOption(option_type_flag, S, X, T, r, b, v) + _priceAmericanOption(option_type_flag, S - dS, X, T, r, b, v)) / dS**2
         elif output_flag == CONSTANTS.backend.pricing.flags.vega:
-            return (priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v + dV) - priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v - dV)) / 2
+            return (_priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v + dV) - _priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v - dV)) / 2
         elif output_flag == CONSTANTS.backend.pricing.flags.theta:
-            return priceAmericanOption(option_type_flag, S + dS, X, T - dT, r, b, v) - priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v)
+            return _priceAmericanOption(option_type_flag, S + dS, X, T - dT, r, b, v) - _priceAmericanOption(option_type_flag, S + dS, X, T, r, b, v)
             
     elif option_style_flag == CONSTANTS.backend.pricing.flags.style.european:
 
         # TODO implement Greeks for european options
         if output_flag == CONSTANTS.backend.pricing.flags.value: 
-            return priceEuropeanOption(option_type_flag, S, X, T, r, b, v)
+            return _priceEuropeanOption(option_type_flag, S, X, T, r, b, v)
 

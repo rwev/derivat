@@ -17,9 +17,6 @@
     - [ ] development instructions
         - [ ] *launch.json* configuration
 - [ ] build OpenGL into main application
-- [ ] define rules on branching
-    - [ ] features
-    - [ ] bug fixes
 - [ ] clean up unused dependencies in requirements.txt
 - [ ] move unit input specifications to tool tip (if possible, investigate)
 - [ ] handle bad dimension range specification
@@ -31,4 +28,5 @@
     - [ ] pricing in progress
     - [ ] bad inputs to check, explanation of check failure
 - [ ] implement greeks for european options
-- [ ] restrict BAW external function access to getValue 
+- [ ] add Cython to speed up pricing 
+- [ ] 

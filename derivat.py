@@ -167,7 +167,7 @@ class MainWindow(QtGui.QMainWindow):
     def saveSettingsToFile(self):
         print('saveSettingsToFile [TO IMPLEMENT]')
     def processSettings(self, settingsMBD):
-        
+
         GLOBALS.settings = settingsMBD
 
         self.input_factors_widget.loadValues(
@@ -176,6 +176,25 @@ class MainWindow(QtGui.QMainWindow):
                 (CONSTANTS.window.valuation.factor.interest_rate,   CONSTANTS.backend.serialization.path.setting.interest_rate),
                 (CONSTANTS.window.valuation.factor.carry_rate,      CONSTANTS.backend.serialization.path.setting.carry_rate),
                 (CONSTANTS.window.valuation.factor.volatility,      CONSTANTS.backend.serialization.path.setting.volatility),
+            )
+        )
+
+        self.option_style_widget.loadSelectedOption(CONSTANTS.backend.serialization.path.setting.style)
+        self.option_type_widget.loadSelectedOption(CONSTANTS.backend.serialization.path.setting.type)
+        self.output_type_widget.loadSelectedOption(CONSTANTS.backend.serialization.path.setting.output)
+
+        self.strikes_widget.loadValues(
+            (
+                (CONSTANTS.window.valuation.dimension.strike_min,   CONSTANTS.backend.serialization.path.setting.strike_min),
+                (CONSTANTS.window.valuation.dimension.strike_incr,  CONSTANTS.backend.serialization.path.setting.strike_incr),
+                (CONSTANTS.window.valuation.dimension.strike_max,   CONSTANTS.backend.serialization.path.setting.strike_max)
+            )
+        )
+        self.expirations_widget.loadValues(
+            (
+                (CONSTANTS.window.valuation.dimension.expiration_min,   CONSTANTS.backend.serialization.path.setting.expiration_min),
+                (CONSTANTS.window.valuation.dimension.expiration_incr,  CONSTANTS.backend.serialization.path.setting.expiration_incr),
+                (CONSTANTS.window.valuation.dimension.expiration_max,   CONSTANTS.backend.serialization.path.setting.expiration_max)
             )
         )
 

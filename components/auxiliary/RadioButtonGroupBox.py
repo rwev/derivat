@@ -1,6 +1,8 @@
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
+import Globals as GLOBALS
+
 class RadioButtonGroupBox(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, group_name = None, display_only = False, parent = None):
@@ -28,6 +30,23 @@ class RadioButtonGroupBox(QtGui.QWidget):
 
             self.content_layout.addWidget(radio_button)
 
+    def loadSelectedOption(self, setting_serialization_path):
+        temp = GLOBALS.settings
+        try:
+            for attr in setting_serialization_path.split('.'):
+                temp = temp[attr]
+            self.setCheckedOption(temp)
+        except Exception, e:
+            print('Unable to load selection from serialization path %s [%s]' % (setting_serialization_path, e))
+
+    def setCheckedOption(self, option):
+        self.clearSelection()
+        id_to_check = self.options.index(option)
+        if id_to_check >= 0:
+            button_to_check = self.button_group.button(id_to_check)
+            button_to_check.setChecked(True)        
+        return
+
     def emitChangedSignal(self):
         value = self.getValueIfDefined()
         if value:
@@ -39,6 +58,7 @@ class RadioButtonGroupBox(QtGui.QWidget):
         if checked_id >= 0:
             return self.options[checked_id]
         return False
+
 
     def clearSelection(self):
         checked_id = self.button_group.checkedId()

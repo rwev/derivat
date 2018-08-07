@@ -2,7 +2,7 @@ import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
 class PushButtonGroupBox(QtGui.QWidget):
-    changedSignal = Qt.pyqtSignal(object)
+    actionSignal = Qt.pyqtSignal(object)
     def __init__(self, row_dimension, column_dimension, group_name = None, display_only = False, parent = None):
         QtGui.QWidget.__init__(self, parent)
         
@@ -18,7 +18,7 @@ class PushButtonGroupBox(QtGui.QWidget):
 
         group_box.setLayout(self.content_layout)
         self.button_group = QtGui.QButtonGroup()
-        self.button_group.buttonClicked.connect(self.emitChangedSignal)
+        self.button_group.buttonClicked[int].connect(self.emitChangedSignal)
         main_layout.addWidget(group_box)
         self.actions = ()
 
@@ -26,6 +26,7 @@ class PushButtonGroupBox(QtGui.QWidget):
         self.actions = push_button_actions_tuple
         action_id = 0
         for push_button_action in push_button_actions_tuple:
+
             push_button = QtGui.QPushButton(push_button_action)
 
             self.button_group.addButton(push_button)
@@ -44,14 +45,13 @@ class PushButtonGroupBox(QtGui.QWidget):
             self.column_index_to_add += 1
         return self.row_index_to_add, self.column_index_to_add
 
-    def emitChangedSignal(self):
-        value = self.getValueIfDefined()
+    def emitChangedSignal(self, index):
+        value = self.getValueIfDefined(index)
         if value:
-            self.changedSignal.emit(value)
+            self.actionSignal.emit(value)
             Qt.QCoreApplication.processEvents()
 
-    def getValueIfDefined(self):
-        checked_id = self.button_group.checkedId()
-        if checked_id >= 0:
-            return self.actions[checked_id]
+    def getValueIfDefined(self, index):
+        if index >= 0:
+            return self.actions[index]
         return False

@@ -70,6 +70,8 @@ class MainWindow(QtGui.QMainWindow):
         strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
         expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
 
+        actions_widget.actionSignal.connect(self.handleAction)
+
         splitter.addWidget(option_style_widget)
         splitter.addWidget(option_type_widget)
         splitter.addWidget(input_factors_widget)
@@ -80,6 +82,19 @@ class MainWindow(QtGui.QMainWindow):
         splitter.addWidget(progress_bar_container_widget)
 
         return splitter
+
+    def handleAction(self, action):
+        if (action == CONSTANTS.window.action.clear):
+            self.clearAllInputs()
+        elif (action == CONSTANTS.window.action.calculate):
+            self.priceIfReady()
+        elif (action == CONSTANTS.window.action.load):
+            self.loadSettings()
+        elif (action == CONSTANTS.window.action.save):
+            self.saveSettings()
+
+    def clearAllInputs(self):
+        print('clearAllInputs [TO IMPLEMENT]')
 
     def buildProgressBar(self):
 
@@ -96,31 +111,25 @@ class MainWindow(QtGui.QMainWindow):
 
     def onOptionStyleChange(self, selected_option):
         pricing_controller.setOptionStyle(selected_option)
-        self.priceIfReady()
 
     def onOptionTypeChange(self, selected_option):
         pricing_controller.setOptionType(selected_option)
-        self.priceIfReady()
     
     def onOutputTypeChange(self, selected_option):
         pricing_controller.setOutputType(selected_option)
-        self.priceIfReady()
 
     def onInputFactorChange(self, input_factors_dict):
         pricing_controller.setFactorsDict(input_factors_dict)
-        self.priceIfReady()
 
     def onStrikeDimensionChange(self, strike_dimensions_dict):
         pricing_controller.setStrikesDict(strike_dimensions_dict)
         if pricing_controller.areStrikesValid():
             self.values_table.updateStrikeColumns(pricing_controller.getStrikesList())
-        self.priceIfReady()
 
     def onExpirationDimensionChange(self, expiration_dimensions_dict):
         pricing_controller.setExpirationsDict(expiration_dimensions_dict)
         if pricing_controller.areExpirationsValid():
             self.values_table.updateExpirationRows(pricing_controller.getExpirationsList())
-        self.priceIfReady()
 
     def priceIfReady(self):
         if pricing_controller.readyToPrice():
@@ -200,6 +209,9 @@ class MainWindow(QtGui.QMainWindow):
         self.load_thread = SERIAL.LoadYAMLThread()
         self.load_thread.resultsSignal.connect(self.printSettings)
         self.load_thread.start()
+
+    def saveSettings(self):
+        print('saveSettings [TO IMPLEMENT]')
 
     def printSettings(self, settingsMBD):
         print(settingsMBD)

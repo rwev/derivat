@@ -8,7 +8,9 @@ import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
 import components.auxiliary.NumericInputGroupBox as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.OptionValuesTable as OPT_VAL_TABLE
+import components.auxiliary.IncrementalProgressBar as PROGRESS_BAR
 import components.auxiliary.PricingController as PRICE_CONTROL
+
 
 import components.libs.PyQtShared as PYQT_SHARED
 from components.libs.Constants import constants as CONSTANTS
@@ -56,6 +58,8 @@ class MainWindow(QtGui.QMainWindow):
         strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
         expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
 
+        progress_bar_container_widget = self.buildProgressBar()
+
         option_style_widget.changedSignal.connect(self.onOptionStyleChange)
         option_type_widget.changedSignal.connect(self.onOptionTypeChange)
         output_type_widget.changedSignal.connect(self.onOutputTypeChange)
@@ -70,8 +74,22 @@ class MainWindow(QtGui.QMainWindow):
         splitter.addWidget(strikes_widget)
         splitter.addWidget(expirations_widget)
         splitter.addWidget(output_type_widget)
+        splitter.addWidget(progress_bar_container_widget)
 
         return splitter
+
+    def buildProgressBar(self):
+
+        progress_bar_container_widget = QtGui.QWidget()
+
+        layout = QtGui.QHBoxLayout()
+        progress_bar_container_widget.setLayout(layout)
+
+        self.progress_bar = PROGRESS_BAR.IncrementalProgressBar()
+
+        layout.addWidget(self.progress_bar)
+    
+        return progress_bar_container_widget 
 
     def onOptionStyleChange(self, selected_option):
         pricing_controller.setOptionStyle(selected_option)
@@ -92,33 +110,46 @@ class MainWindow(QtGui.QMainWindow):
     def onStrikeDimensionChange(self, strike_dimensions_dict):
         pricing_controller.setStrikesDict(strike_dimensions_dict)
         if pricing_controller.areStrikesValid():
-            self.prices_table.updateStrikeColumns(pricing_controller.getStrikesList())
+            self.values_table.updateStrikeColumns(pricing_controller.getStrikesList())
         self.priceIfReady()
 
     def onExpirationDimensionChange(self, expiration_dimensions_dict):
         pricing_controller.setExpirationsDict(expiration_dimensions_dict)
         if pricing_controller.areExpirationsValid():
-            self.prices_table.updateExpirationRows(pricing_controller.getExpirationsList())
+            self.values_table.updateExpirationRows(pricing_controller.getExpirationsList())
         self.priceIfReady()
 
     def priceIfReady(self):
         if pricing_controller.readyToPrice():
 
-            self.price_thread = PRICE.PricingThread()
-
-            self.price_thread.setOptionStyle(pricing_controller.getOptionStyle())
-            self.price_thread.setOptionType(pricing_controller.getOptionType())
-            self.price_thread.setOutputType(pricing_controller.getOutputType())
-
-            self.price_thread.setFactors(*pricing_controller.getFactors())
-
-            self.price_thread.setStrikesList(pricing_controller.getStrikesList())
-            self.price_thread.setExpirationsList(pricing_controller.getExpirationsList())
-
-            self.prices_table.clearContents()
-            self.price_thread.resultSignal.connect(self.prices_table.updateValue)
+            self.prepareProgressBar()
+            self.price_thread = self.preparePricingThread()
+            
+            self.values_table.clearContents()
+            self.price_thread.resultSignal.connect(self.values_table.updateValue)
+            self.price_thread.resultSignal.connect(self.progress_bar.increment)
 
             self.price_thread.start()
+
+
+    def prepareProgressBar(self):
+
+        self.progress_bar.resetToIncrement()
+        self.progress_bar.setMaximumIncrements(pricing_controller.getNumberOfCalculations())
+    
+    def preparePricingThread(self):
+        price_thread = PRICE.PricingThread()
+
+        price_thread.setOptionStyle(pricing_controller.getOptionStyle())
+        price_thread.setOptionType(pricing_controller.getOptionType())
+        price_thread.setOutputType(pricing_controller.getOutputType())
+
+        price_thread.setFactors(*pricing_controller.getFactors())
+
+        price_thread.setStrikesList(pricing_controller.getStrikesList())
+        price_thread.setExpirationsList(pricing_controller.getExpirationsList())
+
+        return price_thread
 
     def buildView(self):
         tabs = QtGui.QTabWidget()
@@ -131,18 +162,16 @@ class MainWindow(QtGui.QMainWindow):
         graphs_tab =   QtGui.QWidget()
 
         self.buildPricesTab(prices_tab)
-        self.buildGraphsTab(graphs_tab)
 
         tabs.addTab(prices_tab, CONSTANTS.window.tabs.prices)
-        tabs.addTab(graphs_tab, CONSTANTS.window.tabs.graphs)
 
         return tabs
      
     def buildPricesTab(self, tab):
         layout = QtGui.QVBoxLayout()
         layout.setAlignment(Qt.Qt.AlignTop)
-        self.prices_table = OPT_VAL_TABLE.OptionValuesTable()
-        layout.addWidget(self.prices_table)
+        self.values_table = OPT_VAL_TABLE.OptionValuesTable()
+        layout.addWidget(self.values_table)
         tab.setLayout(layout)
         return
 

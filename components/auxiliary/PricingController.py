@@ -123,6 +123,9 @@ class PricingController():
         expirations_list = list(np.arange(min, max + incr, incr))
         return expirations_list
 
+    def getNumberOfCalculations(self):
+        return len(self.getExpirationsList()) * len(self.getStrikesList())
+
     def readyToPrice(self):
         radio_options_ready = (self.getOptionStyle() and self.getOptionType() and self.getOutputType())
         numeric_inputs_ready = (self.areFactorsValid() and self.areStrikesValid() and self.areExpirationsValid())

@@ -1,8 +1,6 @@
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
-from ..libs import PyQtShared as PYQT_SHARED
-
 class RadioButtonGroupBox(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, group_name = None, display_only = False, parent = None):

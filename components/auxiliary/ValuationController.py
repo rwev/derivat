@@ -15,7 +15,9 @@ import Globals as GLOBALS
 
 class ValuationController():
     def __init__(self):
+        self.reset()
 
+    def reset(self):
         self.option_style = None
         self.option_type = None
         self.output_type = None

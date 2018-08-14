@@ -121,6 +121,7 @@ class MainWindow(QtGui.QMainWindow):
         progress_bar_container_widget.setLayout(layout)
 
         self.progress_bar = PROGRESS_BAR.IncrementalProgressBar()
+        self.progress_bar.setTextVisible(False)
 
         layout.addWidget(self.progress_bar)
     
@@ -145,14 +146,14 @@ class MainWindow(QtGui.QMainWindow):
 
     def handleAction(self, action):
         if (action == CONSTANTS.window.action.clear_):
-            self.clearInputs()
+            self.clear()
         elif (action == CONSTANTS.window.action.calculate):
             self.priceIfReady()
         elif (action == CONSTANTS.window.action.load):
             self.loadSettingsFromFile()
         elif (action == CONSTANTS.window.action.save):
             self.saveSettingsToFile()
-    def clearInputs(self):
+    def clear(self):
         self.option_style_widget.clearSelection()
         self.option_type_widget.clearSelection()
         self.output_type_widget.clearSelection()
@@ -160,6 +161,12 @@ class MainWindow(QtGui.QMainWindow):
         self.input_factors_widget.clearForm()
         self.strikes_widget.clearForm()
         self.expirations_widget.clearForm()
+
+        self.values_table.clearContents()
+        self.progress_bar.reset()
+
+        GLOBALS.valuation_controller.reset()
+
     def loadSettingsFromFile(self):
         self.load_thread = SERIAL.LoadYAMLThread()
         self.load_thread.resultsSignal.connect(self.processSettings)
@@ -203,20 +210,18 @@ class MainWindow(QtGui.QMainWindow):
             )
         )
 
-
     def priceIfReady(self):
         if GLOBALS.valuation_controller.readyToValue():
 
             self.prepareProgressBar()
             self.price_thread = self.prepareValuationThread()
             
-            self.values_table.clearContents()
+            
             self.price_thread.resultSignal.connect(self.values_table.updateValue)
             self.price_thread.resultSignal.connect(self.progress_bar.increment)
 
             self.price_thread.start()
     def prepareProgressBar(self):
-
         self.progress_bar.resetToIncrement()
         self.progress_bar.setMaximumIncrements(GLOBALS.valuation_controller.getNumberOfCalculations())
     def prepareValuationThread(self):

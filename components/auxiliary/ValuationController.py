@@ -37,7 +37,7 @@ class ValuationController():
             o == CONSTANTS.window.valuation.type.itm:
             self.option_type = o
     def setOutputType(self, o):
-        if o == CONSTANTS.window.valuation.output.value or \
+        if o == CONSTANTS.window.valuation.output.price or \
             o == CONSTANTS.window.valuation.output.delta or \
             o == CONSTANTS.window.valuation.output.gamma or \
             o == CONSTANTS.window.valuation.output.vega or \

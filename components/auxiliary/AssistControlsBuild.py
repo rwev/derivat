@@ -76,7 +76,7 @@ def buildOutputTypeWidget():
 
     output_type_widget.addOptions(
         (
-            CONSTANTS.window.valuation.output.value,
+            CONSTANTS.window.valuation.output.price,
             CONSTANTS.window.valuation.output.delta,
             CONSTANTS.window.valuation.output.gamma,
             CONSTANTS.window.valuation.output.vega,

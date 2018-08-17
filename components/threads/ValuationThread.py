@@ -47,17 +47,27 @@ class ValuationThread(Qt.QThread):
 
                 if self.option_type == CONSTANTS.window.valuation.type.otm:
                     if self.spot_price < strike:
-                        call_put_flag = CONSTANTS.backend.valuation.flags.type.call
+                        call_put_flag = CONSTANTS.window.valuation.type.call
                     else:
-                        call_put_flag = CONSTANTS.backend.valuation.flags.type.put
+                        call_put_flag = CONSTANTS.window.valuation.type.put
                 elif self.option_type == CONSTANTS.window.valuation.type.itm:
                     if self.spot_price > strike:
-                        call_put_flag = CONSTANTS.backend.valuation.flags.type.call
+                        call_put_flag = CONSTANTS.window.valuation.type.call
                     else:
-                        call_put_flag = CONSTANTS.backend.valuation.flags.type.put
+                        call_put_flag = CONSTANTS.window.valuation.type.put
                 else:
                     call_put_flag = self.option_type
 
-                value = BAW.getValue(self.option_style, self.output_type, call_put_flag, self.spot_price, strike, expiration / 365.0, self.interest_rate_ppa / 100.0, self.carry_rate_ppa / 100.0, self.volatility_ppa / 100.0 )
+                value = BAW.getValue(
+                    CONSTANTS.backend.valuation.flags_map[self.option_style], 
+                    CONSTANTS.backend.valuation.flags_map[self.output_type], 
+                    CONSTANTS.backend.valuation.flags_map[call_put_flag], 
+                    self.spot_price, 
+                    strike, 
+                    expiration / 365.0, 
+                    self.interest_rate_ppa / 100.0, 
+                    self.carry_rate_ppa / 100.0, 
+                    self.volatility_ppa / 100.0 
+                )
                 
                 self.resultSignal.emit((strike_index, expiration_index, value))

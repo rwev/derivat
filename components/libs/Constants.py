@@ -4,6 +4,7 @@
 Contains constants saved into an MBD instance for accessibility via members. 
 """
 
+import BAW
 from MBD import *
 
 constants = MBD()
@@ -60,16 +61,6 @@ constants.window.valuation.dimension.expiration_min = 'Min.'
 constants.window.valuation.dimension.expiration_incr = 'Incr.'
 constants.window.valuation.dimension.expiration_max = 'Max.'
 
-constants.backend.valuation.flags.style.american = 'American'
-constants.backend.valuation.flags.style.european = 'European'
-constants.backend.valuation.flags.type.call = 'Call'
-constants.backend.valuation.flags.type.put = 'Put'
-constants.backend.valuation.flags.price = 'Price'
-constants.backend.valuation.flags.delta = 'Delta'
-constants.backend.valuation.flags.gamma = 'Gamma'
-constants.backend.valuation.flags.vega = 'Vega'
-constants.backend.valuation.flags.theta = 'Theta'
-
 constants.backend.serialization.path.file = 'components/serial/settings.yaml'
 
 constants.backend.serialization.path.setting.style = 'valuation.style'
@@ -88,3 +79,19 @@ constants.backend.serialization.path.setting.strike_max = 'valuation.dimensions.
 constants.backend.serialization.path.setting.expiration_min = 'valuation.dimensions.expirations.min'
 constants.backend.serialization.path.setting.expiration_incr = 'valuation.dimensions.expirations.incr'
 constants.backend.serialization.path.setting.expiration_max = 'valuation.dimensions.expirations.max'
+
+constants.backend.valuation.flags_map = {
+
+    constants.window.valuation.style.european: BAW.EUROPEAN,
+    constants.window.valuation.style.american: BAW.AMERICAN,
+
+    constants.window.valuation.type.call: BAW.CALL,
+    constants.window.valuation.type.put: BAW.PUT,
+
+    constants.window.valuation.output.price: BAW.PRICE,
+    constants.window.valuation.output.delta: BAW.DELTA,
+    constants.window.valuation.output.gamma: BAW.GAMMA,
+    constants.window.valuation.output.vega: BAW.VEGA,
+    constants.window.valuation.output.theta: BAW.THETA
+    
+}

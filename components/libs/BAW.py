@@ -6,17 +6,17 @@ import math as _m
 import cmath as _cm
 
 # Option Styles
-_AMERICAN = 11
-_EUROPEAN = 12
+AMERICAN = 11
+EUROPEAN = 12
 # Option Types 
-_CALL = 21
-_PUT = 22
+CALL = 21
+PUT = 22
 # Output Types 
-_PRICE = 31
-_DELTA = 32
-_GAMMA = 33
-_VEGA = 34
-_THETA = 35
+PRICE = 31
+DELTA = 32
+GAMMA = 33
+VEGA = 34
+THETA = 35
 
 _dS = 0.001
 _dT = 1 / 365
@@ -71,7 +71,7 @@ def _priceEuropeanOption(option_type_flag, S, X, T, r, b, v):
     d1 = (_m.log(S / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
     d2 = d1 - v * (T)**0.5
 
-    if option_type_flag == _CALL:
+    if option_type_flag == CALL:
         bsp = S * _m.exp((b - r) * T) * _standardNormalCDF(d1) - X * _m.exp(-r * T) * _standardNormalCDF(d2)
     else:
         bsp = X * _m.exp(-r * T) * _standardNormalCDF(-d2) - S * _m.exp((b - r) * T) * _standardNormalCDF(-d1)
@@ -83,9 +83,9 @@ def _priceAmericanOption(option_type_flag, S, X, T, r, b, v):
     Barone-Adesi-Whaley
     '''
     
-    if option_type_flag == _CALL:
+    if option_type_flag == CALL:
         return _approximateAmericanCall(S, X, T, r, b, v)
-    elif option_type_flag == _PUT:
+    elif option_type_flag == PUT:
         return _approximateAmericanPut(S, X, T, r, b, v)
 def _approximateAmericanCall(S, X, T, r, b, v):
     '''
@@ -93,7 +93,7 @@ def _approximateAmericanCall(S, X, T, r, b, v):
     '''
 
     if b >= r:
-        return _priceEuropeanOption( _CALL, S, X, T, r, b, v)
+        return _priceEuropeanOption( CALL, S, X, T, r, b, v)
     else:
         Sk = _Kc(X, T, r, b, v)
         N = 2 * b / v**2                                           
@@ -102,7 +102,7 @@ def _approximateAmericanCall(S, X, T, r, b, v):
         Q2 = (-1 * (N - 1) + ((N - 1)**2 + 4 * k))**0.5 / 2
         a2 = (Sk / Q2) * (1 - _m.exp((b - r) * T) * _standardNormalCDF(d1))
         if S < Sk:
-            return _priceEuropeanOption( _CALL, S, X, T, r, b, v) + a2 * (S / Sk)**Q2
+            return _priceEuropeanOption( CALL, S, X, T, r, b, v) + a2 * (S / Sk)**Q2
         else:
             return S - X
 def _approximateAmericanPut(S, X, T, r, b, v):
@@ -118,7 +118,7 @@ def _approximateAmericanPut(S, X, T, r, b, v):
     a1 = -1 * (Sk / Q1) * (1 - _m.exp((b - r) * T) * _standardNormalCDF(-1 * d1))
 
     if S > Sk:
-        return _priceEuropeanOption( _PUT, S, X, T, r, b, v) + a1 * (S / Sk)**Q1
+        return _priceEuropeanOption( PUT, S, X, T, r, b, v) + a1 * (S / Sk)**Q1
     else:
         return X - S
     
@@ -135,7 +135,7 @@ def _Kc(X, T, r, b, v):
     d1 = (_m.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
     Q2 = (-1 * (N - 1) + ((N - 1)**2 + 4 * k)**0.5) / 2
     LHS = Si - X
-    RHS = _priceEuropeanOption( _CALL, Si, X, T, r, b, v) + (1 - _m.exp((b - r) * T) * _standardNormalCDF(d1)) * Si / Q2
+    RHS = _priceEuropeanOption( CALL, Si, X, T, r, b, v) + (1 - _m.exp((b - r) * T) * _standardNormalCDF(d1)) * Si / Q2
     bi = _m.exp((b - r) * T) * _standardNormalCDF(d1) * (1 - 1 / Q2) + (1 - _m.exp((b - r) * T) * _standardNormalPDF(d1) / (v * (T)**0.5)) / Q2
 
     E = _ITERATION_MAX_ERROR
@@ -144,7 +144,7 @@ def _Kc(X, T, r, b, v):
         Si = (X + RHS - bi * Si) / (1 - bi)
         d1 = (_m.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
         LHS = Si - X
-        RHS = _priceEuropeanOption( _CALL, Si, X, T, r, b, v) + (1 - _m.exp((b - r) * T) * _standardNormalCDF(d1)) * Si / Q2
+        RHS = _priceEuropeanOption( CALL, Si, X, T, r, b, v) + (1 - _m.exp((b - r) * T) * _standardNormalCDF(d1)) * Si / Q2
         bi = _m.exp((b - r) * T) * _standardNormalCDF(d1) * (1 - 1 / Q2) + (1 - _m.exp((b - r) * T) * _standardNormalCDF(d1) / (v * (T)**0.5)) / Q2
     
     return Si
@@ -161,7 +161,7 @@ def _Kp(X, T, r, b, v):
     d1 = (_m.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
     Q1 = (-1 * (N - 1) - ((N - 1)**2 + 4 * k)**0.5) / 2
     LHS = X - Si
-    RHS = _priceEuropeanOption( _PUT, Si, X, T, r, b, v) - (1 - _m.exp((b - r) * T) * _standardNormalCDF(-1 * d1)) * Si / Q1
+    RHS = _priceEuropeanOption( PUT, Si, X, T, r, b, v) - (1 - _m.exp((b - r) * T) * _standardNormalCDF(-1 * d1)) * Si / Q1
     bi = -1 * _m.exp((b - r) * T) * _standardNormalCDF(-1 * d1) * (1 - 1 / Q1) - (1 + _m.exp((b - r) * T) * _standardNormalPDF(-d1) / (v * (T)**0.5)) / Q1
     
     E = _ITERATION_MAX_ERROR
@@ -170,20 +170,20 @@ def _Kp(X, T, r, b, v):
         Si = (X - RHS + bi * Si) / (1 + bi)
         d1 = (_m.log(Si / X) + (b + v**2 / 2) * T) / (v * (T)**0.5)
         LHS = X - Si
-        RHS = _priceEuropeanOption( _PUT, Si, X, T, r, b, v) - (1 - _m.exp((b - r) * T) * _standardNormalCDF(-1 * d1)) * Si / Q1
+        RHS = _priceEuropeanOption( PUT, Si, X, T, r, b, v) - (1 - _m.exp((b - r) * T) * _standardNormalCDF(-1 * d1)) * Si / Q1
         bi = -_m.exp((b - r) * T) * _standardNormalCDF(-1 * d1) * (1 - 1 / Q1) - (1 + _m.exp((b - r) * T) * _standardNormalCDF(-1 * d1) / (v * (T)**0.5)) / Q1
         
     return Si
 
 def _checkBadFlagInput(option_style_flag, output_flag, option_type_flag):
 
-    styles = (_AMERICAN, _EUROPEAN)
+    styles = (AMERICAN, EUROPEAN)
     if option_style_flag not in styles:
         raise ValueError('Option Style must be one of %s' % (styles))
-    outputs = (_PRICE, _DELTA, _GAMMA, _VEGA, _THETA)
+    outputs = (PRICE, DELTA, GAMMA, VEGA, THETA)
     if output_flag not in outputs:
         raise ValueError('Output Type must be one of %s' % (outputs))
-    types = (_CALL, _PUT)
+    types = (CALL, PUT)
     if option_type_flag not in types:
         raise ValueError('Option Type must be one of %s' % (types))
 
@@ -229,22 +229,22 @@ def getValue(option_style_flag, output_flag, option_type_flag, spot_price, strik
     _checkBadFlagInput(option_style_flag, output_flag, option_type_flag)
     _checkBadNumericInput(S, X, T, r, b, v)
 
-    if option_style_flag == _AMERICAN:
+    if option_style_flag == AMERICAN:
     
-        if output_flag == _PRICE: 
+        if output_flag == PRICE: 
             return _priceAmericanOption(option_type_flag, S, X, T, r, b, v)
-        elif output_flag == _DELTA: 
+        elif output_flag == DELTA: 
             return (_priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v) - _priceAmericanOption(option_type_flag, S - _dS, X, T, r, b, v)) / (2 * _dS)
-        elif output_flag == _GAMMA: 
+        elif output_flag == GAMMA: 
             return (_priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v) - 2 * _priceAmericanOption(option_type_flag, S, X, T, r, b, v) + _priceAmericanOption(option_type_flag, S - _dS, X, T, r, b, v)) / _dS**2
-        elif output_flag == _VEGA:
+        elif output_flag == VEGA:
             return (_priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v + _dV) - _priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v - _dV)) / 2
-        elif output_flag == _THETA:
+        elif output_flag == THETA:
             return _priceAmericanOption(option_type_flag, S + _dS, X, T - _dT, r, b, v) - _priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v)
             
-    elif option_style_flag == _AMERICAN:
+    elif option_style_flag == AMERICAN:
 
         # TODO implement Greeks for european options
-        if output_flag == _PRICE: 
+        if output_flag == PRICE: 
             return _priceEuropeanOption(option_type_flag, S, X, T, r, b, v)
 

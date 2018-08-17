@@ -14,8 +14,14 @@ class NumericInputWidget(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
         self.display_only = display_only
         self.param_name_to_editable_dict = {}
+        
+        self.main_layout = QtGui.QVBoxLayout()
+        
+        self.group_box = QtGui.QGroupBox(group_name)
         self.content_layout = QtGui.QFormLayout()
-        self.main_layout = PYQT_SHARED.getGroupFormLayout(self.content_layout, group_name)
+        self.group_box.setLayout(self.content_layout)
+
+        self.main_layout.addWidget(self.group_box)
         self.setLayout(self.main_layout)
         Qt.QCoreApplication.processEvents()
 
@@ -42,6 +48,16 @@ class NumericInputWidget(QtGui.QWidget):
         editable.changedSignal.connect(self.emitChangedSignal)
         return editable
 
+    def loadValues(self, param_name_serialization_path_tuples):
+        for (name, path) in param_name_serialization_path_tuples:
+            temp = GLOBALS.settings
+            for attr in path.split('.'):
+                temp = temp[attr]
+            self.param_name_to_editable_dict[name].setText(str(temp))
+
+    def setValidity(self, is_valid):
+        PYQT_SHARED.setGroupBoxValidity(self.group_box, is_valid)
+
     def emitChangedSignal(self):
         name_value_dict = self.getParametersNameValueDictIfDefined()
         if name_value_dict:
@@ -56,12 +72,7 @@ class NumericInputWidget(QtGui.QWidget):
             self.content_layout.addRow(label, editable)
             Qt.QCoreApplication.processEvents()
 
-    def loadValues(self, param_name_serialization_path_tuples):
-        for (name, path) in param_name_serialization_path_tuples:
-            temp = GLOBALS.settings
-            for attr in path.split('.'):
-                temp = temp[attr]
-            self.param_name_to_editable_dict[name].setText(str(temp))
+
 
     def getParametersNameValueDictIfDefined(self):
         param_name_value_dict = {}

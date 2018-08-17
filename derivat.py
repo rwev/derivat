@@ -138,11 +138,17 @@ class MainWindow(QtGui.QMainWindow):
     def onStrikeDimensionChange(self, strike_dimensions_dict):
         GLOBALS.valuation_controller.setStrikesDict(strike_dimensions_dict)
         if GLOBALS.valuation_controller.areStrikesValid():
+            self.strikes_widget.setValidity(True)
             self.values_table.updateStrikeColumns(GLOBALS.valuation_controller.getStrikesList())
+        else: 
+            self.strikes_widget.setValidity(False)
     def onExpirationDimensionChange(self, expiration_dimensions_dict):
         GLOBALS.valuation_controller.setExpirationsDict(expiration_dimensions_dict)
         if GLOBALS.valuation_controller.areExpirationsValid():
+            self.expirations_widget.setValidity(True)
             self.values_table.updateExpirationRows(GLOBALS.valuation_controller.getExpirationsList())
+        else:
+            self.expirations_widget.setValidity(False)
 
     def handleAction(self, action):
         if (action == CONSTANTS.window.action.clear_):

@@ -11,15 +11,18 @@ class PushButtonGroupBox(QtGui.QWidget):
         self.row_index_to_add = 0
         self.column_index_to_add = 0
         
-        main_layout = QtGui.QVBoxLayout()
-        self.setLayout(main_layout)
-        group_box = QtGui.QGroupBox(group_name)
+        self.main_layout = QtGui.QVBoxLayout()
+        
+        self.group_box = QtGui.QGroupBox(group_name)
         self.content_layout = QtGui.QGridLayout()
+        self.group_box.setLayout(self.content_layout)
 
-        group_box.setLayout(self.content_layout)
+        self.main_layout.addWidget(self.group_box)
+        self.setLayout(self.main_layout)
+
         self.button_group = QtGui.QButtonGroup()
         self.button_group.buttonClicked[int].connect(self.emitChangedSignal)
-        main_layout.addWidget(group_box)
+
         self.actions = ()
 
     def _getNextPositionToAdd(self):
@@ -44,6 +47,9 @@ class PushButtonGroupBox(QtGui.QWidget):
 
             self.content_layout.addWidget(push_button, self.row_index_to_add, self.column_index_to_add )
             self._getNextPositionToAdd()
+
+    def setValidity(self, is_valid):
+        PYQT_SHARED.setGroupBoxValidity(self.group_box, is_valid)
 
     def emitChangedSignal(self, index):
         value = self.getValueIfDefined(index)

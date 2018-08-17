@@ -3,19 +3,26 @@ import PyQt4.QtGui as QtGui
 
 import Globals as GLOBALS
 
+from ..libs import PyQtShared as PYQT_SHARED
+
 class RadioButtonGroupBox(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, group_name = None, display_only = False, parent = None):
         QtGui.QWidget.__init__(self, parent)
-        main_layout = QtGui.QVBoxLayout()
-        self.setLayout(main_layout)
-        group_box = QtGui.QGroupBox(group_name)
+
+        self.main_layout = QtGui.QVBoxLayout()
+
+        self.group_box = QtGui.QGroupBox(group_name)
         self.content_layout = QtGui.QHBoxLayout()
-        group_box.setLayout(self.content_layout)
+        self.group_box.setLayout(self.content_layout)
+
+        self.main_layout.addWidget(self.group_box)
+        self.setLayout(self.main_layout)
+
         self.button_group = QtGui.QButtonGroup()
         self.button_group.buttonClicked.connect(self.emitChangedSignal)
-        main_layout.addWidget(group_box)
-        self.options = ()
+
+        self.options = ()        
 
     def _setCheckedOption(self, option):
         self.clearSelection()
@@ -43,6 +50,10 @@ class RadioButtonGroupBox(QtGui.QWidget):
         for attr in setting_serialization_path.split('.'):
             temp = temp[attr]
         self._setCheckedOption(temp)
+        self.emitChangedSignal()
+
+    def setValidity(self, is_valid):
+        PYQT_SHARED.setGroupBoxValidity(self.group_box, is_valid)
 
     def emitChangedSignal(self):
         value = self.getValueIfDefined()

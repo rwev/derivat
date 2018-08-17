@@ -7,19 +7,11 @@ and apply consistent settings / configurations
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
-def setEqualRowHeight(form_layout, row_height):
-    for i in range(0, form_layout.rowCount()):
-        layout_item = form_layout.itemAt(i, QtGui.QFormLayout.FieldRole)
-        if (layout_item and layout_item.widget()):
-            layout_item.widget().setFixedHeight(row_height)
-
-def getGroupFormLayout(central_layout, group_name):
-    outer_layout = QtGui.QVBoxLayout()
-    group_box_widget = QtGui.QGroupBox(group_name) 
-    content_layout = QtGui.QFormLayout()
-    group_box_widget.setLayout(central_layout)
-    outer_layout.addWidget(group_box_widget)
-    return outer_layout 
+def setGroupBoxValidity(group_box_widget, is_valid):
+    if is_valid:
+        group_box_widget.setStyleSheet('::title { color: green; }')
+    elif not is_valid:
+        group_box_widget.setStyleSheet('::title { color: red; }')
 
 def getIcon(source_filepath):
     # applies to all child windows     

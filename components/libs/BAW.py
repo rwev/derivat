@@ -6,17 +6,17 @@ import math as _m
 import cmath as _cm
 
 # Option Styles
-_AMERICAN = 'American'
-_EUROPEAN = 'European'
+_AMERICAN = 11
+_EUROPEAN = 12
 # Option Types 
-_CALL = 'Call'
-_PUT = 'Put'
+_CALL = 21
+_PUT = 22
 # Output Types 
-_PRICE = 'Price'
-_DELTA = 'Delta'
-_GAMMA = 'Gamma'
-_VEGA = 'Vega'
-_THETA = 'Theta'
+_PRICE = 31
+_DELTA = 32
+_GAMMA = 33
+_VEGA = 34
+_THETA = 35
 
 _dS = 0.001
 _dT = 1 / 365

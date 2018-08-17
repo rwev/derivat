@@ -7,5 +7,5 @@ from distutils.core import setup
 from Cython.Build import cythonize
 
 setup(
-    ext_modules = cythonize("CYBAW.pyx")
+    ext_modules = cythonize("components/libs/CYBAW.pyx")
 )

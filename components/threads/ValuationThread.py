@@ -1,6 +1,7 @@
 
 import PyQt4.QtCore as Qt
 from ..libs import BAW
+from ..libs import CYBAW
 from ..libs.Constants import constants as CONSTANTS
 
 class ValuationThread(Qt.QThread):
@@ -58,7 +59,7 @@ class ValuationThread(Qt.QThread):
                 else:
                     call_put_flag = self.option_type
 
-                value = BAW.getValue(
+                value = CYBAW.getValue(
                     CONSTANTS.backend.valuation.flags_map[self.option_style], 
                     CONSTANTS.backend.valuation.flags_map[self.output_type], 
                     CONSTANTS.backend.valuation.flags_map[call_put_flag], 

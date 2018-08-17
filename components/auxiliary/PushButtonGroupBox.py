@@ -22,6 +22,14 @@ class PushButtonGroupBox(QtGui.QWidget):
         main_layout.addWidget(group_box)
         self.actions = ()
 
+    def _getNextPositionToAdd(self):
+        if self.column_index_to_add >= self.column_dimension - 1:
+            self.column_index_to_add = 0
+            self.row_index_to_add += 1
+        else:
+            self.column_index_to_add += 1
+        return self.row_index_to_add, self.column_index_to_add
+
     def addActions(self, push_button_actions_tuple):
         self.actions = push_button_actions_tuple
         action_id = 0
@@ -35,15 +43,7 @@ class PushButtonGroupBox(QtGui.QWidget):
             action_id += 1
 
             self.content_layout.addWidget(push_button, self.row_index_to_add, self.column_index_to_add )
-            self.getNextPositionToAdd()
-
-    def getNextPositionToAdd(self):
-        if self.column_index_to_add >= self.column_dimension - 1:
-            self.column_index_to_add = 0
-            self.row_index_to_add += 1
-        else:
-            self.column_index_to_add += 1
-        return self.row_index_to_add, self.column_index_to_add
+            self._getNextPositionToAdd()
 
     def emitChangedSignal(self, index):
         value = self.getValueIfDefined(index)

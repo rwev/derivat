@@ -17,6 +17,14 @@ class RadioButtonGroupBox(QtGui.QWidget):
         main_layout.addWidget(group_box)
         self.options = ()
 
+    def _setCheckedOption(self, option):
+        self.clearSelection()
+        id_to_check = self.options.index(option)
+        if id_to_check >= 0:
+            button_to_check = self.button_group.button(id_to_check)
+            button_to_check.setChecked(True)        
+        return
+
     def addOptions(self, radio_button_options_tuple):
         self.options = radio_button_options_tuple
         option_id = 0
@@ -34,15 +42,7 @@ class RadioButtonGroupBox(QtGui.QWidget):
         temp = GLOBALS.settings
         for attr in setting_serialization_path.split('.'):
             temp = temp[attr]
-        self.setCheckedOption(temp)
-
-    def setCheckedOption(self, option):
-        self.clearSelection()
-        id_to_check = self.options.index(option)
-        if id_to_check >= 0:
-            button_to_check = self.button_group.button(id_to_check)
-            button_to_check.setChecked(True)        
-        return
+        self._setCheckedOption(temp)
 
     def emitChangedSignal(self):
         value = self.getValueIfDefined()
@@ -55,7 +55,6 @@ class RadioButtonGroupBox(QtGui.QWidget):
         if checked_id >= 0:
             return self.options[checked_id]
         return False
-
 
     def clearSelection(self):
         checked_id = self.button_group.checkedId()

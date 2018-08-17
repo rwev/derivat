@@ -15,6 +15,12 @@ class OptionValuesTable(QtGui.QTableWidget):
         font.setPointSize(CONSTANTS.window.table.content.font.size)
         self.setFont(font)
 
+    def _getFormattedContentCell(self, value):
+        value_str = str(value)[:CONSTANTS.window.table.content.characters]
+        cell = QtGui.QTableWidgetItem(value_str)
+        cell.setTextAlignment(Qt.Qt.AlignCenter)
+        return cell
+
     def updateStrikeColumns(self, strike_list):
         self.strike_list = strike_list
         self.setColumnCount(len(strike_list))
@@ -28,12 +34,8 @@ class OptionValuesTable(QtGui.QTableWidget):
     def updateValue(self, (strike_index, expiration_index, value)):
         column_index = strike_index
         row_index = expiration_index
-        cell = self.getFormattedContentCell(value)
+        cell = self._getFormattedContentCell(value)
         self.setItem(row_index, column_index, cell)
 
-    def getFormattedContentCell(self, value):
-        value_str = str(value)[:CONSTANTS.window.table.content.characters]
-        cell = QtGui.QTableWidgetItem(value_str)
-        cell.setTextAlignment(Qt.Qt.AlignCenter)
-        return cell
+
 

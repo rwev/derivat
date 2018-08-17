@@ -18,30 +18,14 @@ class NumericInputWidget(QtGui.QWidget):
         self.main_layout = PYQT_SHARED.getGroupFormLayout(self.content_layout, group_name)
         self.setLayout(self.main_layout)
         Qt.QCoreApplication.processEvents()
-        
-    def displayParameters(self, param_name_type_default_tuples):
-        self.param_name_to_editable_dict = {}
-        for (name, typ, default) in param_name_type_default_tuples:
-            label = self.getLabel(name, typ)
-            editable = self.getEditable(typ, default)
-            self.param_name_to_editable_dict[name] = editable
-            self.content_layout.addRow(label, editable)
-            Qt.QCoreApplication.processEvents()
 
-    def loadValues(self, param_name_serialization_path_tuples):
-        for (name, path) in param_name_serialization_path_tuples:
-            temp = GLOBALS.settings
-            for attr in path.split('.'):
-                temp = temp[attr]
-            self.param_name_to_editable_dict[name].setText(str(temp))
-
-    def getLabel(self, name, typ):
+    def _getLabel(self, name, typ):
         label = QtGui.QLabel()
         label.setAlignment(Qt.Qt.AlignLeft)
         label.setText(Qt.QString(name))
         return label
 
-    def getEditable(self, typ, default):
+    def _getEditable(self, typ, default):
         if self.display_only:
             editable = QtGui.QLabel()
             editable.setAlignment(Qt.Qt.AlignLeft)
@@ -62,7 +46,23 @@ class NumericInputWidget(QtGui.QWidget):
         name_value_dict = self.getParametersNameValueDictIfDefined()
         if name_value_dict:
             self.changedSignal.emit(name_value_dict)
-            
+        
+    def displayParameters(self, param_name_type_default_tuples):
+        self.param_name_to_editable_dict = {}
+        for (name, typ, default) in param_name_type_default_tuples:
+            label = self._getLabel(name, typ)
+            editable = self._getEditable(typ, default)
+            self.param_name_to_editable_dict[name] = editable
+            self.content_layout.addRow(label, editable)
+            Qt.QCoreApplication.processEvents()
+
+    def loadValues(self, param_name_serialization_path_tuples):
+        for (name, path) in param_name_serialization_path_tuples:
+            temp = GLOBALS.settings
+            for attr in path.split('.'):
+                temp = temp[attr]
+            self.param_name_to_editable_dict[name].setText(str(temp))
+
     def getParametersNameValueDictIfDefined(self):
         param_name_value_dict = {}
         for param_name in self.param_name_to_editable_dict.keys():

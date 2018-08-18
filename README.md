@@ -29,8 +29,11 @@ To run the application,
    ```shell
    \derivat > pip install -r requirements.txt
    ```
-   **Note:** pip will encounter an error attempting to install *PyQt4==4.11.4*. Please 
-6. Execute
+6. Compile Cython valuation module
+    ```shell
+    \derivat > python components\libs\setup.py build_ext --inplace
+    ```
+7. Execute
    ```shell
    \derivat > python derivat.py 
    ```

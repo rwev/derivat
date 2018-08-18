@@ -4,4 +4,3 @@
     - [ ] when at least one input section isn't valid
     - [ ] after calculation when same (valid) inputs remain
 - [ ] clear table, progress bar on new (uncalculated) input to reflect state
-- [ ] write Cython compilation instructions

@@ -22,14 +22,20 @@ class OptionValuesTable(QtGui.QTableWidget):
         return cell
 
     def updateStrikeColumns(self, strike_list):
-        self.strike_list = strike_list
         self.setColumnCount(len(strike_list))
         self.setHorizontalHeaderLabels([str(l) for l in strike_list])
+
+    def clearStrikeColumns(self):
+        self.setColumnCount(0)
+        self.setHorizontalHeaderLabels([])
         
     def updateExpirationRows(self, expiration_list):
-        self.expiration_list = expiration_list
         self.setRowCount(len(expiration_list))
         self.setVerticalHeaderLabels([str(l) for l in expiration_list])
+
+    def clearExpirationRows(self):
+        self.setRowCount(0)
+        self.setVerticalHeaderLabels([])
 
     def updateValue(self, (strike_index, expiration_index, value)):
         column_index = strike_index

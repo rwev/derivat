@@ -13,6 +13,9 @@ from ..libs.Constants import constants as CONSTANTS
 
 import Globals as GLOBALS
 
+def _checkRange(min_, incr, max_):
+    return (min_ > 0 and incr > 0 and max_ > 0 and min_ < max_ and min_ + incr < max_)
+
 class ValuationController():
     def __init__(self):
         self.reset()
@@ -27,57 +30,25 @@ class ValuationController():
         self.expiration_dimensions_dict = None
 
     def setOptionStyle(self, o):
+        self.option_style = None
         if o == CONSTANTS.window.valuation.style.american or \
             o == CONSTANTS.window.valuation.style.european:
             self.option_style = o
     def setOptionType(self, o):
+        self.option_type = None
         if o == CONSTANTS.window.valuation.type.call or \
             o == CONSTANTS.window.valuation.type.put or \
             o == CONSTANTS.window.valuation.type.otm or \
             o == CONSTANTS.window.valuation.type.itm:
             self.option_type = o
     def setOutputType(self, o):
+        self.output_type = None
         if o == CONSTANTS.window.valuation.output.price or \
             o == CONSTANTS.window.valuation.output.delta or \
             o == CONSTANTS.window.valuation.output.gamma or \
             o == CONSTANTS.window.valuation.output.vega or \
             o == CONSTANTS.window.valuation.output.theta:
            self.output_type = o
-
-    def setFactorsDict(self, d):
-        self.factors_dict = d
-    def setStrikesDict(self, d):
-        self.strike_dimensions_dict = d
-    def setExpirationsDict(self, d):
-        self.expiration_dimensions_dict = d  
-
-    def getFactorInputs(self):
-        return self.factors_dict[CONSTANTS.window.valuation.factor.spot_price], \
-                self.factors_dict[CONSTANTS.window.valuation.factor.interest_rate], \
-                self.factors_dict[CONSTANTS.window.valuation.factor.carry_rate], \
-                self.factors_dict[CONSTANTS.window.valuation.factor.volatility]
-    def areFactorsValid(self):
-        if not self.factors_dict:
-            return False
-        
-        spot_price, interest_rate_ppa, carry_rate_ppa, volatility_ppa = self.getFactorInputs()
-        
-        if not (spot_price > 0):
-            return False
-        if not (interest_rate_ppa > 0):
-            return False
-        if not (carry_rate_ppa > 0):
-            return False
-        if not (volatility_ppa > 0):
-            return False
-        return True
-    def getFactors(self):
-        if not self.areFactorsValid():
-            return False
-        return self.getFactorInputs()
-
-    def checkRange(self, min, incr, max):
-        return (min > 0 and incr > 0 and max > 0 and min < max and min + incr < max)
 
     def getOptionStyle(self):
         if self.option_style:
@@ -91,51 +62,79 @@ class ValuationController():
         if self.output_type:
             return self.output_type
         return False
-    
-    def getStrikeRangeInputs(self):
-        return self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_min], \
-                self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_incr], \
-                self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_max]
-    def areStrikesValid(self):
-        if not self.strike_dimensions_dict:
-            return False
-        min, incr, max = self.getStrikeRangeInputs() 
-        if self.checkRange(min, incr, max):
-            return True
+
+    def setInputFactors(self, d):
+        self.factors_dict = None
+
+        spot_price, interest_rate_ppa, carry_rate_ppa, volatility_ppa = d[CONSTANTS.window.valuation.factor.spot_price], \
+                                                                        d[CONSTANTS.window.valuation.factor.interest_rate], \
+                                                                        d[CONSTANTS.window.valuation.factor.carry_rate], \
+                                                                        d[CONSTANTS.window.valuation.factor.volatility]
+        if not (spot_price > 0):
+            return 
+        if not (1 > interest_rate_ppa > 0):
+            return 
+        if not (1 > carry_rate_ppa > 0):
+            return 
+        if not (10 > volatility_ppa > 0):
+            return 
+        
+        self.factors_dict = d
+    def getInputFactors(self):
+        if self.factors_dict:
+            return self.factors_dict[CONSTANTS.window.valuation.factor.spot_price], \
+                    self.factors_dict[CONSTANTS.window.valuation.factor.interest_rate], \
+                    self.factors_dict[CONSTANTS.window.valuation.factor.carry_rate], \
+                    self.factors_dict[CONSTANTS.window.valuation.factor.volatility]
         return False
-    def getStrikesList(self):
-        if not self.areStrikesValid():
-            return False
-        min, incr, max = self.getStrikeRangeInputs() 
-        strikes_list = list(np.arange(min, max + incr, incr))
-        return strikes_list
-    
-    def getExpirationRangeInputs(self):
-        return self.expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.expiration_min], \
-                self.expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.expiration_incr], \
-                self.expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.expiration_max]
-    def areExpirationsValid(self):
-        if not self.expiration_dimensions_dict:
-            return False
-        min, incr, max = self.getExpirationRangeInputs() 
-        if self.checkRange(min, incr, max):
-            return True
+
+    def setStrikeRange(self, d):
+        self.strike_dimensions_dict = None
+
+        min_, incr, max_ = d[CONSTANTS.window.valuation.dimension.strike_min], \
+                            d[CONSTANTS.window.valuation.dimension.strike_incr], \
+                            d[CONSTANTS.window.valuation.dimension.strike_max]
+        if not _checkRange(min_, incr, max_):
+            return 
+        self.strike_dimensions_dict = d
+    def getStrikeRange(self):
+        if self.strike_dimensions_dict:
+            return self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_min], \
+                    self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_incr], \
+                    self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_max]
         return False
-    def getExpirationsList(self):
-        if not self.areExpirationsValid():
-            return False
-        min, incr, max = self.getExpirationRangeInputs() 
-        expirations_list = list(np.arange(min, max + incr, incr))
-        return expirations_list
+    def getStrikeList(self):
+        if (self.getStrikeRange()):
+            min_, incr, max_ = self.getStrikeRange() 
+            strikes_list = list(np.arange(min_, max_ + incr, incr))
+            return strikes_list
+    
+    def setExpirationRange(self, d):
+        self.expiration_dimensions_dict = None
+        min_, incr, max_ = d[CONSTANTS.window.valuation.dimension.expiration_min], \
+                            d[CONSTANTS.window.valuation.dimension.expiration_incr], \
+                            d[CONSTANTS.window.valuation.dimension.expiration_max]
+        if not _checkRange(min_, incr, max_):
+            return 
+        self.expiration_dimensions_dict = d
+    def getExpirationRange(self):
+        if self.expiration_dimensions_dict:
+            return self.expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.expiration_min], \
+                    self.expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.expiration_incr], \
+                    self.expiration_dimensions_dict[CONSTANTS.window.valuation.dimension.expiration_max]
+        return False
+    def getExpirationList(self):
+        if (self.getExpirationRange()):
+            min_, incr, max_ = self.getExpirationRange() 
+            expirations_list = list(np.arange(min_, max_ + incr, incr))
+            return expirations_list
 
     def getNumberOfCalculations(self):
         return len(self.getExpirationsList()) * len(self.getStrikesList())
-
     def readyToValue(self):
         radio_options_ready = (self.getOptionStyle() and self.getOptionType() and self.getOutputType())
-        numeric_inputs_ready = (self.areFactorsValid() and self.areStrikesValid() and self.areExpirationsValid())
+        numeric_inputs_ready = (self.getInputFactors() and self.getStrikeRange() and self.getExpirationRange())
         return radio_options_ready and numeric_inputs_ready
-    
     def getValueFromSettings(self, serialization_path):
         temp = GLOBALS.settings
         for attr in serialization_path.split('.'):

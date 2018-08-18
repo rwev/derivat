@@ -136,20 +136,11 @@ class MainWindow(QtGui.QMainWindow):
         self.updateOutputTypeValidity()
         
     def updateOptionStyleValidity(self):
-        if GLOBALS.valuation_controller.getOptionStyle():
-            self.option_style_widget.setValidity(True)
-        else:
-            self.option_style_widget.setValidity(False)
+        self.option_style_widget.setValidity(bool(GLOBALS.valuation_controller.getOptionStyle()))
     def updateOptionTypeValidity(self):
-        if GLOBALS.valuation_controller.getOptionType():
-            self.option_type_widget.setValidity(True)
-        else:
-            self.option_type_widget.setValidity(False)
+        self.option_type_widget.setValidity(bool(GLOBALS.valuation_controller.getOptionType()))
     def updateOutputTypeValidity(self):
-        if GLOBALS.valuation_controller.getOutputType():
-            self.output_type_widget.setValidity(True)
-        else:
-            self.output_type_widget.setValidity(False)
+        self.output_type_widget.setValidity(bool(GLOBALS.valuation_controller.getOutputType()))
 
     def onInputFactorChange(self, input_factors_dict):
         GLOBALS.valuation_controller.setInputFactors(input_factors_dict)
@@ -173,6 +164,7 @@ class MainWindow(QtGui.QMainWindow):
         else:
             self.strike_dimensions_widget.setValidity(False)
             self.values_table.clearStrikeColumns()
+
     def updateExpirationDimensionsValidity(self):
         if GLOBALS.valuation_controller.getExpirationRange():
             self.expiration_dimensions_widget.setValidity(True)
@@ -256,6 +248,8 @@ class MainWindow(QtGui.QMainWindow):
                 (CONSTANTS.window.valuation.dimension.expiration_max,   CONSTANTS.backend.serialization.path.setting.expiration_max)
             )
         )
+
+
 
     def priceIfReady(self):
         if GLOBALS.valuation_controller.readyToValue():

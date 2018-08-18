@@ -58,8 +58,6 @@ class MainWindow(QtGui.QMainWindow):
 
         self.setCentralWidget(splitter)
         
-        Qt.QCoreApplication.processEvents()
-
     def buildTabs(self):
         tabs = QtGui.QTabWidget()
 
@@ -280,10 +278,10 @@ class MainWindow(QtGui.QMainWindow):
         price_thread.setOptionType(GLOBALS.valuation_controller.getOptionType())
         price_thread.setOutputType(GLOBALS.valuation_controller.getOutputType())
 
-        price_thread.setFactors(*GLOBALS.valuation_controller.getFactors())
+        price_thread.setFactors(*GLOBALS.valuation_controller.getInputFactors())
 
-        price_thread.setStrikesList(GLOBALS.valuation_controller.getStrikesList())
-        price_thread.setExpirationsList(GLOBALS.valuation_controller.getExpirationsList())
+        price_thread.setStrikesList(GLOBALS.valuation_controller.getStrikeList())
+        price_thread.setExpirationsList(GLOBALS.valuation_controller.getExpirationList())
 
         return price_thread
 

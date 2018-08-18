@@ -55,7 +55,6 @@ class PushButtonGroupBox(QtGui.QWidget):
         value = self.getValueIfDefined(index)
         if value:
             self.actionSignal.emit(value)
-            Qt.QCoreApplication.processEvents()
 
     def getValueIfDefined(self, index):
         if index >= 0:

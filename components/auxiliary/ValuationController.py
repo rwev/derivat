@@ -130,7 +130,7 @@ class ValuationController():
             return expirations_list
 
     def getNumberOfCalculations(self):
-        return len(self.getExpirationsList()) * len(self.getStrikesList())
+        return len(self.getExpirationList()) * len(self.getStrikeList())
     def readyToValue(self):
         radio_options_ready = (self.getOptionStyle() and self.getOptionType() and self.getOutputType())
         numeric_inputs_ready = (self.getInputFactors() and self.getStrikeRange() and self.getExpirationRange())

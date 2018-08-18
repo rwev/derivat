@@ -22,7 +22,6 @@ class NumericInputWidget(QtGui.QWidget):
 
         self.main_layout.addWidget(self.group_box)
         self.setLayout(self.main_layout)
-        Qt.QCoreApplication.processEvents()
 
     def _getLabel(self, name, typ):
         label = QtGui.QLabel()
@@ -59,7 +58,6 @@ class NumericInputWidget(QtGui.QWidget):
             editable = self._getEditable(typ, default)
             self.param_name_to_editable_dict[name] = editable
             self.content_layout.addRow(label, editable)
-            Qt.QCoreApplication.processEvents()
 
     def getParametersNameValueDict(self):
         param_name_value_dict = {}

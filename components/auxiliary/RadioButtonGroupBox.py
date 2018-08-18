@@ -59,7 +59,6 @@ class RadioButtonGroupBox(QtGui.QWidget):
         value = self.getValueIfDefined()
         if value:
             self.changedSignal.emit(value)
-            Qt.QCoreApplication.processEvents()
 
     def getValueIfDefined(self):
         checked_id = self.button_group.checkedId()

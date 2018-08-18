@@ -9,7 +9,6 @@ class NumericLineEdit(QtGui.QLineEdit):
     def emitValue(self):
         value = self.getValueIfDefined()
         self.changedSignal.emit(value)
-        Qt.QCoreApplication.processEvents()
 
 class AutoDoubleLineEdit(NumericLineEdit):
     def __init__(self, default_text = ''):

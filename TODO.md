@@ -8,4 +8,6 @@
     - [ ] black background
     - [ ] white font
     - [ ] contiguous with plot
-- 
+- [ ] align 3D grid with surface
+- [ ] add axis labels
+- [ ] 

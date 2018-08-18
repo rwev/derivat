@@ -21,7 +21,7 @@ class OptionValuesTable(QtGui.QTableWidget):
         cell.setTextAlignment(Qt.Qt.AlignCenter)
         return cell
 
-    def updateStrikeColumns(self, strike_list):
+    def setStrikeColumns(self, strike_list):
         self.setColumnCount(len(strike_list))
         self.setHorizontalHeaderLabels([str(l) for l in strike_list])
 
@@ -29,7 +29,7 @@ class OptionValuesTable(QtGui.QTableWidget):
         self.setColumnCount(0)
         self.setHorizontalHeaderLabels([])
         
-    def updateExpirationRows(self, expiration_list):
+    def setExpirationRows(self, expiration_list):
         self.setRowCount(len(expiration_list))
         self.setVerticalHeaderLabels([str(l) for l in expiration_list])
 

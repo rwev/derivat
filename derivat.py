@@ -5,6 +5,8 @@ import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
 import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
+import components.auxiliary.AssistGraphsBuild as BUILD_GRAPHS
+
 import components.auxiliary.NumericInputGroupBox as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.OptionValuesTable as OPT_VAL_TABLE
@@ -62,15 +64,27 @@ class MainWindow(QtGui.QMainWindow):
         tabs = QtGui.QTabWidget()
 
         values_tab = QtGui.QWidget()
+        graphs_tab = QtGui.QWidget()
+
         self.buildValuesTab(values_tab)
+        self.buildGraphsTab(graphs_tab)
+
         tabs.addTab(values_tab, CONSTANTS.window.tabs.values_)
+        tabs.addTab(graphs_tab, CONSTANTS.window.tabs.graphs)
 
         return tabs
+    
     def buildValuesTab(self, tab):
         layout = QtGui.QVBoxLayout()
-        layout.setAlignment(Qt.Qt.AlignTop)
         self.values_table = OPT_VAL_TABLE.OptionValuesTable()
         layout.addWidget(self.values_table)
+        tab.setLayout(layout)
+        return
+
+    def buildGraphsTab(self, tab):
+        layout = QtGui.QVBoxLayout()
+        self.graphs_view_widget = BUILD_GRAPHS.buildGraphsViewWidget()
+        layout.addWidget(self.graphs_view_widget)
         tab.setLayout(layout)
         return
 

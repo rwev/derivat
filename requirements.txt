@@ -9,9 +9,13 @@ isort==4.3.4
 lazy-object-proxy==1.3.1
 mccabe==0.6.1
 numpy==1.15.0
+psutil==5.4.6
 pylint==1.9.3
-rope==0.11.0
+PyOpenGL==3.1.0
+PyOpenGL-accelerate==3.1.0
+PyQt4==4.11.4
+pyqtgraph==0.10.0
+PyYAML==3.13
 singledispatch==3.4.0.3
 six==1.11.0
-virtualenv==16.0.0
 wrapt==1.10.11

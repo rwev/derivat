@@ -25,7 +25,6 @@ class NumericInputWidget(QtGui.QWidget):
 
     def _getLabel(self, name, typ):
         label = QtGui.QLabel()
-        label.setAlignment(Qt.Qt.AlignLeft)
         label.setText(Qt.QString(name))
         return label
 

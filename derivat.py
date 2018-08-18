@@ -85,8 +85,8 @@ class MainWindow(QtGui.QMainWindow):
         self.output_type_widget = BUILD_CONTROLS.buildOutputTypeWidget()
 
         self.input_factors_widget = BUILD_CONTROLS.buildInputFactorsWidget()
-        self.strikes_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
-        self.expirations_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
+        self.strike_dimensions_widget = BUILD_CONTROLS.buildStrikeDimensionsWidget()
+        self.expiration_dimensions_widget = BUILD_CONTROLS.buildExpirationDimensionsWidget()
 
         actions_widget = BUILD_CONTROLS.buildActionsWidget()
 
@@ -97,16 +97,16 @@ class MainWindow(QtGui.QMainWindow):
         self.output_type_widget.changedSignal.connect(self.onOutputTypeChange)
 
         self.input_factors_widget.changedSignal.connect(self.onInputFactorChange)
-        self.strikes_widget.changedSignal.connect(self.onStrikeDimensionChange)
-        self.expirations_widget.changedSignal.connect(self.onExpirationDimensionChange)
+        self.strike_dimensions_widget.changedSignal.connect(self.onStrikeDimensionChange)
+        self.expiration_dimensions_widget.changedSignal.connect(self.onExpirationDimensionChange)
 
         actions_widget.actionSignal.connect(self.handleAction)
 
         splitter.addWidget(self.option_style_widget)
         splitter.addWidget(self.option_type_widget)
         splitter.addWidget(self.input_factors_widget)
-        splitter.addWidget(self.strikes_widget)
-        splitter.addWidget(self.expirations_widget)
+        splitter.addWidget(self.strike_dimensions_widget)
+        splitter.addWidget(self.expiration_dimensions_widget)
         splitter.addWidget(self.output_type_widget)
         splitter.addWidget(actions_widget)
         splitter.addWidget(progress_bar_container_widget)
@@ -129,26 +129,67 @@ class MainWindow(QtGui.QMainWindow):
 
     def onOptionStyleChange(self, selected_option):
         GLOBALS.valuation_controller.setOptionStyle(selected_option)
+        self.updateOptionStyleValidity()
     def onOptionTypeChange(self, selected_option):
         GLOBALS.valuation_controller.setOptionType(selected_option)
+        self.updateOptionTypeValidity()
     def onOutputTypeChange(self, selected_option):
         GLOBALS.valuation_controller.setOutputType(selected_option)
-    def onInputFactorChange(self, input_factors_dict):
-        GLOBALS.valuation_controller.setFactorsDict(input_factors_dict)
-    def onStrikeDimensionChange(self, strike_dimensions_dict):
-        GLOBALS.valuation_controller.setStrikesDict(strike_dimensions_dict)
-        if GLOBALS.valuation_controller.areStrikesValid():
-            self.strikes_widget.setValidity(True)
-            self.values_table.updateStrikeColumns(GLOBALS.valuation_controller.getStrikesList())
-        else: 
-            self.strikes_widget.setValidity(False)
-    def onExpirationDimensionChange(self, expiration_dimensions_dict):
-        GLOBALS.valuation_controller.setExpirationsDict(expiration_dimensions_dict)
-        if GLOBALS.valuation_controller.areExpirationsValid():
-            self.expirations_widget.setValidity(True)
-            self.values_table.updateExpirationRows(GLOBALS.valuation_controller.getExpirationsList())
+        self.updateOutputTypeValidity()
+        
+    def updateOptionStyleValidity(self):
+        if GLOBALS.valuation_controller.getOptionStyle():
+            self.option_style_widget.setValidity(True)
         else:
-            self.expirations_widget.setValidity(False)
+            self.option_style_widget.setValidity(False)
+    def updateOptionTypeValidity(self):
+        if GLOBALS.valuation_controller.getOptionType():
+            self.option_type_widget.setValidity(True)
+        else:
+            self.option_type_widget.setValidity(False)
+    def updateOutputTypeValidity(self):
+        if GLOBALS.valuation_controller.getOutputType():
+            self.output_type_widget.setValidity(True)
+        else:
+            self.output_type_widget.setValidity(False)
+
+    def onInputFactorChange(self, input_factors_dict):
+        GLOBALS.valuation_controller.setInputFactors(input_factors_dict)
+        self.updateInputFactorValidity()
+    def onStrikeDimensionChange(self, strike_dimensions_dict):
+        GLOBALS.valuation_controller.setStrikeRange(strike_dimensions_dict)
+        self.updateStrikeDimensionsValidity()
+    def onExpirationDimensionChange(self, expiration_dimensions_dict):
+        GLOBALS.valuation_controller.setExpirationRange(expiration_dimensions_dict)
+        self.updateExpirationDimensionsValidity()
+
+    def updateInputFactorValidity(self):
+        if GLOBALS.valuation_controller.getInputFactors():
+            self.input_factors_widget.setValidity(True)
+        else:
+            self.input_factors_widget.setValidity(False)
+    def updateStrikeDimensionsValidity(self):
+        if GLOBALS.valuation_controller.getStrikeRange():
+            self.strike_dimensions_widget.setValidity(True)
+            self.values_table.updateStrikeColumns(GLOBALS.valuation_controller.getStrikeList())
+        else:
+            self.strike_dimensions_widget.setValidity(False)
+            self.values_table.clearStrikeColumns()
+    def updateExpirationDimensionsValidity(self):
+        if GLOBALS.valuation_controller.getExpirationRange():
+            self.expiration_dimensions_widget.setValidity(True)
+            self.values_table.updateExpirationRows(GLOBALS.valuation_controller.getExpirationList())
+        else:
+            self.expiration_dimensions_widget.setValidity(False)
+            self.values_table.clearExpirationRows()
+
+    def updateAllValidity(self):
+        self.updateOptionStyleValidity()
+        self.updateOptionTypeValidity()
+        self.updateOutputTypeValidity()
+        self.updateInputFactorValidity()
+        self.updateStrikeDimensionsValidity()
+        self.updateExpirationDimensionsValidity()
 
     def handleAction(self, action):
         if (action == CONSTANTS.window.action.clear_):
@@ -160,18 +201,20 @@ class MainWindow(QtGui.QMainWindow):
         elif (action == CONSTANTS.window.action.save):
             self.saveSettingsToFile()
     def clear(self):
+
         self.option_style_widget.clearSelection()
         self.option_type_widget.clearSelection()
         self.output_type_widget.clearSelection()
 
         self.input_factors_widget.clearForm()
-        self.strikes_widget.clearForm()
-        self.expirations_widget.clearForm()
+        self.strike_dimensions_widget.clearForm()
+        self.expiration_dimensions_widget.clearForm()
 
         self.values_table.clearContents()
         self.progress_bar.reset()
 
         GLOBALS.valuation_controller.reset()
+        self.updateAllValidity()
 
     def loadSettingsFromFile(self):
         self.load_thread = SERIAL.LoadYAMLThread()
@@ -201,14 +244,14 @@ class MainWindow(QtGui.QMainWindow):
         self.option_type_widget.loadSelectedOption(CONSTANTS.backend.serialization.path.setting.type)
         self.output_type_widget.loadSelectedOption(CONSTANTS.backend.serialization.path.setting.output)
 
-        self.strikes_widget.loadValues(
+        self.strike_dimensions_widget.loadValues(
             (
                 (CONSTANTS.window.valuation.dimension.strike_min,   CONSTANTS.backend.serialization.path.setting.strike_min),
                 (CONSTANTS.window.valuation.dimension.strike_incr,  CONSTANTS.backend.serialization.path.setting.strike_incr),
                 (CONSTANTS.window.valuation.dimension.strike_max,   CONSTANTS.backend.serialization.path.setting.strike_max)
             )
         )
-        self.expirations_widget.loadValues(
+        self.expiration_dimensions_widget.loadValues(
             (
                 (CONSTANTS.window.valuation.dimension.expiration_min,   CONSTANTS.backend.serialization.path.setting.expiration_min),
                 (CONSTANTS.window.valuation.dimension.expiration_incr,  CONSTANTS.backend.serialization.path.setting.expiration_incr),

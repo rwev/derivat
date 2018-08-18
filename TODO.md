@@ -1,6 +1,8 @@
 - [ ] integrate OpenGL (pyqtgraph.opengl) into main application's "Graphs" tabs
-- [ ] handle bad dimension range specification
-    - [ ] green / red indicator on input components when they are valid or invalid
 - [ ] implement greeks for european options
-- [ ] add Cython to speed up valuation 
 - [ ] lock save, calculate buttons when pricing not ready
+- [ ] consider adding _ITERATION_MAX_COUNT to BAW / CYBAW
+- [ ] verify pricing accuracy
+    - [ ] example: bad ITM call deltas
+- [ ] write Cython compilation instructions
+- [ ] remove process events

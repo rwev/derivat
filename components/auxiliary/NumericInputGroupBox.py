@@ -10,9 +10,8 @@ import LineEdit as LINE_EDIT
 
 class NumericInputWidget(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
-    def __init__(self, group_name = None, display_only = False, parent = None):
+    def __init__(self, group_name = None, parent = None):
         QtGui.QWidget.__init__(self, parent)
-        self.display_only = display_only
         self.param_name_to_editable_dict = {}
         
         self.main_layout = QtGui.QVBoxLayout()
@@ -32,15 +31,6 @@ class NumericInputWidget(QtGui.QWidget):
         return label
 
     def _getEditable(self, typ, default):
-        if self.display_only:
-            editable = QtGui.QLabel()
-            editable.setAlignment(Qt.Qt.AlignLeft)
-            if not default:
-                editable.setText(Qt.QString((str(typ)))) 
-            else:
-                editable.setText(Qt.QString((str(default))))  
-                
-            return editable
         if typ == int: 
             editable = LINE_EDIT.AutoIntegerLineEdit(default)
         elif typ == float:
@@ -54,14 +44,13 @@ class NumericInputWidget(QtGui.QWidget):
             for attr in path.split('.'):
                 temp = temp[attr]
             self.param_name_to_editable_dict[name].setText(str(temp))
+        self.emitChangedSignal()
 
     def setValidity(self, is_valid):
         PYQT_SHARED.setGroupBoxValidity(self.group_box, is_valid)
 
     def emitChangedSignal(self):
-        name_value_dict = self.getParametersNameValueDictIfDefined()
-        if name_value_dict:
-            self.changedSignal.emit(name_value_dict)
+        self.changedSignal.emit(self.getParametersNameValueDict())
         
     def displayParameters(self, param_name_type_default_tuples):
         self.param_name_to_editable_dict = {}
@@ -72,23 +61,19 @@ class NumericInputWidget(QtGui.QWidget):
             self.content_layout.addRow(label, editable)
             Qt.QCoreApplication.processEvents()
 
-
-
-    def getParametersNameValueDictIfDefined(self):
+    def getParametersNameValueDict(self):
         param_name_value_dict = {}
-        for param_name in self.param_name_to_editable_dict.keys():
-            editable = self.param_name_to_editable_dict[param_name]
+        for name in self.param_name_to_editable_dict.keys():
+            editable = self.param_name_to_editable_dict[name]
             value = editable.getValueIfDefined()
-            if value:
-                param_name_value_dict[param_name] = editable.getValueIfDefined()
-            else: 
-                return False
+            param_name_value_dict[name] = value
         return param_name_value_dict
 
     def clearForm(self):
-        for param_name in self.param_name_to_editable_dict.keys():
-            editable = self.param_name_to_editable_dict[param_name]
+        for name in self.param_name_to_editable_dict.keys():
+            editable = self.param_name_to_editable_dict[name]
             editable.clear()
+        self.emitChangedSignal()
 
 
 

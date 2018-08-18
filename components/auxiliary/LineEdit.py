@@ -6,11 +6,10 @@ class NumericLineEdit(QtGui.QLineEdit):
     changedSignal = Qt.pyqtSignal(object)
     def __init__(self, default_text, parent = None):
         QtGui.QWidget.__init__(self, parent)
-    def emitValueIfDefined(self):
+    def emitValue(self):
         value = self.getValueIfDefined()
-        if value:
-            self.changedSignal.emit(value)
-            Qt.QCoreApplication.processEvents()
+        self.changedSignal.emit(value)
+        Qt.QCoreApplication.processEvents()
 
 class AutoDoubleLineEdit(NumericLineEdit):
     def __init__(self, default_text = ''):
@@ -18,12 +17,13 @@ class AutoDoubleLineEdit(NumericLineEdit):
         self.setValidator(QtGui.QDoubleValidator())
         self.link()
     def link(self):
-        self.textChanged.connect(self.emitValueIfDefined)
+        self.textChanged.connect(self.emitValue)
     def getValueIfDefined(self):
         value = self.text()
-        if value:
+        try:
             return float(value)
-        return False
+        except ValueError:
+            return False
 
 class AutoIntegerLineEdit(NumericLineEdit):
     def __init__(self, default_text = ''):
@@ -31,9 +31,10 @@ class AutoIntegerLineEdit(NumericLineEdit):
         self.setValidator(QtGui.QIntValidator())
         self.link()
     def link(self):
-        self.textChanged.connect(self.emitValueIfDefined)
+        self.textChanged.connect(self.emitValue)
     def getValueIfDefined(self):
         value = self.text()
-        if value:
+        try:
             return int(value)
-        return False
+        except ValueError:
+            return False

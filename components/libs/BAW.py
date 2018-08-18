@@ -195,11 +195,11 @@ def _checkBadNumericInput(spot_price, strike_price, expiration_time_in_years, in
         raise ValueError('Strike Price must be > 0')
     if expiration_time_in_years <= 0:
         raise ValueError('Time until Expiration must be > 0')
-    if interest_rate_dec_pa <= 0 or interest_rate_dec_pa >= 1:
+    if interest_rate_dec_pa < 0 or interest_rate_dec_pa >= 1.00:
         raise ValueError('Interest rate in annualized decimal format must be > 0 and < 1.00')
-    if carry_rate_dec_pa <= 0 or carry_rate_dec_pa >= 1:
+    if carry_rate_dec_pa < 0 or carry_rate_dec_pa >= 1.00:
         raise ValueError('Carry Rate in annualized decimal format must be > 0 and < 1.00')
-    if volatility_dec_pa <= 0 or volatility_dec_pa >= 10.00:
+    if volatility_dec_pa < 0 or volatility_dec_pa >= 10.00:
         raise ValueError('Volatility in annualized decimal format must be > 0 and < 10.00 ')
 
 def getValue(option_style_flag, output_flag, option_type_flag, spot_price, strike_price, expiration_time_in_years, interest_rate_dec_pa, carry_rate_dec_pa, volatility_dec_pa):
@@ -214,9 +214,9 @@ def getValue(option_style_flag, output_flag, option_type_flag, spot_price, strik
     spot_price -- Spot price of the underlying asset. Must be > 0.
     strike_price -- Strike price of the option. Must be > 0.
     expiration_time_in_years -- Time until Expiration. Must be > 0. 
-    interest_rate_dec_pa -- Interest rate in annualized decimal format. Must be > 0 and < 1.00.
-    carry_rate_dec_pa -- Carry rate in annualized decimal format. Must be > 0 and < 1.00.
-    volatility_dec_pa -- Volatility in annualized decimal format. Must be > 0 and < 10.00
+    interest_rate_dec_pa -- Interest rate in annualized decimal format. Must be => 0 and < 1.00.
+    carry_rate_dec_pa -- Carry rate in annualized decimal format. Must be => 0 and < 1.00.
+    volatility_dec_pa -- Volatility in annualized decimal format. Must be => 0 and < 10.00
     '''
 
     S = spot_price

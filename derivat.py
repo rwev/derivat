@@ -7,6 +7,9 @@ import PyQt4.QtGui as QtGui
 import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
 import components.auxiliary.AssistGraphsBuild as BUILD_GRAPHS
 
+import components.auxiliary.OptionValuesGridItem as OPT_VAL_GRID
+import components.auxiliary.OptionValuesSurfacePlotItem as OPT_VAL_SURFACE
+
 import components.auxiliary.NumericInputGroupBox as CUSTOM
 import components.auxiliary.LineEdit as LINE_EDIT
 import components.auxiliary.OptionValuesTable as OPT_VAL_TABLE
@@ -84,6 +87,13 @@ class MainWindow(QtGui.QMainWindow):
     def buildGraphsTab(self, tab):
         layout = QtGui.QVBoxLayout()
         self.graphs_view_widget = BUILD_GRAPHS.buildGraphsViewWidget()
+
+        self.values_grid_item = OPT_VAL_GRID.OptionValuesGridItem()
+        # self.values_surface_item = OPT_VAL_SURFACE.OptionValuesSurfacePlotItem()
+
+        self.graphs_view_widget.addItem(self.values_grid_item)
+        # self.graphs_view_widget.addItem(self.values_surface_item)
+
         layout.addWidget(self.graphs_view_widget)
         tab.setLayout(layout)
         return
@@ -175,6 +185,7 @@ class MainWindow(QtGui.QMainWindow):
         if GLOBALS.valuation_controller.getStrikeRange():
             self.strike_dimensions_widget.setValidity(True)
             self.values_table.updateStrikeColumns(GLOBALS.valuation_controller.getStrikeList())
+            self.values_grid_item.setStrikeRange(*GLOBALS.valuation_controller.getStrikeRange())
         else:
             self.strike_dimensions_widget.setValidity(False)
             self.values_table.clearStrikeColumns()
@@ -183,6 +194,7 @@ class MainWindow(QtGui.QMainWindow):
         if GLOBALS.valuation_controller.getExpirationRange():
             self.expiration_dimensions_widget.setValidity(True)
             self.values_table.updateExpirationRows(GLOBALS.valuation_controller.getExpirationList())
+            self.values_grid_item.setExpirationRange(*GLOBALS.valuation_controller.getExpirationRange())
         else:
             self.expiration_dimensions_widget.setValidity(False)
             self.values_table.clearExpirationRows()
@@ -288,8 +300,8 @@ class MainWindow(QtGui.QMainWindow):
 
         price_thread.setFactors(*GLOBALS.valuation_controller.getInputFactors())
 
-        price_thread.setStrikesList(GLOBALS.valuation_controller.getStrikeList())
-        price_thread.setExpirationsList(GLOBALS.valuation_controller.getExpirationList())
+        price_thread.setStrikeList(GLOBALS.valuation_controller.getStrikeList())
+        price_thread.setExpirationList(GLOBALS.valuation_controller.getExpirationList())
 
         return price_thread
 

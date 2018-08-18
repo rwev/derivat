@@ -6,24 +6,21 @@ import numpy as np
 def buildGraphsViewWidget():
 
     graphs_view_widget = gl.GLViewWidget()
+    return graphs_view_widget
 
-    ## create three grids, add each to the graphs_view_widget
-    xgrid = gl.GLGridItem()
-    ygrid = gl.GLGridItem()
-    zgrid = gl.GLGridItem()
+    # graphs_view_widget.addItem(buildGridItem())
+    # graphs_view_widget.addItem(buildScatterPlotItem())
+    # return graphs_view_widget
 
-    xgrid.scale(1, 1, 1)
-    ygrid.scale(1, 1, 1)
-    zgrid.scale(1, 1, 1)
+def buildGridItem():
+    grid_item = gl.GLGridItem()
 
-    xgrid.setSpacing(1, 1, 1)
-    ygrid.setSpacing(1, 1, 1)
-    zgrid.setSpacing(1, 1, 1)
+    grid_item.setSize(100,100)
+    grid_item.setSpacing(5, 5)
 
-    graphs_view_widget.addItem(xgrid)
-    graphs_view_widget.addItem(ygrid)
-    graphs_view_widget.addItem(zgrid)
+    return grid_item
 
+def buildScatterPlotItem():
     xx = np.array([0, 10])
     yy = np.array([0, 10]) 
     zz = np.array([0, 10]) 
@@ -45,7 +42,4 @@ def buildGraphsViewWidget():
     pos = np.array([(c[0], c[1], c[2]) for c in m.T])
 
     scatter = gl.GLScatterPlotItem(pos=pos, size=0.1, pxMode=False)
-
-    graphs_view_widget.addItem(scatter)
-
-    return graphs_view_widget
+    return scatter

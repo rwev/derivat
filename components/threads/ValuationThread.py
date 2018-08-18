@@ -34,9 +34,9 @@ class ValuationThread(Qt.QThread):
         self.carry_rate_ppa = carry_rate_ppa
         self.volatility_ppa = volatility_ppa
 
-    def setStrikesList(self, strikes_list):
+    def setStrikeList(self, strikes_list):
         self.strikes_list = strikes_list
-    def setExpirationsList(self, expirations_list):
+    def setExpirationList(self, expirations_list):
         self.expirations_list = expirations_list 
 
     def run(self): 

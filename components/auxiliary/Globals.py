@@ -17,18 +17,18 @@ def copyStateIntoSettings():
     settings.valuation.type = valuation_controller.getOptionType()
     settings.valuation.output = valuation_controller.getOutputType()
 
-    s, i, c, v = valuation_controller.getFactors()
+    s, i, c, v = valuation_controller.getInputFactors()
     settings.valuation.factors.spot_price = s
     settings.valuation.factors.interest_rate = i
     settings.valuation.factors.carry_rate = c
     settings.valuation.factors.volatility = v
 
-    min, incr, max = valuation_controller.getStrikeRangeInputs()
+    min, incr, max = valuation_controller.getStrikeRange()
     settings.valuation.dimensions.strikes.min = min
     settings.valuation.dimensions.strikes.incr = incr
     settings.valuation.dimensions.strikes.max = max
 
-    min, incr, max = valuation_controller.getExpirationRangeInputs()
+    min, incr, max = valuation_controller.getExpirationRange()
     settings.valuation.dimensions.expirations.min = min
     settings.valuation.dimensions.expirations.incr = incr
     settings.valuation.dimensions.expirations.max = max

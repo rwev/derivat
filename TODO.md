@@ -3,11 +3,12 @@
 - [ ] lock save, calculate buttons 
     - [ ] when at least one input section isn't valid
     - [ ] after calculation when same (valid) inputs remain
-- [ ] clear table, progress bar on new (uncalculated) input to reflect state
+- [ ] clear table, progress bar, graphs on new (uncalculated) input to reflect state
 - [ ] inverted colors
     - [ ] black background
     - [ ] white font
     - [ ] contiguous with plot
 - [ ] align 3D grid with surface
 - [ ] add axis labels
-- [ ] 
+- [ ] change to Cambria font
+- [ ] add heatmap to option value surface

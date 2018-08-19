@@ -1,8 +1,8 @@
 valuation:
   dimensions:
-    expirations: {incr: 30, max: 100, min: 30}
-    strikes: {incr: 0.5, max: 110.0, min: 90.0}
-  factors: {carry_rate: 0.05, interest_rate: 0.05, spot_price: 100.0, volatility: 0.15}
-  output: Vega
+    expirations: {incr: 1, max: 40, min: 20}
+    strikes: {incr: 0.25, max: 15.0, min: 5.0}
+  factors: {carry_rate: 7.5, interest_rate: 15.0, spot_price: 10.0, volatility: 500.0}
+  output: Theta
   style: American
   type: OTM

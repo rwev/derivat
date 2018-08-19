@@ -6,8 +6,9 @@ import PyQt4.QtGui as QtGui
 import pyqtgraph.opengl as gl
 
 import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
-
+import components.auxiliary.OptionValuesAxisItem as OPT_VAL_AXIS
 import components.auxiliary.OptionValuesGridItem as OPT_VAL_GRID
+
 import components.auxiliary.OptionValuesSurfacePlotItem as OPT_VAL_SURFACE
 
 import components.auxiliary.NumericInputGroupBox as CUSTOM
@@ -89,9 +90,11 @@ class MainWindow(QtGui.QMainWindow):
         self.graphs_view_widget = gl.GLViewWidget()
 
         self.values_grid_item = OPT_VAL_GRID.OptionValuesGridItem()
+        self.values_axis_item = OPT_VAL_AXIS.OptionValuesAxisItem()
         self.values_surface_item = OPT_VAL_SURFACE.OptionValuesSurfacePlotItem()
 
         self.graphs_view_widget.addItem(self.values_grid_item)
+        self.graphs_view_widget.addItem(self.values_axis_item)
         self.graphs_view_widget.addItem(self.values_surface_item)
 
         layout.addWidget(self.graphs_view_widget)
@@ -186,22 +189,26 @@ class MainWindow(QtGui.QMainWindow):
             self.strike_dimensions_widget.setValidity(True)
             self.values_table.setStrikeColumns(GLOBALS.valuation_controller.getStrikeList())
             self.values_grid_item.setStrikeRange(*GLOBALS.valuation_controller.getStrikeRange())
+            self.values_axis_item.setStrikeRange(*GLOBALS.valuation_controller.getStrikeRange())
             self.values_surface_item.setStrikeList(GLOBALS.valuation_controller.getStrikeList())
         else:
             self.strike_dimensions_widget.setValidity(False)
             self.values_table.clearStrikeColumns()
             self.values_grid_item.resetStrikeRange()
+            self.values_axis_item.resetStrikeRange()
             self.values_surface_item.resetStrikeList()
     def updateExpirationDimensionsValidity(self):
         if GLOBALS.valuation_controller.getExpirationRange():
             self.expiration_dimensions_widget.setValidity(True)
             self.values_table.setExpirationRows(GLOBALS.valuation_controller.getExpirationList())
             self.values_grid_item.setExpirationRange(*GLOBALS.valuation_controller.getExpirationRange())
+            self.values_axis_item.setExpirationRange(*GLOBALS.valuation_controller.getExpirationRange())
             self.values_surface_item.setExpirationList(GLOBALS.valuation_controller.getExpirationList())
         else:
             self.expiration_dimensions_widget.setValidity(False)
             self.values_table.clearExpirationRows()
             self.values_grid_item.resetExpirationRange()
+            self.values_axis_item.resetExpirationRange()
             self.values_surface_item.resetExpirationList()
 
     def updateAllValidity(self):

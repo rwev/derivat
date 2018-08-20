@@ -5,6 +5,8 @@ import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 import pyqtgraph.opengl as gl
 
+import components.style.DerivatDark as DARK
+
 import components.auxiliary.AssistControlsBuild as BUILD_CONTROLS
 import components.auxiliary.OptionValuesAxisItem as OPT_VAL_AXIS
 import components.auxiliary.OptionValuesGridItem as OPT_VAL_GRID
@@ -27,6 +29,9 @@ class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, parent)
 
+        self.setWindowTitle(CONSTANTS.window.title)
+        self.setIcon()
+        self.setStyle()
         self.buildGui()
         self.show()
         self.activateWindow()
@@ -49,10 +54,11 @@ class MainWindow(QtGui.QMainWindow):
         app_icon = PYQT_SHARED.getIcon(source)
         self.setWindowIcon(app_icon)
 
-    def buildGui(self):
+    def setStyle(self):
+        self.setStyleSheet(DARK.getStyleString())
 
-        self.setWindowTitle(CONSTANTS.window.title)
-        self.setIcon()
+
+    def buildGui(self):
 
         splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
 

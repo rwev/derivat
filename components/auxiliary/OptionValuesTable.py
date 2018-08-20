@@ -10,6 +10,7 @@ class OptionValuesTable(QtGui.QTableWidget):
 
         self.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.setFocusPolicy(Qt.Qt.NoFocus)
+        self.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
 
         font = QtGui.QFont()
         font.setPointSize(CONSTANTS.window.table.content.font.size)

@@ -4,7 +4,6 @@
     - [ ] when at least one input section isn't valid
     - [ ] after calculation when same (valid) inputs remain
 - [ ] clear table, progress bar, graphs on new (uncalculated) input to reflect state
-- [ ] align 3D grid with surface
 - [ ] add axis labels
 - [ ] add heatmap to option value surface
-- [ ] 
+- [ ] solve 3D graph update calls

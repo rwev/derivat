@@ -73,13 +73,12 @@ QTabWidget {
     border: none;
 }
 QTabBar::tab {
+    width: 100px;
     font-size: 10pt;
     font-weight: bold;
     background-color: black;
     border: 1px solid white;
-    width: 50px;
     padding: 5px;
-    margin-top: 10px;
     margin-left: 10px;
     color: white;
 }

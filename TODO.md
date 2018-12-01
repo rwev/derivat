@@ -13,4 +13,4 @@
 - [ ] add minimum width to [values] / [graphs] selectors
 - [ ] add graph control details [?]
 - [ ] add informtion on how to debug to README
-- [ ] 
+- [ ] fix white frame issue on graphs tab widget

@@ -13,4 +13,15 @@
 - [ ] add graph control details [?]
 - [ ] add informtion on how to debug to README
 - [ ] heatmap in values table
-- [ ] 
+
+- [ ] add axis labels https://groups.google.com/forum/#!topic/pyqtgraph/JHviWSaGhckpy
+- [ ] add heatmap / texture to option value surface
+- [ ] solve 3D graph update calls
+- [ ] add VCForPython notes to README
+- [ ] add 3D view controls description to README 
+    - [ ] 3D visualizations use the following mouse interaction:
+        - [ ]  **Left button drag**: Rotates the scene around a central point
+        - [ ]  **Middle button drag**: Pan the scene by moving the central look-at point within the x-y plane
+- [ ]  **Middle button drag + CTRL**: Pan the scene by moving the central look-at point along the z axis
+- [ ] Wheel spin: zoom in/out
+- [ ]  **Wheel + CTRL**: change field-of-view angle

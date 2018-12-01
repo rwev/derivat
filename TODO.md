@@ -7,3 +7,10 @@
 - [ ] add axis labels
 - [ ] add heatmap to option value surface
 - [ ] solve 3D graph update calls
+- [ ] panning 3D scene
+- [ ] scale increments to avoid oblong plotting
+- [ ] resolve all Exception breakpoints
+- [ ] add minimum width to [values] / [graphs] selectors
+- [ ] add graph control details [?]
+- [ ] add informtion on how to debug to README
+- [ ] 

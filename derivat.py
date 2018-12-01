@@ -60,15 +60,20 @@ class MainWindow(QtGui.QMainWindow):
 
     def buildGui(self):
 
-        splitter = QtGui.QSplitter(Qt.Qt.Horizontal)
+        widget = QtGui.QWidget()
+        layout = QtGui.QHBoxLayout()
+
+        widget.setLayout(layout)
 
         tabs_widget = self.buildTabs()
+
         controls_widget = self.buildControls()
+        controls_widget.setFixedWidth(430)
 
-        splitter.addWidget(controls_widget)
-        splitter.addWidget(tabs_widget)
+        layout.addWidget(controls_widget)
+        layout.addWidget(tabs_widget)
 
-        self.setCentralWidget(splitter)
+        self.setCentralWidget(widget)
         
     def buildTabs(self):
         tabs = QtGui.QTabWidget()

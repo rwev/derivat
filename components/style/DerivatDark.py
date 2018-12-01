@@ -70,7 +70,10 @@ QProgressBar::chunk {
 }
 QTabWidget {
     padding: 5px;
-    border: none;
+    border: none ;
+}
+QTabWidget::pane { 
+    border: 0; 
 }
 QTabBar::tab {
     width: 100px;

@@ -36,6 +36,7 @@ class MainWindow(QtGui.QMainWindow):
         self.show()
         self.activateWindow()
         self.loadSettingsFromFile()
+        self.showFullScreen()
 
     def closeEvent(self, event):
         quit_title = CONSTANTS.window.messages.exit.title

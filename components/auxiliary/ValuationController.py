@@ -8,6 +8,8 @@ and returns them
 '''
 
 import numpy as np
+from decimal import Decimal
+
 
 from ..libs.Constants import constants as CONSTANTS
 
@@ -106,7 +108,7 @@ class ValuationController():
     def getStrikeList(self):
         if (self.getStrikeRange()):
             min_, incr, max_ = self.getStrikeRange() 
-            strikes_list = list(np.arange(min_, max_ + incr, incr))
+            strikes_list = list(np.arange(min_, max_ + incr, incr, dtype=np.dtype(Decimal)))
             return strikes_list
     
     def setExpirationRange(self, d):
@@ -126,7 +128,7 @@ class ValuationController():
     def getExpirationList(self):
         if (self.getExpirationRange()):
             min_, incr, max_ = self.getExpirationRange() 
-            expirations_list = list(np.arange(min_, max_ + incr, incr))
+            expirations_list = list(np.arange(min_, max_ + incr, incr, dtype=np.dtype(Decimal)))
             return expirations_list
 
     def getNumberOfCalculations(self):
@@ -162,3 +164,4 @@ class ValuationController():
         self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_min] =  self.getValueFromSettings(CONSTANTS.backend.serialization.path.setting.strike_min)
         self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_incr] = self.getValueFromSettings(CONSTANTS.backend.serialization.path.setting.strike_incr)
         self.strike_dimensions_dict[CONSTANTS.window.valuation.dimension.strike_max] =  self.getValueFromSettings(CONSTANTS.backend.serialization.path.setting.strike_max)
+

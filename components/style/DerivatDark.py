@@ -2,7 +2,7 @@
 def getStyleString():
     return '''
 QWidget {
-    font-size: 8pt;
+    font-size: 11pt;
     font-family: cambria;
     color: white;
     background-color: black;
@@ -29,15 +29,13 @@ QTableView::item {
 }
 QPushButton {
     color: white;
-    font-size: 10pt;
-    font-weight: bold;
     border: 1px solid white;
 }
 QPushButton::pressed {
     border: 2px solid white;
 }
 QGroupBox {
-    font-size: 10pt;
+    font-size: 9pt;
     font-weight: bold;
 }
 
@@ -77,11 +75,12 @@ QTabWidget::pane {
 }
 QTabBar::tab {
     width: 100px;
-    font-size: 10pt;
+    font-size: 9pt;
     font-weight: bold;
     background-color: black;
     border: 1px solid white;
     padding: 5px;
+    margin-top: 20px;
     margin-left: 10px;
     color: white;
 }

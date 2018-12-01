@@ -35,9 +35,9 @@ def buildExpirationDimensionsWidget():
     expirations_widget = NUMERIC_INPUT_GROUP_BOX.NumericInputWidget(group_name = CONSTANTS.window.valuation.dimension.expirations)
     expirations_widget.displayParameters(param_name_type_default_tuples = 
             (
-                (CONSTANTS.window.valuation.dimension.expiration_min, int, None),
-                (CONSTANTS.window.valuation.dimension.expiration_incr,  int, None),
-                (CONSTANTS.window.valuation.dimension.expiration_max,  int, None)
+                (CONSTANTS.window.valuation.dimension.expiration_min, float, None),
+                (CONSTANTS.window.valuation.dimension.expiration_incr,  float, None),
+                (CONSTANTS.window.valuation.dimension.expiration_max,  float, None)
             )
         )
     return expirations_widget

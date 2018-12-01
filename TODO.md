@@ -12,3 +12,4 @@
 - [ ] resolve all Exception breakpoints
 - [ ] add graph control details [?]
 - [ ] add informtion on how to debug to README
+- [ ] convert time to years

@@ -12,9 +12,11 @@ class OptionValuesTable(QtGui.QTableWidget):
         self.setFocusPolicy(Qt.Qt.NoFocus)
         self.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
 
-        font = QtGui.QFont()
-        font.setPointSize(CONSTANTS.window.table.content.font.size)
-        self.setFont(font)
+        self.verticalHeader().setDefaultSectionSize(CONSTANTS.window.table.content.cell.size)
+        self.verticalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
+
+        self.horizontalHeader().setDefaultSectionSize(CONSTANTS.window.table.content.cell.size)
+        self.horizontalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
 
     def _getFormattedContentCell(self, value):
         value_str = str(value)[:CONSTANTS.window.table.content.characters]

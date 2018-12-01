@@ -19,7 +19,8 @@ constants.window.tabs.graphs = 'Graphs'
 constants.window.messages.exit.title = 'Confirm Exit'
 constants.window.messages.exit.description = 'Close derivat? Any unsaved valuation configuration will be lost.'
 
-constants.window.table.content.font.size = 8
+constants.window.table.content.cell.size = 75
+constants.window.table.content.cell.font.size = 20
 constants.window.table.content.characters = 6
 
 constants.window.actions = 'Actions'

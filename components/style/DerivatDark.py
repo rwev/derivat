@@ -24,9 +24,8 @@ QHeaderView::section
     border-right: 2px solid white;
 }
 QTableView{
+    font-size:8pt;
 } 
-QTableView::item {
-}
 QPushButton {
     color: white;
     border: 1px solid white;
@@ -38,7 +37,6 @@ QGroupBox {
     font-size: 9pt;
     font-weight: bold;
 }
-
 QLineEdit {
     color: cyan;
     border: none;
@@ -46,7 +44,6 @@ QLineEdit {
 QLineEdit:focus {
     border: 1px solid cyan;
 }
-
 QRadioButton::indicator::unchecked {
     border: 1px solid white; 
     border-radius: 6px;

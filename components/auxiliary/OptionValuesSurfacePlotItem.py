@@ -16,21 +16,21 @@ class OptionValuesSurfacePlotItem(gl.GLSurfacePlotItem):
         self.y_expirations_1D = None
         self.z_values_2D = None
         
-        self.updateVisibility()
+        self.resetVisibility()
 
     def resetStrikeList(self):
         self.x_strikes_1D = None
-        self.updateVisibility()
+        self.resetVisibility()
     def setStrikeList(self, strike_list):
         self.x_strikes_1D = np.array(strike_list)
-        self.updateVisibility()
+        self.resetVisibility()
 
     def resetExpirationList(self):
         self.y_expirations_1D = None
-        self.updateVisibility()
+        self.resetVisibility()
     def setExpirationList(self, expiration_list):
         self.y_expirations_1D = np.array(expiration_list)
-        self.updateVisibility()
+        self.resetVisibility()
 
     def updateValue(self, (strike_index, expiration_index, value)):
         self.z_values_2D[strike_index][expiration_index] = value
@@ -44,18 +44,18 @@ class OptionValuesSurfacePlotItem(gl.GLSurfacePlotItem):
         self.last_y_translate = -self.y_expirations_1D[0]
         self.translate(self.last_x_translate, self.last_y_translate, 0)
 
-    def updateVisibility(self):
+    def resetVisibility(self):
         are_strikes_defined = isinstance(self.x_strikes_1D, np.ndarray) and self.x_strikes_1D.all()
         are_expirations_defined = isinstance(self.y_expirations_1D, np.ndarray) and self.y_expirations_1D.all()
 
-        is_visible = are_strikes_defined and are_expirations_defined
-
-        if is_visible:
+        if are_strikes_defined and are_expirations_defined:
             self.initializeValues()
             self.translateOnRanges()
 
-        self.setVisible(is_visible)
+        self.setVisible(False)
 
+    def makeVisible(self):
+        self.setVisible(True)
     
 
 

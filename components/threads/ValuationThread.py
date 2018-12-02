@@ -5,7 +5,8 @@ from ..libs import CYBAW
 from ..libs.Constants import constants as CONSTANTS
 
 class ValuationThread(Qt.QThread):
-    resultSignal = Qt.pyqtSignal(object)
+    intermediateResultSignal = Qt.pyqtSignal(object)
+    finishedSignal = Qt.pyqtSignal()
     def __init__(self, parent = None):
         Qt.QThread.__init__(self, parent)
 
@@ -71,4 +72,5 @@ class ValuationThread(Qt.QThread):
                     self.volatility_ppa / 100.0 
                 )
                 
-                self.resultSignal.emit((strike_index, expiration_index, value))
+                self.intermediateResultSignal.emit((strike_index, expiration_index, value))
+        self.finishedSignal.emit()

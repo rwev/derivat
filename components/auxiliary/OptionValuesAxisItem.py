@@ -8,6 +8,7 @@ class OptionValuesAxisItem(gl.GLAxisItem):
         self.x_size_strike_span = None
         self.y_size_expiration_span = None
 
+        self.translate(0, 0, -1)
         self.updateVisibility()
 
     def resetStrikeRange(self):

@@ -14,6 +14,7 @@ class OptionValuesGridItem(gl.GLGridItem):
         self.x_spacing_strike_incr = None
         self.y_spacing_expiration_incr = None
         
+        self.translate(0, 0, -1)
         self.updateVisibility()
 
     def resetStrikeRange(self):

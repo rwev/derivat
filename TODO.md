@@ -26,7 +26,4 @@
     - [ ]  **Middle button drag + CTRL**: Pan the scene by moving the central look-at point along the z axis
     - [ ] Wheel spin: zoom in/out
     - [ ]  **Wheel + CTRL**: change field-of-view angle
-
-- [ ]  get finish signal from pricer... only render 3D when done
-- [ ]  convert prices to Z in [-1, 1] and shift grid downward by calculated amount to force heightColor shader to work. 
-- [ ]  
+  

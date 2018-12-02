@@ -303,13 +303,31 @@ class MainWindow(QtGui.QMainWindow):
         if GLOBALS.valuation_controller.readyToValue():
 
             self.prepareProgressBar()
+            self.prepareGraphsView()
+
             self.price_thread = self.prepareValuationThread()
             
-            self.price_thread.resultSignal.connect(self.values_table.updateValue)
-            self.price_thread.resultSignal.connect(self.values_surface_item.updateValue)
-            self.price_thread.resultSignal.connect(self.progress_bar.increment)
+            self.price_thread.intermediateResultSignal.connect(self.values_table.updateValue)
+            self.price_thread.intermediateResultSignal.connect(self.values_surface_item.updateValue)
+            self.price_thread.intermediateResultSignal.connect(self.progress_bar.increment)
+
+            self.price_thread.finishedSignal.connect(self.onPricingFinished)
 
             self.price_thread.start()
+    def onPricingFinished(self):
+        return
+
+    def prepareGraphsView(self):
+        strike_min, strike_incr, strike_max = GLOBALS.valuation_controller.getStrikeRange()
+        view_strike_center  = (strike_max - strike_min) / 2.0
+
+        expiration_min, expiration_incr, expiration_max = GLOBALS.valuation_controller.getExpirationRange()
+        view_expiration_center = (expiration_max - expiration_min) / 2.0
+
+        self.graphs_view_widget.opts['center'] = QtGui.QVector3D(view_strike_center, view_expiration_center, 0)
+        self.graphs_view_widget.update()
+
+
     def prepareProgressBar(self):
         self.progress_bar.resetToIncrement()
         self.progress_bar.setMaximumIncrements(GLOBALS.valuation_controller.getNumberOfCalculations())

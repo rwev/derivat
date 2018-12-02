@@ -11,17 +11,23 @@
 - [ ] scale increments to avoid oblong plotting
 - [ ] resolve all Exception breakpoints
 - [ ] add graph control details [?]
-- [ ] add informtion on how to debug to README
 - [ ] heatmap in values table
-
 - [ ] add axis labels https://groups.google.com/forum/#!topic/pyqtgraph/JHviWSaGhckpy
 - [ ] add heatmap / texture to option value surface
+- [ ] convert surface to mesh?
 - [ ] solve 3D graph update calls
-- [ ] add VCForPython notes to README
-- [ ] add 3D view controls description to README 
+- [ ] update README
+- [ ] add informtion on how to debug to README
+    - [ ] add VCForPython notes to README
+    - [ ] add 3D view controls description to README 
     - [ ] 3D visualizations use the following mouse interaction:
-        - [ ]  **Left button drag**: Rotates the scene around a central point
-        - [ ]  **Middle button drag**: Pan the scene by moving the central look-at point within the x-y plane
-- [ ]  **Middle button drag + CTRL**: Pan the scene by moving the central look-at point along the z axis
-- [ ] Wheel spin: zoom in/out
-- [ ]  **Wheel + CTRL**: change field-of-view angle
+    - [ ]  **Left button drag**: Rotates the scene around a central point
+    - [ ]  **Middle button drag**: Pan the scene by moving the central look-at point within the x-y plane
+    - [ ]  **Middle button drag + CTRL**: Pan the scene by moving the central look-at point along the z axis
+    - [ ] Wheel spin: zoom in/out
+    - [ ]  **Wheel + CTRL**: change field-of-view angle
+
+- [ ]  get finish signal from pricer... only render 3D when done
+- [ ]  convert prices to Z in [-1, 1] and shift grid downward by calculated amount to force heightColor shader to work. 
+- [ ]  hide plot surface if pricing dimensions have changed
+- [ ]  

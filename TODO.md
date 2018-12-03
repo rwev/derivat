@@ -13,7 +13,6 @@
 - [ ] add graph control details [?]
 - [ ] heatmap in values table
 - [ ] add axis labels https://groups.google.com/forum/#!topic/pyqtgraph/JHviWSaGhckpy
-- [ ] add heatmap / texture to option value surface
 - [ ] convert surface to mesh?
 - [ ] solve 3D graph update calls
 - [ ] update README

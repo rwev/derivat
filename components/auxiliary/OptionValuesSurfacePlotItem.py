@@ -2,10 +2,12 @@
 import pyqtgraph.opengl as gl
 import numpy as np
 
+import matplotlib.pyplot as plt
+cmap = plt.get_cmap('viridis')
+
 class OptionValuesSurfacePlotItem(gl.GLSurfacePlotItem):
     def __init__(self, parent = None):
         gl.GLSurfacePlotItem.__init__(self, parent, computeNormals = False, smooth = True)
-        self.setShader('heightColor')
         self.reset()
 
     def reset(self):
@@ -55,8 +57,15 @@ class OptionValuesSurfacePlotItem(gl.GLSurfacePlotItem):
 
     def makeVisible(self):
         self.transformData()
-        self.setData(x = self.x_strikes_1D, y = self.y_expirations_1D, z = self.z_values_2D)
+        self.setData(x = self.x_strikes_1D, y = self.y_expirations_1D, z = self.z_values_2D, colors = self.generateColors())
         self.setVisible(True)
+
+    def generateColors(self):
+        colors = np.full((self.z_values_2D.shape[0], self.z_values_2D.shape[1], 4), 0.0)
+        for i in range(len(self.z_values_2D)):
+            for j in range(len(self.z_values_2D[i])):
+                colors[i][j] = np.array(cmap((self.z_values_2D[i][j]+1)/(2)))
+        return colors
 
     def transformData(self):
         min_ = np.amin(self.z_values_2D)
@@ -74,6 +83,8 @@ def mapValueToRange(old_min, old_max, new_min, new_max, value):
     new_range = new_max - new_min
     scaled_value = float(value - old_min) / float(old_range)
     return new_min + (scaled_value * new_range)
-    
+
+
+
 
 

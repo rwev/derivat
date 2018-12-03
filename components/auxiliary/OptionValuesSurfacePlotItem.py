@@ -55,22 +55,20 @@ class OptionValuesSurfacePlotItem(gl.GLSurfacePlotItem):
             self.translateOnRanges()
         self.setVisible(False)
 
-    def makeVisible(self):
-        self.transformData()
-        self.setData(x = self.x_strikes_1D, y = self.y_expirations_1D, z = self.z_values_2D, colors = self.generateColors())
+    def makeVisible(self, (min_value, max_value)):
+        self.transformData((min_value, max_value))
+        self.setData(x = self.x_strikes_1D, y = self.y_expirations_1D, z = self.z_values_2D, colors = self.generateColors((min_value, max_value)))
         self.setVisible(True)
 
-    def generateColors(self):
+    def generateColors(self, (min_value, max_value)):
         colors = np.full((self.z_values_2D.shape[0], self.z_values_2D.shape[1], 4), 0.0)
         for i in range(len(self.z_values_2D)):
             for j in range(len(self.z_values_2D[i])):
                 colors[i][j] = np.array(cmap((self.z_values_2D[i][j]+1)/(2)))
         return colors
 
-    def transformData(self):
-        min_ = np.amin(self.z_values_2D)
-        max_ = np.amax(self.z_values_2D)
-        self.z_values_2D = map2DArray(lambda z : mapValueToRange(min_, max_, -1, 1, z), self.z_values_2D)
+    def transformData(self, (min_value, max_value)):
+        self.z_values_2D = map2DArray(lambda z : mapValueToRange(min_value, max_value, -1, 1, z), self.z_values_2D)
 
 def map2DArray(func, arr):
     for i in range(len(arr)):

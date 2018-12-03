@@ -311,6 +311,7 @@ class MainWindow(QtGui.QMainWindow):
             self.price_thread.intermediateResultSignal.connect(self.values_surface_item.updateValue)
             self.price_thread.intermediateResultSignal.connect(self.progress_bar.increment)
 
+            self.price_thread.finishedSignal.connect(self.values_table.makeHeated)
             self.price_thread.finishedSignal.connect(self.values_surface_item.makeVisible)
 
             self.price_thread.start()

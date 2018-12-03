@@ -6,7 +6,7 @@ from ..libs.Constants import constants as CONSTANTS
 
 class ValuationThread(Qt.QThread):
     intermediateResultSignal = Qt.pyqtSignal(object)
-    finishedSignal = Qt.pyqtSignal()
+    finishedSignal = Qt.pyqtSignal(object)
     def __init__(self, parent = None):
         Qt.QThread.__init__(self, parent)
 
@@ -41,6 +41,9 @@ class ValuationThread(Qt.QThread):
         self.expirations_list = expirations_list 
 
     def run(self): 
+        min_value = float('inf')
+        max_value = -float('inf')
+
         for strike_index in range(len(self.strikes_list)):
             for expiration_index in range(len(self.expirations_list)):
                 
@@ -71,6 +74,9 @@ class ValuationThread(Qt.QThread):
                     self.carry_rate_ppa / 100.0, 
                     self.volatility_ppa / 100.0 
                 )
+
+                min_value = min(min_value, value)
+                max_value = max(max_value, value)
                 
                 self.intermediateResultSignal.emit((strike_index, expiration_index, value))
-        self.finishedSignal.emit()
+        self.finishedSignal.emit((min_value, max_value))

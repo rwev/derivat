@@ -1,8 +1,8 @@
 # derivat
 Desktop application for theoretical visualization of financial derivatives, using PyQT, Cython, and OpenGL.
 
-![](graph.png)
-![](table.png)
+![](graph.PNG)
+![](table.PNG)
 
 ## Getting Started
 

@@ -1,4 +1,3 @@
-- [ ] integrate OpenGL (pyqtgraph.opengl) into main application's "Graphs" tabs
 - [ ] implement greeks for european options
 - [ ] lock save, calculate buttons 
     - [ ] when at least one input section isn't valid
@@ -25,4 +24,5 @@
     - [ ]  **Middle button drag + CTRL**: Pan the scene by moving the central look-at point along the z axis
     - [ ] Wheel spin: zoom in/out
     - [ ]  **Wheel + CTRL**: change field-of-view angle
-  
+- [ ] add mapValueToRange, colormap functions, String formatting, etc to DisplayConversionUtils.py 
+- [ ] clear table when inputs change to maintain visual unity

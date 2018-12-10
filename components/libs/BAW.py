@@ -230,21 +230,18 @@ def getValue(option_style_flag, output_flag, option_type_flag, spot_price, strik
     _checkBadNumericInput(S, X, T, r, b, v)
 
     if option_style_flag == AMERICAN:
-    
-        if output_flag == PRICE: 
-            return _priceAmericanOption(option_type_flag, S, X, T, r, b, v)
-        elif output_flag == DELTA: 
-            return (_priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v) - _priceAmericanOption(option_type_flag, S - _dS, X, T, r, b, v)) / (2 * _dS)
-        elif output_flag == GAMMA: 
-            return (_priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v) - 2 * _priceAmericanOption(option_type_flag, S, X, T, r, b, v) + _priceAmericanOption(option_type_flag, S - _dS, X, T, r, b, v)) / _dS**2
-        elif output_flag == VEGA:
-            return (_priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v + _dV) - _priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v - _dV)) / 2
-        elif output_flag == THETA:
-            return _priceAmericanOption(option_type_flag, S + _dS, X, T - _dT, r, b, v) - _priceAmericanOption(option_type_flag, S + _dS, X, T, r, b, v)
-            
-    elif option_style_flag == AMERICAN:
+        priceOption = _priceAmericanOption
+    elif option_style_flag == EUROPEAN:
+        priceOption = _priceEuropeanOption 
 
-        # TODO implement Greeks for european options
-        if output_flag == PRICE: 
-            return _priceEuropeanOption(option_type_flag, S, X, T, r, b, v)
-
+    if output_flag == PRICE: 
+        return priceOption(option_type_flag, S, X, T, r, b, v)
+    elif output_flag == DELTA: 
+        return (priceOption(option_type_flag, S + _dS, X, T, r, b, v) - priceOption(option_type_flag, S - _dS, X, T, r, b, v)) / (2 * _dS)
+    elif output_flag == GAMMA: 
+        return (priceOption(option_type_flag, S + _dS, X, T, r, b, v) - 2 * priceOption(option_type_flag, S, X, T, r, b, v) + priceOption(option_type_flag, S - _dS, X, T, r, b, v)) / _dS**2
+    elif output_flag == VEGA:
+        return (priceOption(option_type_flag, S + _dS, X, T, r, b, v + _dV) - priceOption(option_type_flag, S + _dS, X, T, r, b, v - _dV)) / 2
+    elif output_flag == THETA:
+        return priceOption(option_type_flag, S + _dS, X, T - _dT, r, b, v) - priceOption(option_type_flag, S + _dS, X, T, r, b, v)
+        

@@ -1,6 +1,9 @@
 # derivat
 Desktop application for theoretical visualization of financial derivatives, using PyQT, Cython, and OpenGL.
 
+![](graph.png)
+![](table.png)
+
 ## Getting Started
 
 To run the application, 
@@ -29,19 +32,31 @@ To run the application,
    ```shell
    \derivat > pip install -r requirements.txt
    ```
-6. Compile Cython valuation module
+6. Compile Cython valuation module with the following command. 
     ```shell
     \derivat > python components\libs\setup.py build_ext --inplace
     ```
+    **Note**: this step requires a working installation of [VCforPython27, Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/EN-US/DOWNLOAD/DETAILS.ASPX?ID=44266) 
+
 7. Execute
    ```shell
    \derivat > python derivat.py 
    ```
+### Controls
+
+The 3D visualization on the **Graphs** tab can be manipulated with the following interactions:
+   - **Left button drag**: Rotates the scene around central focus point
+   - **Middle button drag**: Pan the scene by moving the central look-at point within the x-y plane
+   - **Middle button drag + CTRL**: Pan the scene by moving the central look-at point along the z axis
+   - **Wheel spin**: zoom in/out
+   - **Wheel + CTRL**: change field-of-view angle
+
+
 ## Contribution
 
 To-date development has been done exclusively in Visual Studio Code for Windows, with the assistance of a custom execute-on-change tool [resurgence.py](https://gist.github.com/rwev/cb5d117c9dbe0efb923e4bb1ed3619f0). 
 
-### Debug Configuration
+### Setting up Resurgence.py
 
 ```javascript
     {
@@ -60,6 +75,20 @@ To-date development has been done exclusively in Visual Studio Code for Windows,
 
 While running this configuration, a change of one of the *.py* source files in the project directory or the *components/* subdirectories will restart the program execution (*python derivat.py*). See *python resurgence.py --help* or read the source for more details on this mechanism. 
 
+Resurgence shortens the change feedback loop in the development in GUI'd programs like *derivat* by forcefully However, debugging with *resurgence.py* isn't possible, because it spawns a child process.  
+
+### Debug Configuration 
+
+To debug *derivat*, specify a debug configuration that starts execution directly.
+
+```javascript
+        {
+            "name": "Python: derivat",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/derivat.py"
+        }
+```
 
 
 

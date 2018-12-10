@@ -1,28 +1,8 @@
-- [ ] implement greeks for european options
 - [ ] lock save, calculate buttons 
     - [ ] when at least one input section isn't valid
     - [ ] after calculation when same (valid) inputs remain
-- [ ] clear table, progress bar, graphs on new (uncalculated) input to reflect state
-- [ ] add axis labels
-- [ ] add heatmap to option value surface
-- [ ] solve 3D graph update calls
-- [ ] panning 3D scene
-- [ ] scale increments to avoid oblong plotting
-- [ ] resolve all Exception breakpoints
-- [ ] add graph control details [?]
-- [ ] heatmap in values table
-- [ ] add axis labels https://groups.google.com/forum/#!topic/pyqtgraph/JHviWSaGhckpy
-- [ ] convert surface to mesh?
-- [ ] solve 3D graph update calls
-- [ ] update README
-- [ ] add informtion on how to debug to README
-    - [ ] add VCForPython notes to README
-    - [ ] add 3D view controls description to README 
-    - [ ] 3D visualizations use the following mouse interaction:
-    - [ ]  **Left button drag**: Rotates the scene around a central point
-    - [ ]  **Middle button drag**: Pan the scene by moving the central look-at point within the x-y plane
-    - [ ]  **Middle button drag + CTRL**: Pan the scene by moving the central look-at point along the z axis
-    - [ ] Wheel spin: zoom in/out
-    - [ ]  **Wheel + CTRL**: change field-of-view angle
-- [ ] add mapValueToRange, colormap functions, String formatting, etc to DisplayConversionUtils.py 
-- [ ] clear table when inputs change to maintain visual unity
+- [ ] add axis labels 
+- [ ] add mesh to value surface
+- [ ] add ability to further specify axis, instruments
+  - [ ] e.g. time on one axis, underlying price on another, holding the instrument constant
+  - [ ] custom instruments as a combination of vanilla options

@@ -2,6 +2,7 @@
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
+from ..libs import VisualizationUtils as VIS_UTILS
 from ..libs.Constants import constants as CONSTANTS
 
 class OptionValuesTable(QtGui.QTableWidget):
@@ -48,20 +49,12 @@ class OptionValuesTable(QtGui.QTableWidget):
         self.setItem(row_index, column_index, item)
 
     def makeHeated(self, (min_value, max_value)):
-        import matplotlib.pyplot as plt
-        cmap = plt.get_cmap('viridis')
-
         for row in range(self.rowCount()):
             for column in range(self.columnCount()):
                 item = self.item(row, column)
                 value  = float(item.text())
-                color = cmap(mapValueToRange(min_value, max_value, 0, 1, value))
+                color = VIS_UTILS.colormap(VIS_UTILS.mapValueToRange(min_value, max_value, 0, 1, value))
                 item.setTextColor(QtGui.QColor(*(255*i for i in color)))
 
-def mapValueToRange(old_min, old_max, new_min, new_max, value):
-    old_range = old_max - old_min
-    new_range = new_max - new_min
-    scaled_value = float(value - old_min) / float(old_range)
-    return new_min + (scaled_value * new_range)
 
 

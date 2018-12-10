@@ -2,8 +2,7 @@
 import pyqtgraph.opengl as gl
 import numpy as np
 
-import matplotlib.pyplot as plt
-cmap = plt.get_cmap('viridis')
+from ..libs import VisualizationUtils as VIS_UTILS
 
 class OptionValuesSurfacePlotItem(gl.GLSurfacePlotItem):
     def __init__(self, parent = None):
@@ -64,23 +63,14 @@ class OptionValuesSurfacePlotItem(gl.GLSurfacePlotItem):
         colors = np.full((self.z_values_2D.shape[0], self.z_values_2D.shape[1], 4), 0.0)
         for i in range(len(self.z_values_2D)):
             for j in range(len(self.z_values_2D[i])):
-                colors[i][j] = np.array(cmap((self.z_values_2D[i][j]+1)/(2)))
+                colors[i][j] = np.array(VIS_UTILS.colormap((self.z_values_2D[i][j]+1)/(2)))
         return colors
 
     def transformData(self, (min_value, max_value)):
-        self.z_values_2D = map2DArray(lambda z : mapValueToRange(min_value, max_value, -1, 1, z), self.z_values_2D)
+        self.z_values_2D = VIS_UTILS.map2DArray(lambda z : VIS_UTILS.mapValueToRange(min_value, max_value, -1, 1, z), self.z_values_2D)
 
-def map2DArray(func, arr):
-    for i in range(len(arr)):
-        for j in range(len(arr[i])):
-            arr[i][j] = func(arr[i][j])
-    return arr  
 
-def mapValueToRange(old_min, old_max, new_min, new_max, value):
-    old_range = old_max - old_min
-    new_range = new_max - new_min
-    scaled_value = float(value - old_min) / float(old_range)
-    return new_min + (scaled_value * new_range)
+
 
 
 

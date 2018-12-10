@@ -1,8 +1,8 @@
 valuation:
   dimensions:
-    expirations: {incr: 1, max: 40, min: 20}
-    strikes: {incr: 0.25, max: 15.0, min: 5.0}
-  factors: {carry_rate: 7.5, interest_rate: 15.0, spot_price: 10.0, volatility: 500.0}
-  output: Theta
+    expirations: {incr: 0.5, max: 5.0, min: 1.0}
+    strikes: {incr: 0.1, max: 11.0, min: 9.0}
+  factors: {carry_rate: 2.5, interest_rate: 5.0, spot_price: 10.0, volatility: 25.0}
+  output: Price
   style: American
   type: OTM

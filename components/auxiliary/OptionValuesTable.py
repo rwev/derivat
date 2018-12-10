@@ -18,11 +18,12 @@ class OptionValuesTable(QtGui.QTableWidget):
         self.horizontalHeader().setDefaultSectionSize(CONSTANTS.window.table.content.cell.size)
         self.horizontalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
 
-    def _getFormattedContentCell(self, value):
+    def _getFormattedContentitem(self, value):
         value_str = str(value)[:CONSTANTS.window.table.content.characters]
-        cell = QtGui.QTableWidgetItem(value_str)
-        cell.setTextAlignment(Qt.Qt.AlignCenter)
-        return cell
+        item = QtGui.QTableWidgetItem(value_str)
+        item.setTextAlignment(Qt.Qt.AlignCenter)
+        item.setTextColor(QtGui.QColor(*(128, 128, 128, 255)))
+        return item
 
     def setStrikeColumns(self, strike_list):
         self.setColumnCount(len(strike_list))
@@ -43,8 +44,24 @@ class OptionValuesTable(QtGui.QTableWidget):
     def updateValue(self, (strike_index, expiration_index, value)):
         column_index = strike_index
         row_index = expiration_index
-        cell = self._getFormattedContentCell(value)
-        self.setItem(row_index, column_index, cell)
+        item = self._getFormattedContentitem(value)
+        self.setItem(row_index, column_index, item)
 
+    def makeHeated(self, (min_value, max_value)):
+        import matplotlib.pyplot as plt
+        cmap = plt.get_cmap('viridis')
+
+        for row in range(self.rowCount()):
+            for column in range(self.columnCount()):
+                item = self.item(row, column)
+                value  = float(item.text())
+                color = cmap(mapValueToRange(min_value, max_value, 0, 1, value))
+                item.setTextColor(QtGui.QColor(*(255*i for i in color)))
+
+def mapValueToRange(old_min, old_max, new_min, new_max, value):
+    old_range = old_max - old_min
+    new_range = new_max - new_min
+    scaled_value = float(value - old_min) / float(old_range)
+    return new_min + (scaled_value * new_range)
 
 

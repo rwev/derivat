@@ -23,24 +23,28 @@ class OptionValuesTable(QtGui.QTableWidget):
         value_str = str(value)[:CONSTANTS.window.table.content.characters]
         item = QtGui.QTableWidgetItem(value_str)
         item.setTextAlignment(Qt.Qt.AlignCenter)
-        item.setTextColor(QtGui.QColor(*(128, 128, 128, 255)))
+        item.setTextColor(QtGui.QColor(*VIS_UTILS.gray))
         return item
 
     def setStrikeColumns(self, strike_list):
         self.setColumnCount(len(strike_list))
         self.setHorizontalHeaderLabels([str(l) for l in strike_list])
+        self.clearContents()
 
     def clearStrikeColumns(self):
         self.setColumnCount(0)
         self.setHorizontalHeaderLabels([])
+        self.clearContents()
         
     def setExpirationRows(self, expiration_list):
         self.setRowCount(len(expiration_list))
         self.setVerticalHeaderLabels([str(l) for l in expiration_list])
+        self.clearContents()
 
     def clearExpirationRows(self):
         self.setRowCount(0)
         self.setVerticalHeaderLabels([])
+        self.clearContents()
 
     def updateValue(self, (strike_index, expiration_index, value)):
         column_index = strike_index

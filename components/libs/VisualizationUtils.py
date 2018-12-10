@@ -2,6 +2,8 @@
 import matplotlib.pyplot as plt
 colormap = plt.get_cmap('viridis')
 
+gray = (128, 128, 128, 255)
+
 def mapValueToRange(old_min, old_max, new_min, new_max, value):
     old_range = old_max - old_min
     new_range = new_max - new_min

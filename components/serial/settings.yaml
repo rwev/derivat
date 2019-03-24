@@ -1,8 +1,18 @@
 valuation:
   dimensions:
-    expirations: {incr: 0.5, max: 5.0, min: 1.0}
-    strikes: {incr: 0.1, max: 11.0, min: 9.0}
-  factors: {carry_rate: 2.5, interest_rate: 5.0, spot_price: 10.0, volatility: 25.0}
+    expirations:
+      incr: 0.125
+      max: 5.0
+      min: 1.0
+    strikes:
+      incr: 0.025
+      max: 11.0
+      min: 9.0
+  factors:
+    carry_rate: 0.0
+    interest_rate: 2.5
+    spot_price: 10.0
+    volatility: 25.0
   output: Price
   style: American
   type: OTM

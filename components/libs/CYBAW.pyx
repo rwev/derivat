@@ -210,9 +210,9 @@ cdef _checkBadNumericInput(double spot_price, double strike_price, double expira
         raise ValueError('Strike Price must be > 0')
     if expiration_time_in_years <= 0:
         raise ValueError('Time until Expiration must be > 0')
-    if interest_rate_dec_pa <= 0 or interest_rate_dec_pa >= 1:
+    if interest_rate_dec_pa < 0 or interest_rate_dec_pa >= 1:
         raise ValueError('Interest rate in annualized decimal format must be > 0 and < 1.00')
-    if carry_rate_dec_pa <= 0 or carry_rate_dec_pa >= 1:
+    if carry_rate_dec_pa < 0 or carry_rate_dec_pa >= 1:
         raise ValueError('Carry Rate in annualized decimal format must be > 0 and < 1.00')
     if volatility_dec_pa <= 0 or volatility_dec_pa >= 10.00:
         raise ValueError('Volatility in annualized decimal format must be > 0 and < 10.00 ')

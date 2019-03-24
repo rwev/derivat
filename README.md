@@ -3,6 +3,7 @@ Desktop application for theoretical visualization of financial derivatives, usin
 
 ![](graph.PNG)
 ![](table.PNG)
+![](derivat-demo.gif)
 
 ## Getting Started
 
@@ -11,20 +12,22 @@ To run the application,
 1. Assure installation of *Python 2.7* with *pip* and (optionally) *virtualenv* packages installed
 2. Clone the repository
    ```shell
-   > git clone https://github.com/rwev/derivat.git
+   $ git clone https://github.com/rwev/derivat.git
    ```
 3. Navigate to the repository with CLI
     ```shell
-   > cd derivat
+   $ cd derivat
    ```
-4. (Optional, but recommended): create an isolated virtual environment
+4. Create an isolated virtual environment (optional, but recommended)
    ```shell
-   \derivat > virtualenv <name>
+   $ virtualenv <name>
    ```
    This is to mitigate version conflicts with the global system Python installation. This project intentionally relies on some former package versions.
 5. Install dependencies
-   
-   **PyQt4**: download the Windows wheel (*.whl*) file [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4) (be sure to select *cp27* for Python 2.7) and and manually install: 
+
+   **Windows:**
+
+   *PyQt4*: download the Windows wheel (*.whl*) file [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4) (be sure to select *cp27* for Python 2.7) and and manually install:
    ```shell
    \derivat > pip install PyQt4-4.11.4-cp27-<bit-system>.whl
    ```
@@ -32,15 +35,20 @@ To run the application,
    ```shell
    \derivat > pip install -r requirements.txt
    ```
+   **Linux:**
+   ```shell
+   /derivat $ sudo apt-get install python-qt4 python-qt4-gl python-tk
+   /derivat $ pip install -r requirements.txt --user
+   ```
 6. Compile Cython valuation module with the following command. 
     ```shell
-    \derivat > python components\libs\setup.py build_ext --inplace
+    /derivat $ python ./components/libs/setup.py build_ext --inplace
     ```
-    **Note**: this step requires a working installation of [VCforPython27, Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/EN-US/DOWNLOAD/DETAILS.ASPX?ID=44266) 
+    **Note**: On Windows, this step requires a working installation of [VCforPython27, Microsoft Visual C++ Compiler for Python 2.7](https://www.microsoft.com/EN-US/DOWNLOAD/DETAILS.ASPX?ID=44266) 
 
 7. Execute
    ```shell
-   \derivat > python derivat.py 
+   /derivat $ python derivat.py 
    ```
 ### Controls
 
@@ -54,7 +62,7 @@ The 3D visualization on the **Graphs** tab can be manipulated with the following
 
 ## Contribution
 
-To-date development has been done exclusively in Visual Studio Code for Windows, with the assistance of a custom execute-on-change tool [resurgence.py](https://gist.github.com/rwev/cb5d117c9dbe0efb923e4bb1ed3619f0). 
+To-date development has been done exclusively in Visual Studio Code, with the assistance of a custom execute-on-change tool [resurgence.py](https://gist.github.com/rwev/cb5d117c9dbe0efb923e4bb1ed3619f0). 
 
 ### Setting up Resurgence.py
 

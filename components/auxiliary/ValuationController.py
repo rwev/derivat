@@ -74,9 +74,9 @@ class ValuationController():
                                                                         d[CONSTANTS.window.valuation.factor.volatility]
         if not (spot_price > 0):
             return 
-        if not (100 > interest_rate_ppa > 0):
+        if not (100 > interest_rate_ppa >= 0):
             return 
-        if not (100 > carry_rate_ppa > 0):
+        if not (100 > carry_rate_ppa >= 0):
             return 
         if not (1000 > volatility_ppa > 0):
             return 

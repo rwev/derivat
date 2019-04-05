@@ -1,4 +1,4 @@
-# deriVAT (Derivatives Visual Analysis Tool)
+# DeriVAT (Derivative Visual Analysis Tool)
 Desktop application for theoretical visualization of financial derivatives, using PyQT, Cython, and OpenGL.
 
 ![](graph.PNG)
@@ -9,7 +9,7 @@ Desktop application for theoretical visualization of financial derivatives, usin
 
 To run the application, 
 
-1. Assure installation of *Python 2.7* with *pip* and (optionally) *virtualenv* packages installed
+1.Verify working installation of *Python 2.7* with *pip* and (optionally) *virtualenv* packages installed
 2. Clone the repository
    ```shell
    $ git clone https://github.com/rwev/derivat.git

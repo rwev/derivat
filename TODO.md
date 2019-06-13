@@ -1,8 +1,0 @@
-- [ ] lock save, calculate buttons 
-    - [ ] when at least one input section isn't valid
-    - [ ] after calculation when same (valid) inputs remain
-- [ ] add axis labels 
-- [ ] add mesh to value surface
-- [ ] add ability to further specify axis, instruments
-  - [ ] e.g. time on one axis, underlying price on another, holding the instrument constant
-  - [ ] custom instruments as a combination of vanilla options

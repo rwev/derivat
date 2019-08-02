@@ -1,4 +1,3 @@
-
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
@@ -8,14 +7,16 @@ import Globals as GLOBALS
 
 import LineEdit as LINE_EDIT
 
+
 class NumericInputWidget(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
-    def __init__(self, group_name = None, parent = None):
+
+    def __init__(self, group_name=None, parent=None):
         QtGui.QWidget.__init__(self, parent)
         self.param_name_to_editable_dict = {}
-        
+
         self.main_layout = QtGui.QVBoxLayout()
-        
+
         self.group_box = QtGui.QGroupBox(group_name)
         self.content_layout = QtGui.QFormLayout()
         self.group_box.setLayout(self.content_layout)
@@ -29,7 +30,7 @@ class NumericInputWidget(QtGui.QWidget):
         return label
 
     def _getEditable(self, typ, default):
-        if typ == int: 
+        if typ == int:
             editable = LINE_EDIT.AutoIntegerLineEdit(default)
         elif typ == float:
             editable = LINE_EDIT.AutoDoubleLineEdit(default)
@@ -39,7 +40,7 @@ class NumericInputWidget(QtGui.QWidget):
     def loadValues(self, param_name_serialization_path_tuples):
         for (name, path) in param_name_serialization_path_tuples:
             temp = GLOBALS.settings
-            for attr in path.split('.'):
+            for attr in path.split("."):
                 temp = temp[attr]
             self.param_name_to_editable_dict[name].setText(str(temp))
         self.emitChangedSignal()
@@ -49,7 +50,7 @@ class NumericInputWidget(QtGui.QWidget):
 
     def emitChangedSignal(self):
         self.changedSignal.emit(self.getParametersNameValueDict())
-        
+
     def displayParameters(self, param_name_type_default_tuples):
         self.param_name_to_editable_dict = {}
         for (name, typ, default) in param_name_type_default_tuples:
@@ -71,6 +72,3 @@ class NumericInputWidget(QtGui.QWidget):
             editable = self.param_name_to_editable_dict[name]
             editable.clear()
         self.emitChangedSignal()
-
-
-

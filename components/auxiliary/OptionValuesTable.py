@@ -1,26 +1,30 @@
-
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
 from ..libs import VisualizationUtils as VIS_UTILS
 from ..libs.Constants import constants as CONSTANTS
 
+
 class OptionValuesTable(QtGui.QTableWidget):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         QtGui.QTableWidget.__init__(self, parent)
 
         self.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.setFocusPolicy(Qt.Qt.NoFocus)
         self.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
 
-        self.verticalHeader().setDefaultSectionSize(CONSTANTS.window.table.content.cell.size)
+        self.verticalHeader().setDefaultSectionSize(
+            CONSTANTS.window.table.content.cell.size
+        )
         self.verticalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
 
-        self.horizontalHeader().setDefaultSectionSize(CONSTANTS.window.table.content.cell.size)
+        self.horizontalHeader().setDefaultSectionSize(
+            CONSTANTS.window.table.content.cell.size
+        )
         self.horizontalHeader().setResizeMode(QtGui.QHeaderView.Fixed)
 
     def _getFormattedContentitem(self, value):
-        value_str = str(value)[:CONSTANTS.window.table.content.characters]
+        value_str = str(value)[: CONSTANTS.window.table.content.characters]
         item = QtGui.QTableWidgetItem(value_str)
         item.setTextAlignment(Qt.Qt.AlignCenter)
         item.setTextColor(QtGui.QColor(*VIS_UTILS.gray))
@@ -35,7 +39,7 @@ class OptionValuesTable(QtGui.QTableWidget):
         self.setColumnCount(0)
         self.setHorizontalHeaderLabels([])
         self.clearContents()
-        
+
     def setExpirationRows(self, expiration_list):
         self.setRowCount(len(expiration_list))
         self.setVerticalHeaderLabels([str(l) for l in expiration_list])
@@ -56,9 +60,8 @@ class OptionValuesTable(QtGui.QTableWidget):
         for row in range(self.rowCount()):
             for column in range(self.columnCount()):
                 item = self.item(row, column)
-                value  = float(item.text())
-                color = VIS_UTILS.colormap(VIS_UTILS.mapValueToRange(min_value, max_value, 0, 1, value))
-                item.setTextColor(QtGui.QColor(*(255*i for i in color)))
-
-
-
+                value = float(item.text())
+                color = VIS_UTILS.colormap(
+                    VIS_UTILS.mapValueToRange(min_value, max_value, 0, 1, value)
+                )
+                item.setTextColor(QtGui.QColor(*(255 * i for i in color)))

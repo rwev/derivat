@@ -1,6 +1,5 @@
-
 def getStyleString():
-    return '''
+    return """
 QWidget {
     font-size: 11pt;
     font-family: cambria;
@@ -85,4 +84,4 @@ QTabBar::tab::selected {
     color: black;
     background-color: white;
 }
-'''
+"""

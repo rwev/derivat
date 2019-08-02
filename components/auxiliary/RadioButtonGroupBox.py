@@ -5,9 +5,11 @@ import Globals as GLOBALS
 
 from ..libs import PyQtShared as PYQT_SHARED
 
+
 class RadioButtonGroupBox(QtGui.QWidget):
     changedSignal = Qt.pyqtSignal(object)
-    def __init__(self, group_name = None, display_only = False, parent = None):
+
+    def __init__(self, group_name=None, display_only=False, parent=None):
         QtGui.QWidget.__init__(self, parent)
 
         self.main_layout = QtGui.QVBoxLayout()
@@ -22,14 +24,14 @@ class RadioButtonGroupBox(QtGui.QWidget):
         self.button_group = QtGui.QButtonGroup()
         self.button_group.buttonClicked.connect(self.emitChangedSignal)
 
-        self.options = ()        
+        self.options = ()
 
     def _setCheckedOption(self, option):
         self.clearSelection()
         id_to_check = self.options.index(option)
         if id_to_check >= 0:
             button_to_check = self.button_group.button(id_to_check)
-            button_to_check.setChecked(True)        
+            button_to_check.setChecked(True)
         return
 
     def addOptions(self, radio_button_options_tuple):
@@ -47,7 +49,7 @@ class RadioButtonGroupBox(QtGui.QWidget):
 
     def loadSelectedOption(self, setting_serialization_path):
         temp = GLOBALS.settings
-        for attr in setting_serialization_path.split('.'):
+        for attr in setting_serialization_path.split("."):
             temp = temp[attr]
         self._setCheckedOption(temp)
         self.emitChangedSignal()
@@ -69,11 +71,10 @@ class RadioButtonGroupBox(QtGui.QWidget):
     def clearSelection(self):
         checked_id = self.button_group.checkedId()
         if checked_id >= 0:
-            
+
             self.button_group.setExclusive(False)
 
             checked_button = self.button_group.checkedButton()
             checked_button.setChecked(False)
 
             self.button_group.setExclusive(True)
-

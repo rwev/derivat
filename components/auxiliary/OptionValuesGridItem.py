@@ -1,8 +1,8 @@
-
 import pyqtgraph.opengl as gl
 
+
 class OptionValuesGridItem(gl.GLGridItem):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         gl.GLGridItem.__init__(self, parent)
 
         self.last_x_translate = 0
@@ -13,7 +13,7 @@ class OptionValuesGridItem(gl.GLGridItem):
 
         self.x_spacing_strike_incr = None
         self.y_spacing_expiration_incr = None
-        
+
         self.translate(0, 0, -1)
         self.updateVisibility()
 
@@ -21,15 +21,17 @@ class OptionValuesGridItem(gl.GLGridItem):
         self.x_size_strike_span = None
         self.x_spacing_strike_incr = None
         self.updateVisibility()
-    def setStrikeRange(self, min_, incr, max_ ):
+
+    def setStrikeRange(self, min_, incr, max_):
         self.x_size_strike_span = max_ - min_
         self.x_spacing_strike_incr = incr
         self.updateVisibility()
-    
+
     def resetExpirationRange(self):
         self.y_size_expiration_span = None
         self.y_spacing_expiration_incr = None
         self.updateVisibility()
+
     def setExpirationRange(self, min_, incr, max_):
         self.y_size_expiration_span = max_ - min_
         self.y_spacing_expiration_incr = incr
@@ -47,9 +49,9 @@ class OptionValuesGridItem(gl.GLGridItem):
 
         is_visible = have_x and have_y
         if is_visible:
-            self.setSize(x = self.x_size_strike_span, y = self.y_size_expiration_span)
-            self.setSpacing(x = self.x_spacing_strike_incr, y = self.y_spacing_expiration_incr)
+            self.setSize(x=self.x_size_strike_span, y=self.y_size_expiration_span)
+            self.setSpacing(
+                x=self.x_spacing_strike_incr, y=self.y_spacing_expiration_incr
+            )
             self.translateOnRanges()
         self.setVisible(is_visible)
-
-    

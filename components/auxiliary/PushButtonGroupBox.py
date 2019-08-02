@@ -1,18 +1,27 @@
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
+
 class PushButtonGroupBox(QtGui.QWidget):
     actionSignal = Qt.pyqtSignal(object)
-    def __init__(self, row_dimension, column_dimension, group_name = None, display_only = False, parent = None):
+
+    def __init__(
+        self,
+        row_dimension,
+        column_dimension,
+        group_name=None,
+        display_only=False,
+        parent=None,
+    ):
         QtGui.QWidget.__init__(self, parent)
-        
+
         self.row_dimension = row_dimension
         self.column_dimension = column_dimension
         self.row_index_to_add = 0
         self.column_index_to_add = 0
-        
+
         self.main_layout = QtGui.QVBoxLayout()
-        
+
         self.group_box = QtGui.QGroupBox(group_name)
         self.content_layout = QtGui.QGridLayout()
         self.group_box.setLayout(self.content_layout)
@@ -45,7 +54,9 @@ class PushButtonGroupBox(QtGui.QWidget):
 
             action_id += 1
 
-            self.content_layout.addWidget(push_button, self.row_index_to_add, self.column_index_to_add )
+            self.content_layout.addWidget(
+                push_button, self.row_index_to_add, self.column_index_to_add
+            )
             self._getNextPositionToAdd()
 
     def setValidity(self, is_valid):

@@ -1,8 +1,8 @@
-'''
+"""
 holds variables to be shared between files, 
 so that they must not be reinitialized / reloaded in each file,
 nor passed as arguments. 
-'''
+"""
 
 import components.auxiliary.ValuationController as VALUE_CONTROL
 
@@ -10,6 +10,7 @@ global valuation_controller
 global settings
 
 valuation_controller = VALUE_CONTROL.ValuationController()
+
 
 def copyStateIntoSettings():
 
@@ -32,4 +33,3 @@ def copyStateIntoSettings():
     settings.valuation.dimensions.expirations.min = min
     settings.valuation.dimensions.expirations.incr = incr
     settings.valuation.dimensions.expirations.max = max
-

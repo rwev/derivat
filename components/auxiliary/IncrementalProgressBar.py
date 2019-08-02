@@ -1,9 +1,9 @@
-
 import PyQt4.QtCore as Qt
 import PyQt4.QtGui as QtGui
 
+
 class IncrementalProgressBar(QtGui.QProgressBar):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         QtGui.QProgressBar.__init__(self, parent)
         self.to_increment = 0
 

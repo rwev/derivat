@@ -1,10 +1,9 @@
-# DeriVAT (Derivative Visual Analysis Tool)
+# DeriVAT (derivative visual analysis tool)
 
 Desktop application for theoretical visualization of financial derivatives, using PyQT, Cython, and OpenGL.
 
 ![](graph.PNG)
 ![](table.PNG)
-![](derivat-demo.gif)
 
 ## Getting Started
 
